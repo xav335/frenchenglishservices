@@ -1,0 +1,36 @@
+.wp-pagenavi {
+	overflow:hidden;
+	margin:-2px 0;
+	font-size:11px;
+}
+.wp-pagenavi a,
+.wp-pagenavi span {
+	display:-moz-inline-stack;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+	margin-right:1px;
+	padding:3px 7px;
+}
+.wp-pagenavi span {
+	padding:4px 7px;
+}
+.wp-pagenavi span.pages {
+	padding:3px 7px 3px 25px;
+	background:url(./images/LayoutBgs.jpg) no-repeat -2510px -221px;
+}
+.wp-pagenavi a {
+	border:1px solid #ccc;
+	background-color:#eee;
+	text-decoration:none;
+}
+.wp-pagenavi a:hover {
+	border-color:#aaa;
+	text-decoration:none;
+}
+.wp-pagenavi span.current {
+	font-weight:bold;
+}
+.wp-pagenavi span.extend {
+	padding:2px 4px;
+}

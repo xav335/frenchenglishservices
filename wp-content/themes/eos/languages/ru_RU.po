@@ -1,0 +1,380 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-08 16:20+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SRS Solutions <info@srssolutions.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: 404.php:6
+msgid "Error 404 - Not Found"
+msgstr "Увы, файл не найден (ошибка 404)"
+
+#: 404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "К сожалению, того, что вы искали, здесь нет."
+
+#: archive.php:15
+#: index.php:13
+msgid "Search Results"
+msgstr "Результаты поиска"
+
+#: archive.php:16
+#: index.php:14
+msgid "Keyword:"
+msgstr "Искали:"
+
+#: archive.php:20
+msgid "Archive"
+msgstr "Архив"
+
+#: archive.php:23
+msgid "Category:"
+msgstr "Рубрика:"
+
+#: archive.php:25
+msgid "Tag:"
+msgstr "Метка:"
+
+#: archive.php:27
+#: archive.php:29
+#: archive.php:31
+#, php-format
+msgid "Archive for %s"
+msgstr "Архивы - %s"
+
+#: archive.php:27
+#: functions.php:226
+#: legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "F jS, Y"
+
+#: archive.php:29
+msgid "F, Y"
+msgstr "F, Y"
+
+#: archive.php:31
+msgid "Y"
+msgstr "Y"
+
+#: archive.php:33
+msgid "Author Archive"
+msgstr "Архивы автора"
+
+#: archive.php:35
+msgid "Blog Archives"
+msgstr "Архивы сайта"
+
+#: archive.php:45
+#: index.php:21
+#: page.php:11
+#: page_fullwidth.php:17
+#: single.php:11
+msgid "Permalink to"
+msgstr "Постоянная ссылка на"
+
+#: archive.php:50
+#: index.php:26
+msgid "continue reading..."
+msgstr "Далее..."
+
+#: archive.php:52
+#: index.php:28
+msgid "Pass Required"
+msgstr "Требуется пароль"
+
+#: archive.php:52
+#: index.php:28
+msgid "Leave a Comment"
+msgstr "Комментировать"
+
+#: archive.php:52
+#: index.php:28
+msgid "1 Comment"
+msgstr "1 комментарий"
+
+#: archive.php:52
+#: index.php:28
+msgid "% Comments"
+msgstr "% коммента (ов)"
+
+#: archive.php:52
+#: index.php:28
+msgid "Comments Off"
+msgstr "Комментарии отключены"
+
+#: archive.php:53
+#: index.php:29
+#: single.php:19
+msgid "none"
+msgstr "нет"
+
+#: archive.php:54
+#: index.php:30
+msgid "Read more"
+msgstr "Далее"
+
+#: archive.php:64
+#: index.php:40
+msgid "Newer Entries"
+msgstr "Более свежие записи"
+
+#: archive.php:65
+#: index.php:41
+msgid "Older Entries"
+msgstr "Более ранние записи"
+
+#: archive.php:76
+#: index.php:52
+#: page.php:30
+#: page_fullwidth.php:36
+#: single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "К сожалению, того, что вы искали, на этом сайте нет. Попробуйте воспользоваться формой поиска (в правом верхнем углу страницы)."
+
+#: comments.php:12
+#: comments.php:19
+#: legacy.comments.php:12
+#: legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Запись защищена паролем. Чтобы просмотреть комментарии, введите пароль."
+
+#: comments.php:28
+msgid "Leave a comment"
+msgstr "Комментировать"
+
+#: comments.php:31
+msgid "Trackback"
+msgstr "Трекбэк"
+
+#: comments.php:33
+msgid "Comments"
+msgstr "Комментарии"
+
+#: comments.php:43
+msgid "Previous"
+msgstr "<<<"
+
+#: comments.php:43
+msgid "Next"
+msgstr ">>>"
+
+#: comments.php:45
+msgid "Older Comments"
+msgstr "Более старые комментарии"
+
+#: comments.php:46
+msgid "Newer Comments"
+msgstr "Более новые комментарии"
+
+#: comments.php:55
+#: legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "Комментарии отключены."
+
+#: comments.php:62
+#: legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "Оставить отзыв"
+
+#: comments.php:70
+#: legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "Чтобы иметь возможность комментировать, вы должны быть %slogged в%s."
+
+#: comments.php:74
+#: legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "Вы находитесь внутри системы под ником %s."
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "Выйти из аккаунта"
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Logout"
+msgstr "Выход"
+
+#: comments.php:77
+#: legacy.comments.php:106
+msgid "Name"
+msgstr "Имя"
+
+#: comments.php:77
+#: comments.php:79
+#: legacy.comments.php:106
+#: legacy.comments.php:108
+msgid "(required)"
+msgstr "(без этого ничего не получится)"
+
+#: comments.php:79
+#: legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "E-mail (не публикуется)"
+
+#: comments.php:81
+#: legacy.comments.php:110
+msgid "Website"
+msgstr "Сайт"
+
+#: comments.php:91
+#: legacy.comments.php:115
+msgid "Leave comment"
+msgstr "Отправить"
+
+#: footer.php:5
+msgid "top"
+msgstr "Наверх"
+
+#: functions.php:65
+#: functions.php:77
+msgid "Eos Theme Options"
+msgstr "Опции шаблона Eos"
+
+#: functions.php:73
+msgid "Options saved."
+msgstr "Изменения успешно сохранены"
+
+#: functions.php:82
+msgid "Primary Dropdown Menu"
+msgstr "Главное ниспадающее меню"
+
+#: functions.php:86
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "Включить простое ниспадающее меню для главного меню"
+
+#: functions.php:91
+msgid "Sort Categories in Top Menu:"
+msgstr "Сортировать рубрики в верхнем меню:"
+
+#: functions.php:95
+msgid "Alphabetically by name"
+msgstr "По алфавиту"
+
+#: functions.php:99
+msgid "By category ID"
+msgstr "По ID рубрики"
+
+#: functions.php:103
+msgid "By the count of posts in the categories"
+msgstr "По количеству записей в рубриках"
+
+#: functions.php:107
+msgid "By category slug"
+msgstr "По ярлыку рубрики"
+
+#: functions.php:112
+msgid "Sorting Order:"
+msgstr "Порядок сортировки:"
+
+#: functions.php:116
+msgid "Ascending"
+msgstr "Восходящий"
+
+#: functions.php:120
+msgid "Descending"
+msgstr "Нисходящий"
+
+#: functions.php:125
+msgid "Secondary Dropdown Menu"
+msgstr "Вторичное ниспадающее меню"
+
+#: functions.php:129
+msgid "Enable simple dropdown menu for the secondary menu"
+msgstr "Включить простое ниспадающее меню для вторичного меню"
+
+#: functions.php:137
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: functions.php:226
+#: legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s в %2$s"
+
+#: functions.php:226
+msgid "g:i A"
+msgstr "g:i A"
+
+#: functions.php:233
+#: legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "Ваш комментарий ожидает модерации."
+
+#: header-fullpage.php:19
+#: header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s RSS лента"
+
+#: header-fullpage.php:29
+#: header.php:29
+msgid "Skip to content"
+msgstr "Перейти к собственно контенту"
+
+#: header-fullpage.php:36
+#: header.php:36
+msgid "Home"
+msgstr "Главная"
+
+#: header-fullpage.php:52
+#: header.php:52
+msgid "Search here..."
+msgstr "Поиск..."
+
+#: header-fullpage.php:53
+#: header.php:53
+msgid "Find"
+msgstr "Найти"
+
+#: legacy.comments.php:60
+msgid "H:i"
+msgstr "H:i"
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Pages:"
+msgstr "Страницы:"
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Page %"
+msgstr "Страница %"
+
+#: page.php:18
+#: page_fullwidth.php:24
+#: single.php:20
+msgid "Edit"
+msgstr "Изменить"
+
+#: sidebar.php:10
+msgid "Recent Posts"
+msgstr "Свежайшие записи"
+
+#: sidebar.php:19
+msgid "Browse by Tags"
+msgstr "Облако тэгов"
+
+#: sidebar.php:34
+msgid "Categories"
+msgstr "Рубрики"
+
+#: sidebar.php:50
+msgid "Meta"
+msgstr "Мета"
+
+#: single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "<abbr title=\"Поистине простой сособ синдикации\">RSS</abbr> лента для этой эаписи (комментариев)"
+

@@ -1,0 +1,78 @@
+.RssButton,
+#pageNavigation,
+.commentHeader,
+#respond .submitBar,
+li.comment .messageBox .content,
+li.comment .messageBox,
+li.comment,
+.post ul,
+.post ol,
+#wp-calendar td a {
+	zoom:1;
+}
+
+.HeaderSubMenu {
+	text-align:right;
+}
+.HeaderSubMenu li {
+	float:none;
+	display:inline;
+	text-align:left;
+	zoom:1;
+}
+.HeaderMenu li a,
+.HeaderMenu li a:visited {
+	float:left;
+}
+.HeaderSubMenu li li {
+	display:block;
+}
+.HeaderSubMenu li a,
+.HeaderSubMenu li a:visited {
+	display:inline;
+}
+.HeaderSubMenu li li a,
+.HeaderSubMenu li li a:visited {
+	display:block;
+}
+.removeSidebarTop {
+	font-size:1px;
+	line-height:1px;
+	bottom:-1px;
+}
+
+.postTitle {
+	height:24px;
+}
+.postTitle span {
+	font-size:5px;
+	line-height:5px;
+}
+
+.postReadMore {
+	border:1px solid #ccc;
+	background:url(./images/LayoutBgs.jpg) no-repeat -2870px -125px;
+	width:98px;
+}
+.postReadMore:hover {
+	border-color:#9b9b9b;
+}
+.postReadMore b {
+	display:block;
+	margin:0;
+	border:0;
+	background:none;
+}
+
+.Header .SearchQuery {
+	height:12px;
+}
+
+#contentWrapperFull .removeSidebarBottom {
+	bottom:-1px;
+}
+
+.post {
+	margin-bottom:30px;
+}
+

@@ -1,0 +1,411 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EOS v1.2.7 for WP -20091116\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-21 10:50+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SRS Solutions <info@srssolutions.com>\n"
+"Language-Team: OP351net <webmaster@op351.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: PORTUGAL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../404.php:6
+msgid "Error 404 - Not Found"
+msgstr "Error 404 - Not Found"
+
+#: ../404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "Desculpe, mas está à procura de algo que não se encontra aqui"
+
+#: ../archive.php:15
+#: ../index.php:13
+msgid "Search Results"
+msgstr "Resultados da Pesquisa"
+
+#: ../archive.php:16
+#: ../index.php:14
+msgid "Keyword:"
+msgstr "Palavra-Chave:"
+
+#: ../archive.php:20
+msgid "Archive"
+msgstr "Arquivo"
+
+#: ../archive.php:23
+msgid "Category:"
+msgstr "Categoria:"
+
+#: ../archive.php:25
+msgid "Tag:"
+msgstr "Tag:"
+
+#: ../archive.php:27
+#: ../archive.php:29
+#: ../archive.php:31
+#, php-format
+msgid "Archive for %s"
+msgstr "Arquivo para %s"
+
+#: ../archive.php:27
+#: ../functions.php:272
+#: ../legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "F jS, Y"
+
+#: ../archive.php:29
+msgid "F, Y"
+msgstr "F, Y"
+
+#: ../archive.php:31
+msgid "Y"
+msgstr "Y"
+
+#: ../archive.php:33
+msgid "Author Archive"
+msgstr "Autor do Arquivo"
+
+#: ../archive.php:35
+msgid "Blog Archives"
+msgstr "Arquivos do Blog"
+
+#: ../archive.php:45
+#: ../index.php:21
+#: ../page.php:11
+#: ../page_fullwidth.php:17
+#: ../single.php:11
+msgid "Permalink to"
+msgstr "Permalink para"
+
+#: ../archive.php:50
+#: ../index.php:26
+msgid "continue reading..."
+msgstr "continue a ler..."
+
+#: ../archive.php:52
+#: ../index.php:28
+msgid "Pass Required"
+msgstr "Password Obrigatória"
+
+#: ../archive.php:52
+#: ../index.php:28
+msgid "Leave a Comment"
+msgstr "Faça o seu Comentário"
+
+#: ../archive.php:52
+#: ../index.php:28
+msgid "1 Comment"
+msgstr "1 Comentário"
+
+#: ../archive.php:52
+#: ../index.php:28
+msgid "% Comments"
+msgstr "% Comentários"
+
+#: ../archive.php:52
+#: ../index.php:28
+msgid "Comments Off"
+msgstr "Comentários Bloqueados"
+
+#: ../archive.php:53
+#: ../index.php:29
+#: ../single.php:19
+msgid "none"
+msgstr "nenhum"
+
+#: ../archive.php:54
+#: ../index.php:30
+msgid "Read more"
+msgstr "Ler mais"
+
+#: ../archive.php:64
+#: ../index.php:40
+msgid "Newer Entries"
+msgstr "Posts + Recentes"
+
+#: ../archive.php:65
+#: ../index.php:41
+msgid "Older Entries"
+msgstr "Posts + Antigos"
+
+#: ../archive.php:76
+#: ../index.php:52
+#: ../page.php:30
+#: ../page_fullwidth.php:36
+#: ../single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "Desculpe, mas está a procurar algo que não se encontra aqui. Pode pesquisar outra vez se usar o formulário no canto superior direito da página..."
+
+#: ../comments.php:12
+#: ../comments.php:19
+#: ../legacy.comments.php:12
+#: ../legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Este post está protegido por password. Introduza a password para ver os comentários."
+
+#: ../comments.php:28
+msgid "Leave a comment"
+msgstr "Faça o seu comentário"
+
+#: ../comments.php:31
+msgid "Trackback"
+msgstr "Trackback"
+
+#: ../comments.php:33
+msgid "Comments"
+msgstr "Comentários"
+
+#: ../comments.php:43
+msgid "Previous"
+msgstr "Anterior"
+
+#: ../comments.php:43
+msgid "Next"
+msgstr "Seguinte"
+
+#: ../comments.php:45
+msgid "Older Comments"
+msgstr "Comentários + Antigos"
+
+#: ../comments.php:46
+msgid "Newer Comments"
+msgstr "Comentários + Recentes"
+
+#: ../comments.php:55
+#: ../legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "Comentários estão fechados"
+
+#: ../comments.php:62
+#: ../legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "Deixe a sua Resposta"
+
+#: ../comments.php:70
+#: ../legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "Tem que ter efectuado o %slogin%s para publicar um comentário."
+
+#: ../comments.php:74
+#: ../legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "Efectuou login como %s"
+
+#: ../comments.php:74
+#: ../legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "Efectue o logout desta conta"
+
+#: ../comments.php:74
+#: ../legacy.comments.php:103
+msgid "Logout"
+msgstr "Logout"
+
+#: ../comments.php:77
+#: ../legacy.comments.php:106
+msgid "Name"
+msgstr "Nome"
+
+#: ../comments.php:77
+#: ../comments.php:79
+#: ../legacy.comments.php:106
+#: ../legacy.comments.php:108
+msgid "(required)"
+msgstr "(obrigatório)"
+
+#: ../comments.php:79
+#: ../legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "e-Mail (não será publicado)"
+
+#: ../comments.php:81
+#: ../legacy.comments.php:110
+msgid "Website"
+msgstr "Website"
+
+#: ../comments.php:91
+#: ../legacy.comments.php:115
+msgid "Leave comment"
+msgstr "Enviar"
+
+#: ../footer.php:5
+msgid "top"
+msgstr "topo"
+
+#: ../functions.php:79
+#: ../functions.php:91
+msgid "Eos Theme Options"
+msgstr "Opções do Tema EOS"
+
+#: ../functions.php:87
+msgid "Options saved."
+msgstr "Opções gravadas."
+
+#: ../functions.php:93
+msgid "General"
+msgstr ""
+
+#: ../functions.php:97
+msgid "Primary Dropdown Menu"
+msgstr "Menu Dropdown Primário"
+
+#: ../functions.php:101
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "Activar menu dropdown simples para menu primário"
+
+#: ../functions.php:106
+msgid "Sort Categories in Top Menu:"
+msgstr "Ordenar Categorias no Menu de Topo:"
+
+#: ../functions.php:110
+msgid "Alphabetically by name"
+msgstr "Alfabéticamente pelo nome"
+
+#: ../functions.php:114
+msgid "By category ID"
+msgstr "Pela ID da categoria"
+
+#: ../functions.php:118
+msgid "By the count of posts in the categories"
+msgstr "Pela contagem dos posts nas categorias"
+
+#: ../functions.php:122
+msgid "By category slug"
+msgstr ""
+
+#: ../functions.php:127
+msgid "Sorting Order:"
+msgstr "Tipo de Ordenação:"
+
+#: ../functions.php:131
+msgid "Ascending"
+msgstr "Ascendente"
+
+#: ../functions.php:135
+msgid "Descending"
+msgstr "Descendente"
+
+#: ../functions.php:140
+msgid "Secondary Dropdown Menu"
+msgstr "Menu Dropdown Secundário"
+
+#: ../functions.php:144
+msgid "Enable simple dropdown menu for the secondary menu"
+msgstr "Activar menu dropdown simples para o menu secundário"
+
+#: ../functions.php:151
+msgid "Sidebar"
+msgstr ""
+
+#: ../functions.php:155
+msgid "Twitter"
+msgstr ""
+
+#: ../functions.php:159
+msgid "Enable twitter icon in sidebar"
+msgstr ""
+
+#: ../functions.php:164
+msgid "Twitter URL"
+msgstr ""
+
+#: ../functions.php:168
+msgid "Please type in the URL of your Twitter account."
+msgstr ""
+
+#: ../functions.php:176
+msgid "Save Changes"
+msgstr "Gravar Alterações"
+
+#: ../functions.php:272
+#: ../legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s em %2$s"
+
+#: ../functions.php:272
+msgid "g:i A"
+msgstr "g:i A"
+
+#: ../functions.php:279
+#: ../legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "O seu comentário aguarda aprovação."
+
+#: ../header-fullpage.php:19
+#: ../header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s RSS Feed"
+
+#: ../header-fullpage.php:29
+#: ../header.php:29
+msgid "Skip to content"
+msgstr "Saltar para o conteúdo"
+
+#: ../header-fullpage.php:36
+#: ../header.php:36
+msgid "Home"
+msgstr "Home"
+
+#: ../header-fullpage.php:52
+#: ../header.php:52
+msgid "Search here..."
+msgstr "Pesquise aqui..."
+
+#: ../header-fullpage.php:53
+#: ../header.php:53
+msgid "Find"
+msgstr "Procure"
+
+#: ../legacy.comments.php:60
+msgid "H:i"
+msgstr "H:i"
+
+#: ../page.php:16
+#: ../page_fullwidth.php:22
+#: ../single.php:17
+msgid "Pages:"
+msgstr "Páginas:"
+
+#: ../page.php:16
+#: ../page_fullwidth.php:22
+#: ../single.php:17
+msgid "Page %"
+msgstr "Página %s"
+
+#: ../page.php:18
+#: ../page_fullwidth.php:24
+#: ../single.php:20
+msgid "Edit"
+msgstr "Editar"
+
+#: ../sidebar.php:16
+msgid "Recent Posts"
+msgstr "Posts Recentes"
+
+#: ../sidebar.php:25
+msgid "Browse by Tags"
+msgstr "Pesquise por Tags"
+
+#: ../sidebar.php:40
+msgid "Categories"
+msgstr "Categorias"
+
+#: ../sidebar.php:56
+msgid "Meta"
+msgstr "Meta"
+
+#: ../single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "<abbr title=\"Really Simple Syndication\">RSS Feed</abbr> para este post (comentários)"
+

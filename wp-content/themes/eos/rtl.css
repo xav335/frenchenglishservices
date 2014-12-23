@@ -1,0 +1,364 @@
+
+blockquote,
+pre {
+	background:#edf1f5 url(./images/blockquote.gif) 3px 3px no-repeat;
+	border:1px solid #ddd;
+	padding:8px 12px 8px 40px;
+	margin:5px 0;
+}
+.alignleft {
+	float:right;
+	text-align:right;
+	margin-right:0;
+	margin-left:10px;
+}
+.alignright {
+	float:left;
+	text-align:left;
+	margin-left:0;
+	margin-right:10px;
+}
+
+html {
+	direction:rtl;
+}
+body {
+	text-align:right;
+	direction:rtl;
+}
+.PageContainer {
+	text-align:right;
+	overflow:hidden;
+}
+#skipToContent {
+	position:absolute;
+	top:0;
+	left:999em;
+}
+.HeaderSubArea {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+
+.sidebarbox li {
+	padding-left:0;
+	padding-right:12px;
+	background:url(./images/Lists.png) no-repeat right 0.4em;
+}
+
+.HeaderSubArea h1 {
+	left:auto;
+	right:50px;
+}
+.HeaderSubArea span {
+	left:auto;
+	right:52px;
+}
+
+.HeaderSubArea .SearchBox {
+	right:auto;
+	left:22px;
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.HeaderSubArea .SearchButton {
+	right:auto;
+	left:3px;
+	background:url(./imagesRTL/LayoutBgs.jpg) no-repeat -2003px -103px;
+}
+
+.HeaderMenu {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.HeaderMenu li {
+	float:right;
+}
+.HeaderMenu li a:hover {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.HeaderMenu ul ul {
+	right:-999em;
+	left:auto;
+}
+.HeaderMenu li:hover ul,
+.HeaderMenu li.jHover ul {
+	right:auto;
+}
+.HeaderMenu ul ul ul,
+.HeaderMenu li:hover ul ul,
+.HeaderMenu li.jHover ul ul {
+	left:auto;
+	right:-999em;
+}
+.HeaderMenu li li:hover ul,
+.HeaderMenu li li.jHover ul {
+	left:auto;
+	right:180px;
+}
+
+.HeaderSubMenu {
+	right:auto;
+	left:30px;
+}
+.HeaderSubMenu li {
+	float:right;
+	margin:0 20px 0 0;
+}
+/* STILL BROKEN
+
+.HeaderSubMenu ul ul {
+	left:auto;
+	right:-999em;
+}
+.HeaderSubMenu li:hover ul,
+.HeaderSubMenu li.jHover ul {
+	right:0;
+}
+.HeaderSubMenu ul ul ul,
+.HeaderSubMenu li:hover ul ul,
+.HeaderSubMenu li.jHover ul ul {
+	left:auto;
+	right:-999em;
+}
+.HeaderSubMenu li li:hover ul,
+.HeaderSubMenu li li.jHover ul {
+	left:auto;
+	right:180px;
+}
+
+*/
+
+#contentWrapper {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+#contentWrapperFull {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+#contentWrapperFull .removeSidebarTop {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+#contentWrapperFull .removeSidebarBottom {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+#contentArea {
+	padding:10px 10px 10px 11px;
+	float:right;
+	margin-right:auto;
+	margin-left:-1px;
+}
+.SideBars {
+	float:left;
+}
+.SideBar_Full h2 {
+	margin:0 -9px 10px -10px;
+}
+.SideBar_Left {
+	float:right;
+	width:128px;
+	padding:0 0 0 10px;
+}
+.SideBar_Right {
+	float:left;
+	width:129px;
+	padding:0 10px 0 0;
+}
+.SideBar_Left h2 {
+	margin-left:-10px;
+	margin-right:-9px;
+}
+
+#wp-calendar td#prev {
+	text-align:right;
+}
+#wp-calendar td#next {
+	text-align:left;
+}
+
+.RssButton a {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+	float:left;
+}
+
+.ContentFooter {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.ContentFooterInner {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.Footer {
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.Footer .copyright {
+	left:auto;
+	right:75px;
+}
+.Footer .themeInfo {
+	left:auto;
+	right:75px;
+}
+.Footer a.moveToTop,
+.Footer a.moveToTop:visited,
+.Footer a.moveToTop:hover {
+	left:16px;
+	right:auto;
+	padding:0 12px 0 0;
+	background:url(./imagesRTL/Arrows.gif) no-repeat 100% -45px;
+}
+
+.postTitle {
+	background:url(./imagesRTL/_postTitle.jpg) no-repeat 0 0;
+	margin:0 30px 0 0;
+}
+.postTitle a,
+.postTitle a:visited,
+.postTitle a:hover {
+	padding:0 10px 0 0;
+}
+.postTitle span {
+	background:url(./imagesRTL/_postTitle.jpg) no-repeat 0 -45px;
+	left:auto;
+	right:0;
+}
+.postMonth {
+	left:auto;
+	right:0;
+	padding:1px 0 0 2px;
+	background:url(./imagesRTL/_postTitle.jpg) no-repeat -600px 0;
+}
+.postDay {
+	left:auto;
+	right:0;
+	padding:0 0 0 2px;
+	background:url(./imagesRTL/_postTitle.jpg) no-repeat -600px -13px;
+}
+.postSubTitle {
+	text-align:left;
+	padding:0 0 0 10px;
+}
+.postCategories {
+	float:left;
+	padding:3px 25px 3px 0;
+	background:url(./imagesRTL/_postCategories.jpg) no-repeat 100% 0;
+}
+
+.postComments {
+	float:right;
+	padding:2px 25px 3px 0;
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.postTags {
+	float:right;
+	padding:2px 25px 3px 10px;
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.postReadMore {
+	float:left;
+}
+.postReadMore b {
+	background:url(./images/LayoutBgs.jpg) no-repeat -2870px -125px;
+	
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.postReadMore b b {
+	padding:3px 10px 3px 20px;
+}
+.post-edit-link {
+	float:left;
+}
+
+.post ul,
+.comment ul,
+.post ol,
+.comment ol{
+	padding:0 30px 10px 0;
+	clear:right;
+}
+
+.commentHeader h4 {
+	float:left;
+	margin:0 0 0 10px;
+}
+.commentHeader span {
+	float:right;
+}
+.commentHeader .addComment {
+	padding:5px 25px 0 10px;
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+.commentHeader .addTrackback {
+	padding:5px 23px 0 10px;
+	background-image:url(./imagesRTL/LayoutBgs.jpg);
+}
+
+li.comment .avatar {
+	margin:0 5px 0 0;
+}
+li.comment .author {
+	float:right;
+}
+li.comment .author .name {
+	text-align:right;
+	margin:0 10px 0 0;
+}
+li.comment .messageBox {
+	margin:0 100px 10px 0;
+}
+li.comment .messageBox .date {
+	float:right;
+}
+li.comment .messageBox .links {
+	float:left;
+	margin:0 0 0 10px;
+}
+ul.children {
+	margin:0 20px 0 0;
+}
+
+.commentNavigation .prev,
+.commentNavigation .older {
+	background:url(./imagesRTL/Arrows.gif) no-repeat 100% 1px;
+	padding:0 15px 0 10px;
+}
+.commentNavigation .next,
+.commentNavigation .newer {
+	background:url(./imagesRTL/Arrows.gif) no-repeat 0 -24px;
+	padding:0 10px 0 15px;
+}
+.commentNavigation .older {
+	float:right;
+}
+.commentNavigation .newer {
+	float:left;
+}
+#respond .submitButton {
+	float:left;
+}
+
+#pageNavigation {
+	margin:10px -10px 10px -11px;
+}
+#newerEntries {
+	float:right;
+}
+#olderEntries {
+	float:left;
+}
+#newerEntries a {
+	background:url(./imagesRTL/Arrows.gif) no-repeat 100% 1px;
+	padding:0 15px 0 0;
+}
+#olderEntries a {
+	background:url(./imagesRTL/Arrows.gif) no-repeat 0 -24px;
+	padding:0 0 0 15px;
+}
+
+#postExtra {
+	padding:0 10px 0 0;
+}
+
+.wp-pagenavi a,
+.wp-pagenavi span {
+	margin:0 0 0 1px;
+}
+.wp-pagenavi span.pages {
+	padding:3px 7px 3px 25px;
+	background:url(./images/LayoutBgs.jpg) no-repeat -2510px -221px;
+}

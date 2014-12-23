@@ -1,0 +1,322 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos 1.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-05 23:01+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SRS Solutions <info@srssolutions.com>\n"
+"Language-Team: SRS Solutions <info@srssolutions.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=n != 1;\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: d:\wordpress\themes\translated\eos/404.php:6
+msgid "Error 404 - Not Found"
+msgstr "Fel 404 - Finns ej"
+
+#: d:\wordpress\themes\translated\eos/404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "Beklagar, men ni söker efter något som inte finns här."
+
+#: d:\wordpress\themes\translated\eos/archive.php:11
+#: d:\wordpress\themes\translated\eos/index.php:8
+msgid "Search Results"
+msgstr "Sökresultat"
+
+#: d:\wordpress\themes\translated\eos/archive.php:12
+#: d:\wordpress\themes\translated\eos/index.php:9
+msgid "Keyword:"
+msgstr "Nyckelord:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:16
+msgid "Archive"
+msgstr "Arkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:19
+msgid "Category:"
+msgstr "Kategori:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:21
+msgid "Tag:"
+msgstr "Tag:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:23
+#: d:\wordpress\themes\translated\eos/archive.php:25
+#: d:\wordpress\themes\translated\eos/archive.php:27
+#, php-format
+msgid "Archive for %s"
+msgstr "Arkiv for %s"
+
+#: d:\wordpress\themes\translated\eos/archive.php:23
+#: d:\wordpress\themes\translated\eos/functions.php:142
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "j. F Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:25
+msgid "F, Y"
+msgstr "F Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:27
+msgid "Y"
+msgstr "Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:29
+msgid "Author Archive"
+msgstr "Författararkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:31
+msgid "Blog Archives"
+msgstr "Bloggarkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:46
+#: d:\wordpress\themes\translated\eos/index.php:21
+msgid "continue reading..."
+msgstr "fortsätt läsning..."
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Pass Required"
+msgstr "Lösen nödvändigt"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Leave a Comment"
+msgstr "Lämna en kommentar"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "1 Comment"
+msgstr "1 Kommentar"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "% Comments"
+msgstr "% Kommentarer"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Comments Off"
+msgstr "Kommentarer avstängda"
+
+#: d:\wordpress\themes\translated\eos/archive.php:49
+#: d:\wordpress\themes\translated\eos/index.php:24
+#: d:\wordpress\themes\translated\eos/single.php:19
+msgid "none"
+msgstr "ingen"
+
+#: d:\wordpress\themes\translated\eos/archive.php:50
+#: d:\wordpress\themes\translated\eos/index.php:25
+msgid "Read more"
+msgstr "Läs mer"
+
+#: d:\wordpress\themes\translated\eos/archive.php:60
+#: d:\wordpress\themes\translated\eos/index.php:35
+msgid "Newer Entries"
+msgstr "Nyare inlägg"
+
+#: d:\wordpress\themes\translated\eos/archive.php:61
+#: d:\wordpress\themes\translated\eos/index.php:36
+msgid "Older Entries"
+msgstr "Äldre inlägg"
+
+#: d:\wordpress\themes\translated\eos/archive.php:67
+#: d:\wordpress\themes\translated\eos/index.php:42
+#: d:\wordpress\themes\translated\eos/page.php:30
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:37
+#: d:\wordpress\themes\translated\eos/single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "Beklagar, men ni söker efter något som inte finns här. Ni kan söka igen genom att använda fältet i övre högra hörnet på sidan..."
+
+#: d:\wordpress\themes\translated\eos/comments.php:12
+#: d:\wordpress\themes\translated\eos/comments.php:19
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:12
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Detta inlägg är lösenordsskyddat. Skriv in lösenordet för att se kommentarerna."
+
+#: d:\wordpress\themes\translated\eos/comments.php:28
+msgid "Leave a comment"
+msgstr "Lämna en kommentar"
+
+#: d:\wordpress\themes\translated\eos/comments.php:31
+msgid "Trackback"
+msgstr "Trackback"
+
+#: d:\wordpress\themes\translated\eos/comments.php:33
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:43
+msgid "Previous"
+msgstr "Tidigare"
+
+#: d:\wordpress\themes\translated\eos/comments.php:43
+msgid "Next"
+msgstr "Nästa"
+
+#: d:\wordpress\themes\translated\eos/comments.php:45
+msgid "Older Comments"
+msgstr "Äldre kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:46
+msgid "Newer Comments"
+msgstr "Nyare kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:55
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "Kommentering ej tillåten."
+
+#: d:\wordpress\themes\translated\eos/comments.php:62
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "Kommentera"
+
+#: d:\wordpress\themes\translated\eos/comments.php:70
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "Du skall vara %sinloggad%s för att skriva en kommentar."
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "Inloggad som %s."
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "Logga ut från detta konto"
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+msgid "Logout"
+msgstr "Logga ut"
+
+#: d:\wordpress\themes\translated\eos/comments.php:77
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:106
+msgid "Name"
+msgstr "Namn"
+
+#: d:\wordpress\themes\translated\eos/comments.php:77
+#: d:\wordpress\themes\translated\eos/comments.php:79
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:106
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:108
+msgid "(required)"
+msgstr "(skall ifyllas)"
+
+#: d:\wordpress\themes\translated\eos/comments.php:79
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "Mail (blir ej publicerad)"
+
+#: d:\wordpress\themes\translated\eos/comments.php:81
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:110
+msgid "Website"
+msgstr "Hemsida"
+
+#: d:\wordpress\themes\translated\eos/comments.php:91
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:115
+msgid "Leave comment"
+msgstr "Lämna en kommentar"
+
+#: d:\wordpress\themes\translated\eos/footer.php:5
+msgid "top"
+msgstr "topp"
+
+#: d:\wordpress\themes\translated\eos/functions.php:35
+#: d:\wordpress\themes\translated\eos/functions.php:46
+msgid "Eos Theme Options"
+msgstr "Eos Temainställningar"
+
+#: d:\wordpress\themes\translated\eos/functions.php:42
+msgid "Options saved."
+msgstr "Inställningar sparade."
+
+#: d:\wordpress\themes\translated\eos/functions.php:51
+msgid "Dropdown Menu"
+msgstr "Listmeny"
+
+#: d:\wordpress\themes\translated\eos/functions.php:55
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "Aktivera enkel listmeny som primär meny"
+
+#: d:\wordpress\themes\translated\eos/functions.php:63
+msgid "Save Changes"
+msgstr "Spara ändringar"
+
+#: d:\wordpress\themes\translated\eos/functions.php:142
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s kl. %2$s"
+
+#: d:\wordpress\themes\translated\eos/functions.php:142
+msgid "g:i A"
+msgstr "H.i"
+
+#: d:\wordpress\themes\translated\eos/functions.php:149
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "Din kommentar väntar på godkännande."
+
+#: d:\wordpress\themes\translated\eos/header.php:29
+msgid "Skip to content"
+msgstr "Gå till innehåll"
+
+#: d:\wordpress\themes\translated\eos/header.php:49
+msgid "Search here..."
+msgstr "Sök här..."
+
+#: d:\wordpress\themes\translated\eos/header.php:50
+msgid "Find"
+msgstr "Hitta"
+
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+msgid "H:i"
+msgstr "H.i"
+
+#: d:\wordpress\themes\translated\eos/page.php:16
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:23
+#: d:\wordpress\themes\translated\eos/single.php:17
+msgid "Pages:"
+msgstr "Sidor:"
+
+#: d:\wordpress\themes\translated\eos/page.php:16
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:23
+#: d:\wordpress\themes\translated\eos/single.php:17
+msgid "Page %"
+msgstr "Sida %"
+
+#: d:\wordpress\themes\translated\eos/page.php:18
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:25
+#: d:\wordpress\themes\translated\eos/single.php:20
+msgid "Edit"
+msgstr "Redigera"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:10
+msgid "Recent Posts"
+msgstr "Nya inlägg"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:19
+msgid "Browse by Tags"
+msgstr "Sök med taggar"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:34
+msgid "Categories"
+msgstr "Kategorier"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:50
+msgid "Meta"
+msgstr "Meta"
+
+#: d:\wordpress\themes\translated\eos/single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "<abbr title=\"Really Simple Syndication\">RSS</abbr>-feed med kommentarer till detta inlägg."
+

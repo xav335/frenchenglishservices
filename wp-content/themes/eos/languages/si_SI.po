@@ -1,0 +1,407 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos 1.2.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-21 10:47+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SRS Solutions <info@srssolutions.com>\n"
+"Language-Team: SRS Solutions <info@srssolutions.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: D:\\_Local Web Server\\TestServer\\WordPress\\2.8\\wp-content\\themes\\Eos\\\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: 404.php:6
+msgid "Error 404 - Not Found"
+msgstr "404 දරණ දෝෂය - සොයාගත නොහැකි විය"
+
+#: 404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "කණගාටුයි, ඔබ සොයනුයේ මෙහි නොමැති දෙයකි."
+
+#: archive.php:15
+#: index.php:13
+msgid "Search Results"
+msgstr "සෙවුම් ප්‍රතිඵල"
+
+#: archive.php:16
+#: index.php:14
+msgid "Keyword:"
+msgstr "සෙවුම් පද:"
+
+#: archive.php:20
+msgid "Archive"
+msgstr "ලේඛණාගාරය"
+
+#: archive.php:23
+msgid "Category:"
+msgstr "වර්ගීකරණ:"
+
+#: archive.php:25
+msgid "Tag:"
+msgstr "ටැග:"
+
+#: archive.php:27
+#: archive.php:29
+#: archive.php:31
+#, php-format
+msgid "Archive for %s"
+msgstr "%s සඳහා ලිපි"
+
+#: archive.php:27
+#: functions.php:272
+#: legacy.comments.php:60
+msgid "F jS, Y"
+msgstr ""
+
+#: archive.php:29
+msgid "F, Y"
+msgstr ""
+
+#: archive.php:31
+msgid "Y"
+msgstr ""
+
+#: archive.php:33
+msgid "Author Archive"
+msgstr "රචකයාගේ ලේඛණාගාරය"
+
+#: archive.php:35
+msgid "Blog Archives"
+msgstr "ලිපි ලේඛණාගාරය"
+
+#: archive.php:45
+#: index.php:21
+#: page.php:11
+#: page_fullwidth.php:17
+#: single.php:11
+msgid "Permalink to"
+msgstr "ස්ථීර යොමුව"
+
+#: archive.php:50
+#: index.php:26
+msgid "continue reading..."
+msgstr "දිගටම කියවන්න..."
+
+#: archive.php:52
+#: index.php:28
+msgid "Pass Required"
+msgstr "මුරපදය අවශ්‍යයි"
+
+#: archive.php:52
+#: index.php:28
+msgid "Leave a Comment"
+msgstr "ප්‍රතිචාරයක් පලකරන්න"
+
+#: archive.php:52
+#: index.php:28
+msgid "1 Comment"
+msgstr "එක් ප්‍රතිචාරයකි"
+
+#: archive.php:52
+#: index.php:28
+msgid "% Comments"
+msgstr "ප්‍රතිචාර % කි"
+
+#: archive.php:52
+#: index.php:28
+msgid "Comments Off"
+msgstr "ප්‍රතිචාර අවුරා ඇත"
+
+#: archive.php:53
+#: index.php:29
+#: single.php:19
+msgid "none"
+msgstr "නැත"
+
+#: archive.php:54
+#: index.php:30
+msgid "Read more"
+msgstr "ඉතිරියත් කියවන්න"
+
+#: archive.php:64
+#: index.php:40
+msgid "Newer Entries"
+msgstr "අලුත් ලිපි"
+
+#: archive.php:65
+#: index.php:41
+msgid "Older Entries"
+msgstr "පැරණි ලිපි"
+
+#: archive.php:76
+#: index.php:52
+#: page.php:30
+#: page_fullwidth.php:36
+#: single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "කණගාටුයි, ඔබ සොයනුයේ මෙහි නොමැති දෙයකි. පිටුවේ ඉහල ඇති පෝර්මය මගින් ඔබට අලුත් සෙවුමක් සිදුකල හැකිය."
+
+#: comments.php:12
+#: comments.php:19
+#: legacy.comments.php:12
+#: legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "මෙම ලිපිය මුරපදයකින් සුරක්ෂිත කර ඇත. ප්‍රතිචාර බැලීම සඳහා මුරපදය ලබාදෙන්න."
+
+#: comments.php:28
+msgid "Leave a comment"
+msgstr "ප්‍රතිචාරයක් එක්කරන්න"
+
+#: comments.php:31
+msgid "Trackback"
+msgstr "ට්‍රැක්බැක්"
+
+#: comments.php:33
+msgid "Comments"
+msgstr "ප්‍රතිචාර"
+
+#: comments.php:43
+msgid "Previous"
+msgstr "පෙර"
+
+#: comments.php:43
+msgid "Next"
+msgstr "පසු"
+
+#: comments.php:45
+msgid "Older Comments"
+msgstr "පැරණි ප්‍රතිචාර"
+
+#: comments.php:46
+msgid "Newer Comments"
+msgstr "අලුත් ප්‍රතිචාර"
+
+#: comments.php:55
+#: legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "ප්‍රතිචාර අවුරා ඇත."
+
+#: comments.php:62
+#: legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "ප්‍රතිචාරයක් එක්කරන්න"
+
+#: comments.php:70
+#: legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "ප්‍රතිචාර පලකිරීම සඳහා ඔබ %sපිවිසිය%s යුතුය."
+
+#: comments.php:74
+#: legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "%s ලෙස පිවිස සිටී."
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "මෙම ගිණුමෙන් පිටවන්න"
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Logout"
+msgstr "පිටවන්න"
+
+#: comments.php:77
+#: legacy.comments.php:106
+msgid "Name"
+msgstr "නම"
+
+#: comments.php:77
+#: comments.php:79
+#: legacy.comments.php:106
+#: legacy.comments.php:108
+msgid "(required)"
+msgstr "(අත්‍යාවශ්‍යයි)"
+
+#: comments.php:79
+#: legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "ඊමේල් (අන් අයට දර්ශණය නොවේ)"
+
+#: comments.php:81
+#: legacy.comments.php:110
+msgid "Website"
+msgstr "වෙබ්/බ්ලොග් අඩවිය"
+
+#: comments.php:91
+#: legacy.comments.php:115
+msgid "Leave comment"
+msgstr "ප්‍රතිචාරයක් එක්කරන්න"
+
+#: footer.php:5
+msgid "top"
+msgstr "ඉහලටම"
+
+#: functions.php:79
+#: functions.php:91
+msgid "Eos Theme Options"
+msgstr "Eos තීමයේ සැකසුම්"
+
+#: functions.php:87
+msgid "Options saved."
+msgstr "සැකසුම් සුරකින ලදී."
+
+#: functions.php:93
+msgid "General"
+msgstr ""
+
+#: functions.php:97
+msgid "Primary Dropdown Menu"
+msgstr "ප්‍රාථමික ඇදහැලෙන මෙනුව"
+
+#: functions.php:101
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "ප්‍රාථමික මෙනුව සඳහා සරල ඇදහැලෙන (dropdown) මෙනු එක්කරන්න"
+
+#: functions.php:106
+msgid "Sort Categories in Top Menu:"
+msgstr "ඉහල මෙනුවේ වර්ගීකරණ පිලිවෙලට සකසන්න"
+
+#: functions.php:110
+msgid "Alphabetically by name"
+msgstr "නම් අනුව අකාරාදී පිලිවෙලට"
+
+#: functions.php:114
+msgid "By category ID"
+msgstr "වර්ගීකරණ අංකය අනුව"
+
+#: functions.php:118
+msgid "By the count of posts in the categories"
+msgstr "එක් වර්ගීකරණයක ඇති ලිපි ගණන අනුව"
+
+#: functions.php:122
+msgid "By category slug"
+msgstr "ප්‍රවර්ග ලඝුරුව අනුව"
+
+#: functions.php:127
+msgid "Sorting Order:"
+msgstr "තේරීම් පිලිවෙල:"
+
+#: functions.php:131
+msgid "Ascending"
+msgstr "ආරෝහණ"
+
+#: functions.php:135
+msgid "Descending"
+msgstr "අවරෝහණ"
+
+#: functions.php:140
+msgid "Secondary Dropdown Menu"
+msgstr "ද්විතීයික ඇදහැලෙන මෙනුව"
+
+#: functions.php:144
+msgid "Enable simple dropdown menu for the secondary menu"
+msgstr "ද්විතීයික මෙනුව සඳහා සරල ඇදහැලෙන (dropdown) මෙනු එක්කරන්න"
+
+#: functions.php:151
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:155
+msgid "Twitter"
+msgstr ""
+
+#: functions.php:159
+msgid "Enable twitter icon in sidebar"
+msgstr ""
+
+#: functions.php:164
+msgid "Twitter URL"
+msgstr ""
+
+#: functions.php:168
+msgid "Please type in the URL of your Twitter account."
+msgstr ""
+
+#: functions.php:176
+msgid "Save Changes"
+msgstr "වෙනස්කම් සුරකින්න"
+
+#: functions.php:272
+#: legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%2$s දා %1$s ට"
+
+#: functions.php:272
+msgid "g:i A"
+msgstr ""
+
+#: functions.php:279
+#: legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "ඔබේ ප්‍රතිචාරය අනුමත කිරීම සඳහා රැඳී පවතී"
+
+#: header-fullpage.php:19
+#: header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s RSS පෝෂකය"
+
+#: header-fullpage.php:29
+#: header.php:29
+msgid "Skip to content"
+msgstr "අන්තර්ගතය වෙත යන්න"
+
+#: header-fullpage.php:36
+#: header.php:36
+msgid "Home"
+msgstr "නිවෙස"
+
+#: header-fullpage.php:52
+#: header.php:52
+msgid "Search here..."
+msgstr "සොයන්න..."
+
+#: header-fullpage.php:53
+#: header.php:53
+msgid "Find"
+msgstr "සොයන්න"
+
+#: legacy.comments.php:60
+msgid "H:i"
+msgstr ""
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Pages:"
+msgstr "පිටු:"
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Page %"
+msgstr "% පිටුව"
+
+#: page.php:18
+#: page_fullwidth.php:24
+#: single.php:20
+msgid "Edit"
+msgstr "වෙනස් කරන්න"
+
+#: sidebar.php:16
+msgid "Recent Posts"
+msgstr "නවතම ලිපි"
+
+#: sidebar.php:25
+msgid "Browse by Tags"
+msgstr "ටැග මගින් සැරිසරන්න"
+
+#: sidebar.php:40
+msgid "Categories"
+msgstr "වර්ගීකරණ"
+
+#: sidebar.php:56
+msgid "Meta"
+msgstr "මෙටා"
+
+#: single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "මෙම ලිපිය (ප්‍රතිචාර) සඳහා <abbr title=\"Really Simple Syndication\">RSS</abbr> පෝෂකය"
+

@@ -1,0 +1,325 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos 1.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-05 23:01+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Team Blogos <wordpress@blogos.dk>\n"
+"Language-Team: Team Blogos <wordpress@blogos.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=n != 1;\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_c;_e;__ngettext:1,2;__ngettext_noop:1,2;_n:1,2;_nc:1,2;_n_noop:1,2\n"
+"X-Poedit-Basepath: d:\\wordpress\\themes\\translated\\eos\n"
+"X-Poedit-SearchPath-0: d:\\wordpress\\themes\\translated\\eos\n"
+
+#: d:\wordpress\themes\translated\eos/404.php:6
+msgid "Error 404 - Not Found"
+msgstr "Fejl 404 - Ikke fundet"
+
+#: d:\wordpress\themes\translated\eos/404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "Beklager, men du leder efter noget, som ikke er her."
+
+#: d:\wordpress\themes\translated\eos/archive.php:11
+#: d:\wordpress\themes\translated\eos/index.php:8
+msgid "Search Results"
+msgstr "Søgeresultater"
+
+#: d:\wordpress\themes\translated\eos/archive.php:12
+#: d:\wordpress\themes\translated\eos/index.php:9
+msgid "Keyword:"
+msgstr "N&oslash;gleord:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:16
+msgid "Archive"
+msgstr "Arkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:19
+msgid "Category:"
+msgstr "Kategori:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:21
+msgid "Tag:"
+msgstr "Tag:"
+
+#: d:\wordpress\themes\translated\eos/archive.php:23
+#: d:\wordpress\themes\translated\eos/archive.php:25
+#: d:\wordpress\themes\translated\eos/archive.php:27
+#, php-format
+msgid "Archive for %s"
+msgstr "Arkiv for %s"
+
+#: d:\wordpress\themes\translated\eos/archive.php:23
+#: d:\wordpress\themes\translated\eos/functions.php:142
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "j. F Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:25
+msgid "F, Y"
+msgstr "F Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:27
+msgid "Y"
+msgstr "Y"
+
+#: d:\wordpress\themes\translated\eos/archive.php:29
+msgid "Author Archive"
+msgstr "Forfatterarkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:31
+msgid "Blog Archives"
+msgstr "Blogarkiv"
+
+#: d:\wordpress\themes\translated\eos/archive.php:46
+#: d:\wordpress\themes\translated\eos/index.php:21
+msgid "continue reading..."
+msgstr "fortsæt læsning ..."
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Pass Required"
+msgstr "Kode skal udfyldes"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Leave a Comment"
+msgstr "Efterlad en kommentar"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "1 Comment"
+msgstr "&Eacute;n kommentar"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "% Comments"
+msgstr "% kommentarer"
+
+#: d:\wordpress\themes\translated\eos/archive.php:48
+#: d:\wordpress\themes\translated\eos/index.php:23
+msgid "Comments Off"
+msgstr "Kommentarer slået fra"
+
+#: d:\wordpress\themes\translated\eos/archive.php:49
+#: d:\wordpress\themes\translated\eos/index.php:24
+#: d:\wordpress\themes\translated\eos/single.php:19
+msgid "none"
+msgstr "ingen"
+
+#: d:\wordpress\themes\translated\eos/archive.php:50
+#: d:\wordpress\themes\translated\eos/index.php:25
+msgid "Read more"
+msgstr "L&aelig;s mere"
+
+#: d:\wordpress\themes\translated\eos/archive.php:60
+#: d:\wordpress\themes\translated\eos/index.php:35
+msgid "Newer Entries"
+msgstr "Nyere indlæg"
+
+#: d:\wordpress\themes\translated\eos/archive.php:61
+#: d:\wordpress\themes\translated\eos/index.php:36
+msgid "Older Entries"
+msgstr "Ældre indlæg"
+
+#: d:\wordpress\themes\translated\eos/archive.php:67
+#: d:\wordpress\themes\translated\eos/index.php:42
+#: d:\wordpress\themes\translated\eos/page.php:30
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:37
+#: d:\wordpress\themes\translated\eos/single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "Beklager, men du leder efter noget, som ikke er her. Du kan bruge søgefeltet øverst til højre på siden og søge igen ..."
+
+#: d:\wordpress\themes\translated\eos/comments.php:12
+#: d:\wordpress\themes\translated\eos/comments.php:19
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:12
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Dette indlæg er kodeordsbeskyttet. Indtast kodeordet for at se kommentarer."
+
+#: d:\wordpress\themes\translated\eos/comments.php:28
+msgid "Leave a comment"
+msgstr "Efterlad en kommentar"
+
+#: d:\wordpress\themes\translated\eos/comments.php:31
+msgid "Trackback"
+msgstr "Trackback"
+
+#: d:\wordpress\themes\translated\eos/comments.php:33
+msgid "Comments"
+msgstr "Kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:43
+msgid "Previous"
+msgstr "Forrige"
+
+#: d:\wordpress\themes\translated\eos/comments.php:43
+msgid "Next"
+msgstr "Næste"
+
+#: d:\wordpress\themes\translated\eos/comments.php:45
+msgid "Older Comments"
+msgstr "Ældre kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:46
+msgid "Newer Comments"
+msgstr "Nyere kommentarer"
+
+#: d:\wordpress\themes\translated\eos/comments.php:55
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "Der er lukket for kommentarer."
+
+#: d:\wordpress\themes\translated\eos/comments.php:62
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "Læg et svar"
+
+#: d:\wordpress\themes\translated\eos/comments.php:70
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "Du skal være %slogget ind%s for at skrive en kommentar."
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "Logget ind som %s."
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "Log ud af denne konto"
+
+#: d:\wordpress\themes\translated\eos/comments.php:74
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:103
+msgid "Logout"
+msgstr "Log ud"
+
+#: d:\wordpress\themes\translated\eos/comments.php:77
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:106
+msgid "Name"
+msgstr "Navn"
+
+#: d:\wordpress\themes\translated\eos/comments.php:77
+#: d:\wordpress\themes\translated\eos/comments.php:79
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:106
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:108
+msgid "(required)"
+msgstr "(skal udfyldes)"
+
+#: d:\wordpress\themes\translated\eos/comments.php:79
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "Mail (vil ikke blive offentliggjort)"
+
+#: d:\wordpress\themes\translated\eos/comments.php:81
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:110
+msgid "Website"
+msgstr "Hjemmeside"
+
+#: d:\wordpress\themes\translated\eos/comments.php:91
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:115
+msgid "Leave comment"
+msgstr "Efterlad kommentar"
+
+#: d:\wordpress\themes\translated\eos/footer.php:5
+msgid "top"
+msgstr "top"
+
+#: d:\wordpress\themes\translated\eos/functions.php:35
+#: d:\wordpress\themes\translated\eos/functions.php:46
+msgid "Eos Theme Options"
+msgstr "Indstillinger for temaet Eos"
+
+#: d:\wordpress\themes\translated\eos/functions.php:42
+msgid "Options saved."
+msgstr "Indstillinger gemt."
+
+#: d:\wordpress\themes\translated\eos/functions.php:51
+msgid "Dropdown Menu"
+msgstr "Dropdown-menu"
+
+#: d:\wordpress\themes\translated\eos/functions.php:55
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "Aktivér simpel dropdown-menu for primær menu"
+
+#: d:\wordpress\themes\translated\eos/functions.php:63
+msgid "Save Changes"
+msgstr "Gem ændringer"
+
+#: d:\wordpress\themes\translated\eos/functions.php:142
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s kl. %2$s"
+
+#: d:\wordpress\themes\translated\eos/functions.php:142
+msgid "g:i A"
+msgstr "H.i"
+
+#: d:\wordpress\themes\translated\eos/functions.php:149
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "Din kommentar afventer godkendelse."
+
+#: d:\wordpress\themes\translated\eos/header.php:29
+msgid "Skip to content"
+msgstr "Gå til indhold"
+
+#: d:\wordpress\themes\translated\eos/header.php:49
+msgid "Search here..."
+msgstr "Søg her ..."
+
+#: d:\wordpress\themes\translated\eos/header.php:50
+msgid "Find"
+msgstr "Find"
+
+#: d:\wordpress\themes\translated\eos/legacy.comments.php:60
+msgid "H:i"
+msgstr "H.i"
+
+#: d:\wordpress\themes\translated\eos/page.php:16
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:23
+#: d:\wordpress\themes\translated\eos/single.php:17
+msgid "Pages:"
+msgstr "Sider:"
+
+#: d:\wordpress\themes\translated\eos/page.php:16
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:23
+#: d:\wordpress\themes\translated\eos/single.php:17
+msgid "Page %"
+msgstr "Side %"
+
+#: d:\wordpress\themes\translated\eos/page.php:18
+#: d:\wordpress\themes\translated\eos/page_fullwidth.php:25
+#: d:\wordpress\themes\translated\eos/single.php:20
+msgid "Edit"
+msgstr "Redigér"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:10
+msgid "Recent Posts"
+msgstr "Nye indlæg"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:19
+msgid "Browse by Tags"
+msgstr "Gennemse efter tags"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:34
+msgid "Categories"
+msgstr "Kategorier"
+
+#: d:\wordpress\themes\translated\eos/sidebar.php:50
+msgid "Meta"
+msgstr "Meta"
+
+#: d:\wordpress\themes\translated\eos/single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "<abbr title=\"Really Simple Syndication\">RSS</abbr>-feed med kommentarer til dette indlæg."
+

@@ -1,0 +1,365 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos 1.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-09-02 11:56+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Seaice <seaice@seaice.name>\n"
+"Language-Team: SRS Solutions <http://www.srssolutions.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1;nplural=0;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: D:\\xampplite\\htdocs\\wp\\wp-content\\themes\\eos\\languages\n"
+"X-Poedit-SearchPath-0: D:\\xampplite\\htdocs\\wp\\wp-content\\themes\\eos\\languages\n"
+
+#: 404.php:6
+msgid "Error 404 - Not Found"
+msgstr "404 錯誤 - 找不到訊息"
+
+#: 404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "很抱歉，找不到訊息"
+
+#: archive.php:11
+#: index.php:8
+msgid "Search Results"
+msgstr "搜尋結果"
+
+#: archive.php:12
+#: index.php:9
+msgid "Keyword:"
+msgstr "关键字："
+
+#: archive.php:16
+msgid "Archive"
+msgstr "彙整"
+
+#: archive.php:19
+msgid "Category:"
+msgstr "分類："
+
+#: archive.php:21
+msgid "Tag:"
+msgstr "標籤："
+
+#: archive.php:23
+#: archive.php:25
+#: archive.php:27
+#, php-format
+msgid "Archive for %s"
+msgstr "%s 的彙整"
+
+#: archive.php:23
+#: functions.php:196
+#: legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "Y 年 n 月 j日"
+
+#: archive.php:25
+msgid "F, Y"
+msgstr "Y 年 n 月"
+
+#: archive.php:27
+msgid "Y"
+msgstr "Y 年"
+
+#: archive.php:29
+msgid "Author Archive"
+msgstr "作者彙整"
+
+#: archive.php:31
+msgid "Blog Archives"
+msgstr "網誌彙整"
+
+#: archive.php:46
+#: index.php:21
+msgid "continue reading..."
+msgstr "繼續閱讀……"
+
+#: archive.php:48
+#: index.php:23
+msgid "Pass Required"
+msgstr "需要密碼"
+
+#: archive.php:48
+#: index.php:23
+msgid "Leave a Comment"
+msgstr "我要發言"
+
+#: archive.php:48
+#: index.php:23
+msgid "1 Comment"
+msgstr "1 則評論"
+
+#: archive.php:48
+#: index.php:23
+msgid "% Comments"
+msgstr "% 則評論"
+
+#: archive.php:48
+#: index.php:23
+msgid "Comments Off"
+msgstr "評論關閉"
+
+#: archive.php:49
+#: index.php:24
+#: single.php:19
+msgid "none"
+msgstr "沒有"
+
+#: archive.php:50
+#: index.php:25
+msgid "Read more"
+msgstr "閱讀全文"
+
+#: archive.php:60
+#: index.php:35
+msgid "Newer Entries"
+msgstr "較新文章"
+
+#: archive.php:61
+#: index.php:36
+msgid "Older Entries"
+msgstr "較早文章"
+
+#: archive.php:67
+#: index.php:42
+#: page.php:30
+#: page_fullwidth.php:37
+#: single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "很抱歉，找不到訊息。您可以嘗試再次搜尋……"
+
+#: comments.php:12
+#: comments.php:19
+#: legacy.comments.php:12
+#: legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "本文受密碼保護，請輸入密碼查看。"
+
+#: comments.php:28
+msgid "Leave a comment"
+msgstr "發表評論"
+
+#: comments.php:31
+msgid "Trackback"
+msgstr "引用"
+
+#: comments.php:33
+msgid "Comments"
+msgstr "評論"
+
+#: comments.php:43
+msgid "Previous"
+msgstr "上一頁"
+
+#: comments.php:43
+msgid "Next"
+msgstr "下一頁"
+
+#: comments.php:45
+msgid "Older Comments"
+msgstr "較早評論"
+
+#: comments.php:46
+msgid "Newer Comments"
+msgstr "較新評論"
+
+#: comments.php:55
+#: legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "評論已關閉。"
+
+#: comments.php:62
+#: legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "回覆"
+
+#: comments.php:70
+#: legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "您必須 %slogged in%s 才能發表評論。"
+
+#: comments.php:74
+#: legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "登入為 %s。"
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "登出此帳號"
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Logout"
+msgstr "登出"
+
+#: comments.php:77
+#: legacy.comments.php:106
+msgid "Name"
+msgstr "昵稱"
+
+#: comments.php:77
+#: comments.php:79
+#: legacy.comments.php:106
+#: legacy.comments.php:108
+msgid "(required)"
+msgstr "（必填）"
+
+#: comments.php:79
+#: legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "郵箱（不會公開）"
+
+#: comments.php:81
+#: legacy.comments.php:110
+msgid "Website"
+msgstr "網站"
+
+#: comments.php:91
+#: legacy.comments.php:115
+msgid "Leave comment"
+msgstr "發表評論"
+
+#: footer.php:5
+msgid "top"
+msgstr "返回頁首"
+
+#: functions.php:58
+#: functions.php:70
+msgid "Eos Theme Options"
+msgstr "Eos 主題選項"
+
+#: functions.php:66
+msgid "Options saved."
+msgstr "選項已存儲。"
+
+#: functions.php:75
+msgid "Dropdown Menu"
+msgstr "下拉選單"
+
+#: functions.php:79
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "開啟導航下拉選單"
+
+#: functions.php:84
+msgid "Sort Categories in Top Menu:"
+msgstr "導航分類排序："
+
+#: functions.php:88
+msgid "Alphabetically by name"
+msgstr "按名稱"
+
+#: functions.php:92
+msgid "By category ID"
+msgstr "按分類 ID"
+
+#: functions.php:96
+msgid "By the count of posts in the categories"
+msgstr "按分類文章數"
+
+#: functions.php:100
+msgid "By category slug"
+msgstr "按分類代稱"
+
+#: functions.php:105
+msgid "Sorting Order:"
+msgstr "排序方式："
+
+#: functions.php:109
+msgid "Ascending"
+msgstr "升序"
+
+#: functions.php:113
+msgid "Descending"
+msgstr "降序"
+
+#: functions.php:121
+msgid "Save Changes"
+msgstr "儲存變更"
+
+#: functions.php:196
+#: legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s  %2$s"
+
+#: functions.php:196
+msgid "g:i A"
+msgstr "g:i A"
+
+#: functions.php:203
+#: legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "您的評論正在等待審核。"
+
+#: header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s RSS 訂閱"
+
+#: header.php:29
+msgid "Skip to content"
+msgstr "轉到正文"
+
+#: header.php:36
+msgid "Home"
+msgstr "首頁"
+
+#: header.php:52
+msgid "Search here..."
+msgstr "搜尋"
+
+#: header.php:53
+msgid "Find"
+msgstr "尋找"
+
+#: legacy.comments.php:60
+msgid "H:i"
+msgstr "H:i"
+
+#: page.php:16
+#: page_fullwidth.php:23
+#: single.php:17
+msgid "Pages:"
+msgstr "單頁："
+
+#: page.php:16
+#: page_fullwidth.php:23
+#: single.php:17
+msgid "Page %"
+msgstr "頁次 %"
+
+#: page.php:18
+#: page_fullwidth.php:25
+#: single.php:20
+msgid "Edit"
+msgstr "編輯"
+
+#: sidebar.php:10
+msgid "Recent Posts"
+msgstr "近期文章"
+
+#: sidebar.php:19
+msgid "Browse by Tags"
+msgstr "按標籤瀏覽"
+
+#: sidebar.php:34
+msgid "Categories"
+msgstr "分類"
+
+#: sidebar.php:50
+msgid "Meta"
+msgstr "其他"
+
+#: single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "订阅本文（评论）<abbr title=\"Really Simple Syndication\">RSS</abbr>。"
+

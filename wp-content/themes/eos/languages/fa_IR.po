@@ -1,0 +1,510 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-16 18:49+0330\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Mohammad Bagheri <truth.praiser@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: C:\\Program Files\\wamp\\www\\wordpress\\wp-content\\themes\\eos\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: iran\n"
+"X-Poedit-SearchPath-0: C:\\Program Files\\wamp\\www\\wordpress\\wp-content\\themes\\eos\n"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/404.php:6
+msgid "Error 404 - Not Found"
+msgstr "خطای 404 - پیدا نشد"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "متاسفم , اما شما در جستجوی چیزی هستید که اینجا نیست."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:15
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:13
+msgid "Search Results"
+msgstr "نتیجه های جستجو"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:16
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:14
+msgid "Keyword:"
+msgstr "کلیدواژه:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:20
+msgid "Archive"
+msgstr "بایگانی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:23
+msgid "Category:"
+msgstr "دسته بندی:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:25
+msgid "Tag:"
+msgstr "برچسب:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:27
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:29
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:31
+#, php-format
+msgid "Archive for %s"
+msgstr "بایگانی %s"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:27
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:233
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:60
+msgid "F jS, Y"
+msgstr ""
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:29
+msgid "F, Y"
+msgstr ""
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:31
+msgid "Y"
+msgstr ""
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:33
+msgid "Author Archive"
+msgstr "بایگانی نویسنده"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:35
+msgid "Blog Archives"
+msgstr "بایگانی های وبلاگ"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:45
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:21
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page.php:11
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page_fullwidth.php:17
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:11
+msgid "Permalink to"
+msgstr "پیوند پایدار به"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:50
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:26
+msgid "continue reading..."
+msgstr "ادامه مطالعه ..."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:28
+msgid "Pass Required"
+msgstr "گذرواژه نیاز است"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:28
+msgid "Leave a Comment"
+msgstr "یک دیدگاه بگذارید"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:28
+msgid "1 Comment"
+msgstr "1 دیدگاه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:28
+msgid "% Comments"
+msgstr "% دیدگاه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:28
+msgid "Comments Off"
+msgstr "دیدگاه ها خاموش"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:53
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:29
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:19
+msgid "none"
+msgstr "هیچ"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:54
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:30
+msgid "Read more"
+msgstr "بیشتر بخوانید"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:64
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:40
+msgid "Newer Entries"
+msgstr "نوشته های جدیدتر"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:65
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:41
+msgid "Older Entries"
+msgstr "نوشته های قدیمی تر"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/archive.php:76
+#: Files\wamp\www\wordpress\wp-content\themes\eos/index.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page.php:30
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page_fullwidth.php:36
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "متاسفم , اما شما در جستجوی چیزی هستید که اینجا نیست. شما می توانید بوسیله استفاده از فرمی که در بالا و سمت چپ این برگه هست دوباره جستجو کنید ..."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:12
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:19
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:12
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "این نوشته بوسیله گذرواژه محافظت شده است. برای مشاهده دیدگاه ها گذرواژه را وارد کنید."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:28
+msgid "Leave a comment"
+msgstr "یک دیدگاه بگذارید"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:31
+msgid "Trackback"
+msgstr "بازتاب"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:33
+msgid "Comments"
+msgstr "دیدگاه ها"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:43
+msgid "Previous"
+msgstr "قبلی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:43
+msgid "Next"
+msgstr "بعدی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:45
+msgid "Older Comments"
+msgstr "دیدگاه های قدیمی تر"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:46
+msgid "Newer Comments"
+msgstr "دیدگاه های جدیدتر"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:55
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "دیدگاه ها بسته شده است."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:62
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "یک دیدگاه بگذارید"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:70
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "You must be %slogged in%s to post a comment."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:74
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "با عنوان %s وارد شده."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:74
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "خروج از این حساب کاربری"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:74
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:103
+msgid "Logout"
+msgstr "خروج"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:77
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:106
+msgid "Name"
+msgstr "نام"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:77
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:79
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:106
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:108
+msgid "(required)"
+msgstr "(لازم)"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:79
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "پست الکترونیک (منتشر نخواهد شد)"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:81
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:110
+msgid "Website"
+msgstr "آدرس اینترنتی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/comments.php:91
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:115
+msgid "Leave comment"
+msgstr "دیدگاه بگذارید"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:3
+msgid "Copyright"
+msgstr "حق نشر محفوظ است"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "Powered by"
+msgstr "قدرت گرفته بوسیله"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "WordPress"
+msgstr "وردپرس"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "Design by"
+msgstr "طراحی بوسیله"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "and"
+msgstr "و"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "Translated to Persian by"
+msgstr "ترجمه شده به فارسی بوسیله"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:4
+msgid "Mamali Blog"
+msgstr "وبلاگ مملی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/footer.php:5
+msgid "top"
+msgstr "بالا"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:65
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:77
+msgid "Eos Theme Options"
+msgstr "اختیارات پوسته Eos"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:73
+msgid "Options saved."
+msgstr "اختیارات ذخیره شد."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:82
+msgid "Primary Dropdown Menu"
+msgstr "منوی بازشوی اولیه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:86
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "فعال بودن منوی بازشوی ساده در منوی اولیه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:91
+msgid "Sort Categories in Top Menu:"
+msgstr "ترتیب دسته بندی ها در منوی بالا:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:95
+msgid "Alphabetically by name"
+msgstr "الفبایی براساس نام"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:99
+msgid "By category ID"
+msgstr "براساس شماره دسته بندی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:103
+msgid "By the count of posts in the categories"
+msgstr "براساس شمارش نوشته ها در دسته بندی ها"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:107
+msgid "By category slug"
+msgstr "براساس نامک دسته بندی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:112
+msgid "Sorting Order:"
+msgstr "مرتب سازی سفارش:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:116
+msgid "Ascending"
+msgstr "صعودی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:120
+msgid "Descending"
+msgstr "نزولی"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:125
+msgid "Secondary Dropdown Menu"
+msgstr "منوی بازشوی ثانویه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:129
+msgid "Enable simple dropdown menu for the secondary menu"
+msgstr "فعال بودن منوی بازشوی ساده در منوی ثانویه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:137
+msgid "Save Changes"
+msgstr "ذخیره تغییرات"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:233
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s در %2$s"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:233
+msgid "g:i A"
+msgstr ""
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/functions.php:240
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "دیدگاه شما در انتظار تایید می باشد."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header-fullpage.php:19
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s خوراک RSS"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header-fullpage.php:29
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header.php:29
+msgid "Skip to content"
+msgstr "پرش به محتوا"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header-fullpage.php:36
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header.php:36
+msgid "Home"
+msgstr "خانه"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header-fullpage.php:52
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header.php:52
+msgid "Search here..."
+msgstr "جستجوی اینجا ..."
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header-fullpage.php:53
+#: Files\wamp\www\wordpress\wp-content\themes\eos/header.php:53
+msgid "Find"
+msgstr "یافتن"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/legacy.comments.php:60
+msgid "H:i"
+msgstr ""
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page.php:16
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page_fullwidth.php:22
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:17
+msgid "Pages:"
+msgstr "برگه ها:"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page.php:16
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page_fullwidth.php:22
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:17
+msgid "Page %"
+msgstr "برگه %"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page.php:18
+#: Files\wamp\www\wordpress\wp-content\themes\eos/page_fullwidth.php:24
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:20
+msgid "Edit"
+msgstr "ویرایش"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/searchform.php:3
+msgid "Search keywords"
+msgstr "جستجوی کلیدواژه ها"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/searchform.php:4
+msgid "Find it"
+msgstr "پیدا کن"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/sidebar.php:10
+msgid "Recent Posts"
+msgstr "نوشته های اخیر"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/sidebar.php:19
+msgid "Browse by Tags"
+msgstr "مرور براساس برچسب ها"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/sidebar.php:34
+msgid "Categories"
+msgstr "دسته بندی ها"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/sidebar.php:50
+msgid "Meta"
+msgstr "متا"
+
+#: C:\Program
+#: Files\wamp\www\wordpress\wp-content\themes\eos/single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "<abbr title=\"تشکیلات واقعا ساده\">خوراک RSS</abbr> این نوشته (دیدگاه ها)"
+
+#~ msgid "(Persian Version)"
+#~ msgstr "(نسخه فارسی)"
+

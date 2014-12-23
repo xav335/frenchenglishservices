@@ -1,0 +1,406 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Eos in italiano\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-21 10:50+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SRS Solutions <info@srssolutions.com>\n"
+"Language-Team: Gianni Diurno | gidibao.net <gidibao[at]gmail[dot]com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+
+#: 404.php:6
+msgid "Error 404 - Not Found"
+msgstr "Errore 404 - Pagina non trovata"
+
+#: 404.php:7
+msgid "Sorry, but you are looking for something that isn't here. "
+msgstr "Stai cercando qualcosa che non é qui..."
+
+#: archive.php:15
+#: index.php:13
+msgid "Search Results"
+msgstr "Risultati della ricerca"
+
+#: archive.php:16
+#: index.php:14
+msgid "Keyword:"
+msgstr "Parola chiave:"
+
+#: archive.php:20
+msgid "Archive"
+msgstr "Archivio"
+
+#: archive.php:23
+msgid "Category:"
+msgstr "Categoria:"
+
+#: archive.php:25
+msgid "Tag:"
+msgstr "Tag:"
+
+#: archive.php:27
+#: archive.php:29
+#: archive.php:31
+#, php-format
+msgid "Archive for %s"
+msgstr "Archivio per %s"
+
+#: archive.php:27
+#: functions.php:272
+#: legacy.comments.php:60
+msgid "F jS, Y"
+msgstr "j F Y"
+
+#: archive.php:29
+msgid "F, Y"
+msgstr "F Y"
+
+#: archive.php:31
+msgid "Y"
+msgstr "Y"
+
+#: archive.php:33
+msgid "Author Archive"
+msgstr "Archivio autore"
+
+#: archive.php:35
+msgid "Blog Archives"
+msgstr "Archivi del blog"
+
+#: archive.php:45
+#: index.php:21
+#: page.php:11
+#: page_fullwidth.php:17
+#: single.php:11
+msgid "Permalink to"
+msgstr "Permalink a"
+
+#: archive.php:50
+#: index.php:26
+msgid "continue reading..."
+msgstr "continua..."
+
+#: archive.php:52
+#: index.php:28
+msgid "Pass Required"
+msgstr "Password obbligatoria"
+
+#: archive.php:52
+#: index.php:28
+msgid "Leave a Comment"
+msgstr "Commenta"
+
+#: archive.php:52
+#: index.php:28
+msgid "1 Comment"
+msgstr "1 commento"
+
+#: archive.php:52
+#: index.php:28
+msgid "% Comments"
+msgstr "% commenti"
+
+#: archive.php:52
+#: index.php:28
+msgid "Comments Off"
+msgstr "Commenti disabilitati"
+
+#: archive.php:53
+#: index.php:29
+#: single.php:19
+msgid "none"
+msgstr "nessuno"
+
+#: archive.php:54
+#: index.php:30
+msgid "Read more"
+msgstr "continua..."
+
+#: archive.php:64
+#: index.php:40
+msgid "Newer Entries"
+msgstr "Articoli recenti"
+
+#: archive.php:65
+#: index.php:41
+msgid "Older Entries"
+msgstr "Articoli precedenti"
+
+#: archive.php:76
+#: index.php:52
+#: page.php:30
+#: page_fullwidth.php:36
+#: single.php:36
+msgid "Sorry, but you are looking for something that isn't here. You can search again by using the form on upper right of the page..."
+msgstr "Stai cercando qualcosa che non é qui. Effettua una ricerca utilizzando il form in alto a destra..."
+
+#: comments.php:12
+#: comments.php:19
+#: legacy.comments.php:12
+#: legacy.comments.php:19
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Questo articolo é stato protetto con una password. Inserisci la password per leggere i commenti."
+
+#: comments.php:28
+msgid "Leave a comment"
+msgstr "Lascia un commento"
+
+#: comments.php:31
+msgid "Trackback"
+msgstr "Trackback"
+
+#: comments.php:33
+msgid "Comments"
+msgstr "Commenti"
+
+#: comments.php:43
+msgid "Previous"
+msgstr "Precedente"
+
+#: comments.php:43
+msgid "Next"
+msgstr "Successivo"
+
+#: comments.php:45
+msgid "Older Comments"
+msgstr "Commenti precedenti"
+
+#: comments.php:46
+msgid "Newer Comments"
+msgstr "Commenti recenti"
+
+#: comments.php:55
+#: legacy.comments.php:86
+msgid "Comments are closed."
+msgstr "I commenti sono stati disabilitati"
+
+#: comments.php:62
+#: legacy.comments.php:96
+msgid "Leave a Reply"
+msgstr "Rispondi"
+
+#: comments.php:70
+#: legacy.comments.php:99
+#, php-format
+msgid "You must be %slogged in%s to post a comment."
+msgstr "Devi essere %scollegato%s per inviare un commento."
+
+#: comments.php:74
+#: legacy.comments.php:103
+#, php-format
+msgid "Logged in as %s."
+msgstr "Collegato a nome %s."
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Log out of this account"
+msgstr "Esci sa questo account"
+
+#: comments.php:74
+#: legacy.comments.php:103
+msgid "Logout"
+msgstr "Esci"
+
+#: comments.php:77
+#: legacy.comments.php:106
+msgid "Name"
+msgstr "Nome"
+
+#: comments.php:77
+#: comments.php:79
+#: legacy.comments.php:106
+#: legacy.comments.php:108
+msgid "(required)"
+msgstr "(richiesto)"
+
+#: comments.php:79
+#: legacy.comments.php:108
+msgid "Mail (will not be published)"
+msgstr "Email (non verrà resa pubblica)"
+
+#: comments.php:81
+#: legacy.comments.php:110
+msgid "Website"
+msgstr "Sito web"
+
+#: comments.php:91
+#: legacy.comments.php:115
+msgid "Leave comment"
+msgstr "Commenta"
+
+#: footer.php:5
+msgid "top"
+msgstr "vai su"
+
+#: functions.php:79
+#: functions.php:91
+msgid "Eos Theme Options"
+msgstr "Opzioni tema Eos"
+
+#: functions.php:87
+msgid "Options saved."
+msgstr "Le opzioni sono state salvate"
+
+#: functions.php:93
+msgid "General"
+msgstr "Generale"
+
+#: functions.php:97
+msgid "Primary Dropdown Menu"
+msgstr "Menu a tendina principale"
+
+#: functions.php:101
+msgid "Enable simple dropdown menu for primary menu"
+msgstr "Attiva il menu a tendina per il menu principale"
+
+#: functions.php:106
+msgid "Sort Categories in Top Menu:"
+msgstr "Disposizione categorie menu principale:"
+
+#: functions.php:110
+msgid "Alphabetically by name"
+msgstr "Alfabetico per nome"
+
+#: functions.php:114
+msgid "By category ID"
+msgstr "Per ID categoria:"
+
+#: functions.php:118
+msgid "By the count of posts in the categories"
+msgstr "Per quantità di articoli pubblicati"
+
+#: functions.php:122
+msgid "By category slug"
+msgstr "Per slug categoria"
+
+#: functions.php:127
+msgid "Sorting Order:"
+msgstr "Disposizione:"
+
+#: functions.php:131
+msgid "Ascending"
+msgstr "Ascendente"
+
+#: functions.php:135
+msgid "Descending"
+msgstr "Discendente"
+
+#: functions.php:140
+msgid "Secondary Dropdown Menu"
+msgstr "Menu a tendina secondario"
+
+#: functions.php:144
+msgid "Enable simple dropdown menu for the secondary menu"
+msgstr "Attiva il menu a tendina per il menu secondario"
+
+#: functions.php:151
+msgid "Sidebar"
+msgstr "Barra laterale"
+
+#: functions.php:155
+msgid "Twitter"
+msgstr "Twitter"
+
+#: functions.php:159
+msgid "Enable twitter icon in sidebar"
+msgstr "Attiva icona di Twitter nella sidebar"
+
+#: functions.php:164
+msgid "Twitter URL"
+msgstr "URL Twitter"
+
+#: functions.php:168
+msgid "Please type in the URL of your Twitter account."
+msgstr "Inserisci l?URL del tuo account di Twitter."
+
+#: functions.php:176
+msgid "Save Changes"
+msgstr "Salva le modifiche"
+
+#: functions.php:272
+#: legacy.comments.php:60
+#, php-format
+msgid "%1$s at %2$s"
+msgstr "%1$s alle %2$s"
+
+#: functions.php:272
+msgid "g:i A"
+msgstr "G:i"
+
+#: functions.php:279
+#: legacy.comments.php:67
+msgid "Your comment is awaiting moderation."
+msgstr "Il tuo commento é in attesa di essere moderato da un amministratore"
+
+#: header-fullpage.php:19
+#: header.php:19
+#, php-format
+msgid "%s RSS Feed"
+msgstr "%s Feed RSS"
+
+#: header-fullpage.php:29
+#: header.php:29
+msgid "Skip to content"
+msgstr "Vai ai contenuti"
+
+#: header-fullpage.php:36
+#: header.php:36
+msgid "Home"
+msgstr "Home"
+
+#: header-fullpage.php:52
+#: header.php:52
+msgid "Search here..."
+msgstr "Cerca qui..."
+
+#: header-fullpage.php:53
+#: header.php:53
+msgid "Find"
+msgstr "Trova"
+
+#: legacy.comments.php:60
+msgid "H:i"
+msgstr "H:i"
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Pages:"
+msgstr "Pagine:"
+
+#: page.php:16
+#: page_fullwidth.php:22
+#: single.php:17
+msgid "Page %"
+msgstr "Pagina %"
+
+#: page.php:18
+#: page_fullwidth.php:24
+#: single.php:20
+msgid "Edit"
+msgstr "Modifica"
+
+#: sidebar.php:16
+msgid "Recent Posts"
+msgstr "Ultimi articoli"
+
+#: sidebar.php:25
+msgid "Browse by Tags"
+msgstr "Consulta per tag"
+
+#: sidebar.php:40
+msgid "Categories"
+msgstr "Categorie"
+
+#: sidebar.php:56
+msgid "Meta"
+msgstr "Meta"
+
+#: single.php:29
+msgid "<abbr title=\"Really Simple Syndication\">RSS</abbr> feed for this post (comments)"
+msgstr "Feed <abbr title=\"Really Simple Syndication\">RSS</abbr> per questo articolo (commenti)"
+
