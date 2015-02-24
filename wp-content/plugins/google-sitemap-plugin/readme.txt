@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://www.2checkout.com/checkout/purchase?sid=1430388&quantity=1&product_id=94
 Tags: add posts to sitemap, add pages to sitemap, add sitemap, add site to google webmaster tools, create a map, google, googel, googgle, gogle, gogole, google sitemap, google sitemap plugin, google webmaster tools, sitemep, sitemap, sitemaps, site mep, site map, sitemap file path, update sitemap
 Requires at least: 3.1
-Tested up to: 4.1
-Stable tag: 2.9.5
+Tested up to: 4.1.1
+Stable tag: 2.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,10 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 3. Google Sitemap Extra Settings page.
 
 == Changelog ==
+
+= V2.9.6 - 20.02.2015 = 
+* Bugfix : Error with access to the plugins settings page was fixed.
+* Update : BWS Menu was updated.
 
 = V2.9.5 - 23.12.2014 = 
 * Bugfix : Error loading stylesheet is fixed.
@@ -224,6 +228,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 * New: Ability to add site in google webmaster tools, verify it and add sitemap file was added.
 
 == Upgrade Notice ==
+
+= V2.9.6 = 
+Error with access to the plugins settings page was fixed. BWS Menu was updated.
 
 = V2.9.5 = 
 Error loading stylesheet is fixed.
