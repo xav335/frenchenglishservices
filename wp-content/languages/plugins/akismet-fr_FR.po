@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2014-12-09 17:31:07+0000\n"
+"PO-Revision-Date: 2015-02-18 18:12:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,11 +10,19 @@ msgstr ""
 "X-Generator: GlotPress/1.0-alpha-1000\n"
 "Project-Id-Version: Development\n"
 
+#: views/notice.php:96
+msgid "Your Pro subscription allows the use of Akismet on only one site. Please <a href=\"http://docs.akismet.com/billing/add-more-sites/\">purchase additional Pro subscriptions</a> or upgrade to an Enterprise subscription that allows the use of Akismet on unlimited sites.<br /><br />If you have any questions, please get in touch with our support team."
+msgstr "Votre abonnement Pro vous permet d'utiliser Akismet sur un seul site. Veuillez <a href=\"http://docs.akismet.com/billing/add-more-sites/\">acheter plus d'abonnements Pro</a> ou passer à un abonnement Entreprise qui permet d'utiliser Akismet sur un nombre illimité de sites.<br /><br />Si vous avez des questions, veuillez contacter notre équipe de support."
+
 #: views/config.php:97
-msgid "Spam in the <a href=\"%s\">spam folder</a> older than 1 day is deleted automatically."
+msgid "Spam in the <a href=\"%1$s\">spam folder</a> older than 1 day is deleted automatically."
 msgid_plural "Spam in the <a href=\"%1$s\">spam folder</a> older than %2$d days is deleted automatically."
-msgstr[0] "Les indésirables dans le <a href=\"%s\">dossier Indésirables</a> qui datent de plus d'un jour sont effacés automatiquement."
-msgstr[1] "Les indésirables dans le <a href=\"%1$s\">dossier Indésirables</a> qui datent de plus de %2$s jours sont effacés automatiquement."
+msgstr[0] "Les messages dans le <a href=\"%1$s\">dossier des indésirables</a> depuis plus de 1 jour sont supprimés automatiquement."
+msgstr[1] "Les messages dans le <a href=\"%1$s\">dossier des indésirables</a> depuis plus de %2$d jours sont supprimés automatiquement."
+
+#. Plugin URI of the plugin/theme
+msgid "http://akismet.com/"
+msgstr "http://akismet.com/"
 
 #: class.akismet-admin.php:700
 msgid "Please check your <a href=\"%s\">Akismet configuration</a> and contact your web host if problems persist."
@@ -107,10 +115,6 @@ msgstr "Il manque votre abonnement."
 #: views/notice.php:95
 msgid "You're using your Akismet key on more sites than your Pro subscription allows."
 msgstr "Vous utilisez votre clé Askismet pour plus de sites que votre abonnement Pro n'en autorise."
-
-#: views/notice.php:96
-msgid "If you would like to use Akismet on more than 10 sites, you will need to <a href=\"%s\" target=\"_blank\">upgrade to an Enterprise subscription</a>. If you have any questions, please <a href=\"%s\" target=\"_blank\">get in touch with our support team</a>"
-msgstr "Si vous souhaitez utiliser Akismet sur plus de 10 sites, il vous faudra <a href=\"%s\" target=\"_blank\">prendre un abonnement Enterprise</a>. Pour toute question, veuillez <a href=\"%s\" target=\"_blank\">contacter notre équipe de support</a>"
 
 #: views/notice.php:98
 msgid "You're using Akismet on far too many sites for your Pro subscription."
@@ -257,6 +261,14 @@ msgstr "Strict : supprimer sans avertissement les indésirables les plus nuisibl
 #: views/strict.php:5
 msgid "Safe: always put spam in the Spam folder for review."
 msgstr "Sûr : toujours mettre les indésirables dans le dossier Indésirables pour vérification."
+
+#. Author of the plugin/theme
+msgid "Automattic"
+msgstr "Automattic"
+
+#. Author URI of the plugin/theme
+msgid "http://automattic.com/wordpress-plugins/"
+msgstr "http://automattic.com/wordpress-plugins/"
 
 #: class.akismet-admin.php:217
 msgid "Akismet Support"
@@ -495,6 +507,8 @@ msgstr "Akismet n&rsquo;a pas pu revérifier ce commentaire (réponse&nbsp;: %s)
 msgid "View comment history"
 msgstr "Voir l&rsquo;historique du commentaire"
 
+#. #-#-#-#-#  akismet.pot (Akismet 3.0.5b1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
 #: class.akismet-admin.php:76 class.akismet-admin.php:78
 #: class.akismet-admin.php:757 views/config.php:3
 msgid "Akismet"
