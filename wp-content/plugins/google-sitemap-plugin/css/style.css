@@ -1,0 +1,25 @@
+.gglstmp_span {
+    color: #888888;
+    font-size: 10px;
+}
+#gglstmp_authorization_button {
+    margin: 20px 0;
+    display: inline-block;
+}
+#gglstmp_authorization_code {
+    width: 300px;
+}
+#gglstmp_logout_button {
+    margin: 0 0 20px;
+}
+#gglstmp_authorize_error {
+    font-size: 14px;
+    color: red;
+}
+.gglstmp_wmt_content {
+    padding-left: 20px;
+    font-size: 14px;
+}
+.gglstmp_wmt_error {
+    color: red;
+}

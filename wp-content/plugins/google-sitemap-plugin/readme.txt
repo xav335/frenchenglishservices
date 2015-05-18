@@ -3,8 +3,8 @@ Contributors: bestwebsoft
 Donate link: https://www.2checkout.com/checkout/purchase?sid=1430388&quantity=1&product_id=94
 Tags: add posts to sitemap, add pages to sitemap, add sitemap, add site to google webmaster tools, create a map, google, googel, googgle, gogle, gogole, google sitemap, google sitemap plugin, google webmaster tools, sitemep, sitemap, sitemaps, site mep, site map, sitemap file path, update sitemap
 Requires at least: 3.1
-Tested up to: 4.1.1
-Stable tag: 2.9.6
+Tested up to: 4.2.1
+Stable tag: 2.9.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,8 +61,8 @@ http://www.youtube.com/watch?v=NKlAnFTzNrQ
 = How can I use this plugin? =
 
 After opening the plugin settings page your Sitemap file will be created automatically. If you already have a Sitemap file and do not want to change it, just do not check off the field "I want to create a new sitemap file".
-If you do not want a Sitemap file to be added to Google Webmaster Tools automatically, just follow the brief instruction. In another case you should enter your login and password and choose the necessary action.
-In order to add a path to your sitemap file in robots.txt you do not need to enter login and password, you should just select the necessary field and click "Update button". If you're using multisiting, the plugin does not allow to add a sitemap to robots.txt
+If you do not want a Sitemap file to be added to Google Webmaster Tools automatically, just follow the brief instruction. In another case you should authorize via your Google Account and choose the necessary action.
+In order to add a path to your sitemap file in robots.txt you do not need to authorize via your Google Account, you should just select the necessary field and click "Save Changes" button. If you're using multisiting, the plugin does not allow to add a sitemap to robots.txt
 
 = How to create sitemap.xml file? =
 
@@ -70,23 +70,24 @@ After opening the Settings page the sitemap.xml file will be created automatical
 
 = How to replace the existing sitemap.xml file? =
 
-Select "I want to create a new sitemap file" and click "Update", the sitemap file will be recreated then.
+Select "I want to create a new sitemap file" and click "Save Changes" button, the sitemap file will be recreated then.
 
 = How to add a site to Google Webmaster Tools? =
 
-Select "I want to add this site to Google Webmaster Tools" and click "Update". Your site will be added to Google Webmaster Tools and verified, afterwards your sitemap file will be added.
+Select "I want to add this site to Google Webmaster Tools" and click "Save Changes" button. Your site will be added to Google Webmaster Tools and verified, afterwards your sitemap file will be added.
 
 = How can I remove a site from Google Webmaster Tools? =
 
-Select "I want to delete this site from Google Webmaster Tools" and click "Update". 
+Select "I want to delete this site from Google Webmaster Tools" and click "Save Changes" button. 
 
 = How can I get information about my site in Google Webmaster Tools? =
 
-Select "I want to get info about this site in Google Webmaster Tools" and click "Update". 
+Select "I want to get info about this site in Google Webmaster Tools" and click "Save Changes" button. 
 
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
 Please make sure that the problem hasn't been discussed yet on our forum (http://support.bestwebsoft.com). If no, please provide the following data along with your problem's description:
+
 1. the link to the page where the problem occurs
 2. the name of the plugin and its version. If you are using a pro version - your order number.
 3. the version of your WordPress installation
@@ -95,10 +96,14 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 == Screenshots ==
 
 1. Google Sitemap Settings page.
-2. Google Sitemap Settings page on the hosting which doesn't support cURL.
-3. Google Sitemap Extra Settings page.
+2. Google Sitemap Settings page when you have authorization via your Google Account.
+3. Google Sitemap Settings page on the hosting which doesn't support cURL.
+4. Google Sitemap Extra Settings page.
 
 == Changelog ==
+
+= V2.9.7 - 05.05.2015 = 
+* Update : We replaced old Google Webmaster Tools API with new Google Webmaster Tools API v3.
 
 = V2.9.6 - 20.02.2015 = 
 * Bugfix : Error with access to the plugins settings page was fixed.
@@ -228,6 +233,9 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 * New: Ability to add site in google webmaster tools, verify it and add sitemap file was added.
 
 == Upgrade Notice ==
+
+= V2.9.7 =
+We replaced old Google Webmaster Tools API with new Google Webmaster Tools API v3.
 
 = V2.9.6 = 
 Error with access to the plugins settings page was fixed. BWS Menu was updated.

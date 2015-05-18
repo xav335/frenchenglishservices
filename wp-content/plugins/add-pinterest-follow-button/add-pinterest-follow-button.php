@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Add Pinterest Follow Button
- * Version: 0.1
+ * Version: 0.2
  * Description: Pinterest follow button plugin give an ability to maximise your followers of Pinterest account.
  * Author: Weblizar
  * Author URI: http://weblizar.com/plugins/

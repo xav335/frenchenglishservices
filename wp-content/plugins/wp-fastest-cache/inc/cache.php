@@ -1,6 +1,7 @@
 <?php
 	class WpFastestCacheCreateCache extends WpFastestCache{
 		public $options = array();
+		public $cdn;
 		private $startTime;
 		private $blockCache = false;
 		private $err = "";
@@ -9,6 +10,19 @@
 			$this->options = $this->getOptions();
 
 			$this->checkActivePlugins();
+
+			$this->set_cdn();
+		}
+
+		public function set_cdn(){
+			$cdn_values = get_option("WpFastestCacheCDN");
+			if($cdn_values){
+				$std = json_decode($cdn_values);
+
+				$std->originurl = trim($std->originurl, "/");
+				$std->originurl = preg_replace("/http(s?)\:\/\/(www\.)?/i", "", $std->originurl);
+				$this->cdn = $std;
+			}
 		}
 
 		public function checkActivePlugins(){
@@ -49,7 +63,8 @@
 						"\/wp\-includes",
 						"\/index\.php",
 						"\/xmlrpc\.php",
-						"\/wp\-api\/"
+						"\/wp\-api\/",
+						"leaflet\-geojson\.php"
 					);
 			if($this->isPluginActive('woocommerce/woocommerce.php')){
 				array_push($list, "\/cart", "\/checkout", "\/receipt", "\/confirmation", "\/product");
@@ -134,12 +149,12 @@
 			}else if(is_404()){
 				return $buffer;
 			}else if($this->ignored()){
-				return $buffer."<!-- ignored -->";
+				return $buffer;
 			}else if($this->blockCache === true){
 				return $buffer."<!-- wpfcNOT has been detected -->";
 			}else if(isset($_GET["preview"])){
 				return $buffer."<!-- not cached -->";
-			}else if(preg_match("/\?/", $_SERVER["REQUEST_URI"])){
+			}else if(preg_match("/\?/", $_SERVER["REQUEST_URI"]) && !preg_match("/\/\?fdx\_switcher\=true/", $_SERVER["REQUEST_URI"])){ // for WP Mobile Edition
 				return $buffer;
 			}else if($this->checkHtml($buffer)){
 				return $buffer."<!-- html is corrupted -->";
@@ -164,7 +179,7 @@
 					}
 				}
 
-				$content = $this->cacheDate($buffer);
+				$content = $buffer;
 
 				if(isset($this->options->wpFastestCacheCombineCss) && isset($this->options->wpFastestCacheMinifyCss)){
 					require_once "css-utilities.php";
@@ -199,16 +214,43 @@
 					if(isset($this->options->wpFastestCacheMinifyHtmlPowerFul)){
 						$content = $powerful_html->minify_html();
 					}
+
+					if(isset($this->options->wpFastestCacheMinifyJs) && method_exists("WpFastestCachePowerfulHtml", "minify_js_in_body")){
+						$content = $powerful_html->minify_js_in_body($this);
+					}
 				}
 
 				if($this->err){
 					return $buffer."<!-- ".$this->err." -->";
 				}else{
+					$content = $this->cacheDate($content);
 					$content = $this->minify($content);
+					if($this->cdn){
+						$content = preg_replace_callback("/[\'\"][^\'\"]+".preg_quote($this->cdn->originurl, "/")."[^\'\"]+[\'\"]/i", array($this, 'cdn_replace_urls'), $content);
+					}
 					$this->createFolder($cachFilePath, $content);
 					return $buffer."<!-- need to refresh to see cached version -->";
 				}
 			}
+		}
+
+		public function cdn_replace_urls($matches){
+			if(preg_match("/".preg_quote($this->cdn->originurl, "/")."/", $matches[0])){
+				$extension = $this->get_extension($matches[0]);
+				if($extension){
+					if(preg_match("/".$extension."/i", $this->cdn->file_types)){
+						$matches[0] = preg_replace("/(http(s?)\:)?\/\/(www\.)?".preg_quote($this->cdn->originurl, "/")."/i", "//".$this->cdn->cdnurl, $matches[0]);
+						//$matches[0] = str_replace($this->cdn->originurl, $this->cdn->cdnurl, $matches[0]);
+					}
+				}
+			}
+			return $matches[0];
+		}
+
+		public function get_extension($url){
+			$url = str_replace(array("'",'"'), "", $url);
+			$file_name = preg_replace("/\?.*/", "", basename($url));
+			return $file_name ? substr(strrchr($file_name,'.'),1) : "";
 		}
 
 		public function minify($content){

@@ -18,48 +18,108 @@
 
 		public function inlineToScript($wpfc){
 			preg_match("/<head(.*?)<\/head>/si", $this->html, $head);
-			preg_match_all("/<script([^\>]*)>((?:(?!<\/script).)+)<\/script\s*>/is",$head[1],$out);
 
-			if(count($out) > 0){
-				$countStyle = array_count_values($out[2]);
 
-				$i = 0;
+			$data = $head[1];
+			$script_list = array();
+			$script_start_index = false;
 
-				$out[2] = array_unique($out[2]);
+			for($i = 0; $i < strlen( $data ); $i++) {
+				if(isset($data[$i-6])){
+				    if(substr($data, $i-6, 7) == "<script"){
+				    	$script_start_index = $i-6;
+					}
+				}
 
-				foreach ($out[2] as $key => $value) {
-					$cachFilePath = WPFC_WP_CONTENT_DIR."/cache/wpfc-minified/".md5($value);
-					$jsScript = content_url()."/cache/wpfc-minified/".md5($value);
+				if(isset($data[$i-8])){
+					if($script_start_index){
+						if(substr($data, $i-8, 9) == "</script>"){
+							array_push($script_list, array("start" => $script_start_index, "end" => $i));
+							$script_start_index = false;
+						}
+					}
+				}
+			}
 
-					if(strpos($this->getJsLinksExcept(), $out[0][$i]) === false){
+			if(!empty($script_list)){
+				foreach (array_reverse($script_list) as $key => $value) {
+					$inline_script = substr($data, $value["start"], ($value["end"] - $value["start"] + 1));
+
+
+					if(preg_match("/^<script[^\>\<]*src\=[^\>\<]*>/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/switchTo5x/i", $inline_script)){ // WP Socializer
+						continue;
+					}
+
+					if(preg_match("/window\.dynamicgoogletags/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/GoogleAnalyticsObject/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/document\.write/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/google\-analytics\.com/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/addIgnoredOrganic/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/WebFontConfig/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/action\=wordfence_logHuman\&hid=/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/connect\.facebook\.net/i", $inline_script)){
+						continue;
+					}
+
+					if(preg_match("/document\.createElement\([^\(\)]+script[^\(\)]+\)/i", $inline_script)){
+						continue;
+					}
+
+					if(strpos($this->getJsLinksExcept(), $inline_script) === false){
+						$inline_script = preg_replace("/<!--((?:(?!-->).)+)-->/si", '', $inline_script);
+						$inline_script = preg_replace("/^\s+/m", "", ((string) $inline_script));
+						
+						$attributes = "";
+						$cachFilePath = WPFC_WP_CONTENT_DIR."/cache/wpfc-minified/".md5($inline_script);
+						$jsScript = content_url()."/cache/wpfc-minified/".md5($inline_script);
+
+						if(preg_match("/<script([^\>]*)>/i", $inline_script, $out)){
+							$attributes = $out[1];
+						}
+						
+						$inline_script = trim($inline_script);
+						$inline_script = preg_replace("/<script([^\>]*)>/i", "", $inline_script);
+						$inline_script = preg_replace("/<\/script>/i", "", $inline_script);
+
 						if(!is_dir($cachFilePath)){
 							$prefix = time();
-							$wpfc->createFolder($cachFilePath, $value, "js", $prefix);
+							$wpfc->createFolder($cachFilePath, $inline_script, "js", $prefix);
 						}
 
 						if($jsFiles = @scandir($cachFilePath, 1)){
-							if($countStyle[$value] == 1){
-								$script = "<!-- <script".$out[1][$i].">".str_replace(array("<!--", "-->"), "", $value)."</script> -->"."\n"."<script".$out[1][$i]." src='".$jsScript."/".$jsFiles[0]."'></script>";
-								if($tmpHtml = @preg_replace("/<script[^<>]*>".preg_quote($value, "/")."<\/script\s*>/", $script, $this->html)){
-									$this->html = $tmpHtml;
-								}else{
-									$this->err = "inline js is too large. it is a mistake for optimization. save it as a file and call in the html.".$value;
-								}
-							}else{
-								$script = "<!-- <script".$out[1][$i].">".str_replace(array("<!--", "-->"), "", $value)."</script> -->"."\n"."<script".$out[1][$i]." src='".$jsScript."/".$jsFiles[0]."'></script>";
-								if($tmpHtml = @preg_replace("/<script[^<>]*>".preg_quote($value, "/")."<\/script\s*>/", $script, $this->html)){
-									$this->html = $tmpHtml;
-								}else{
-									$this->err = "inline js is too large. it is a mistake for optimization. save it as a file and call in the html.".$value;
-								}
-								$countStyle[$value] = $countStyle[$value] - 1;
-							}
+							$script = "<script src='".$jsScript."/".$jsFiles[0]."'".$attributes."></script>";
+							$data = substr_replace($data, "<!-- ".$inline_script." -->"."\n".$script, $value["start"], ($value["end"] - $value["start"] + 1));
 						}
 					}
-
-					$i++;
 				}
 			}
+
+			$this->html = str_replace($head[1], $data, $this->html);
 		}
 
 		public function setJsLinks(){
@@ -73,18 +133,40 @@
 		public function setJsLinksExcept(){
 			preg_match("/<head(.*?)<\/head>/si", $this->html, $head);
 
-			preg_match_all("/<\!--\s*\[\s*if[^>]+>(.*?)<\!\s*\[\s*endif\s*\]\s*-->/si", $head[1], $jsLinksInIf);
+			$data = $head[1];
+			$comment_list = array();
+			$comment_start_index = false;
 
-			preg_match_all("/<\!--(?!\[if)(.*?)(?!<\!\s*\[\s*endif\s*\]\s*)-->/si", $head[1], $jsLinksCommentOut);
+			for($i = 0; $i < strlen( $data ); $i++) {
+				if(isset($data[$i-3])){
+				    if($data[$i-3].$data[$i-2].$data[$i-1].$data[$i] == "<!--"){
+				    	$comment_start_index = $i-3;
+					}
+				}
 
-			preg_match_all("/<script[^\>]*>((?:(?!<\/script).)+)GoogleAnalyticsObject((?:(?!<\/script).)+)<\/script>/si", $head[1], $jsLinksGoogleAnalytics);
+				if(isset($data[$i-2])){
+					if($comment_start_index){
+						if($data[$i-2].$data[$i-1].$data[$i] == "-->"){
+							array_push($comment_list, array("start" => $comment_start_index, "end" => $i));
+							$comment_start_index = false;
+						}
+					}
+				}
+			}
 
-			preg_match_all("/<script[^\>]*>((?:(?!<\/script).)+)google\-analytics\.com((?:(?!<\/script).)+)<\/script>/si", $head[1], $jsLinksGoogleAnalyticsYoast);
-			
-			preg_match_all("/<script[^\>]*>((?:(?!<\/script).)+)WebFontConfig((?:(?!<\/script).)+)<\/script>/si", $head[1], $jsLinksGoogleFonts);
+			if(!empty($comment_list)){
+				foreach (array_reverse($comment_list) as $key => $value) {
+					if(($value["end"] - $value["start"]) > 4){
+						$this->jsLinksExcept = $this->jsLinksExcept.substr($data, $value["start"], ($value["end"] - $value["start"] + 1));
+					}
+				}
+			}
 
+			// preg_match_all("/<\!--\s*\[\s*if[^>]+>(.*?)<\!\s*\[\s*endif\s*\]\s*-->/si", $head[1], $jsLinksInIf);
 
-			$this->jsLinksExcept = implode(" ", array_merge($jsLinksInIf[0], $jsLinksCommentOut[0], $jsLinksGoogleAnalytics[0], $jsLinksGoogleAnalyticsYoast[0], $jsLinksGoogleFonts[0]));
+			// preg_match_all("/<\!--(?!\[if)(.*?)(?!<\!\s*\[\s*endif\s*\]\s*)-->/si", $head[1], $jsLinksCommentOut);
+
+			// $this->jsLinksExcept = implode(" ", array_merge($jsLinksInIf[0], $jsLinksCommentOut[0]));
 		}
 
 		public function getJsLinksExcept(){

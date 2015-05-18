@@ -4,7 +4,7 @@ Donate link: http://profiles.wordpress.org/emrevona/
 Tags: cache, caching, performance, wp-cache, optimize, minify, woocommerce, plugin, post, posts, google, ajax, comments, seo, adsense, gzip, google page speed, ylow
 
 Requires at least: 3.3
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -34,6 +34,7 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 7. Enable/Disable cache option for mobile devices
 8. Enable/Disable cache option for logged-in users
 9. SSL support
+10. CDN support
 
 <h4>Performance Optimization</h4>
 
@@ -47,14 +48,16 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 
 <h4>Supported languages: </h4>
 
-* Deutsch (by Hinji)
+* Deutsch
 * English
 * Español (by Diplo)
 * Français (by PascalJ)
 * Italiana (by Valerio)
 * 日本語 (by KUCKLU)
 * Português
+* Română
 * Русский
+* Svenska (Linus Wileryd)
 * Türkçe
 
 == Installation ==
@@ -75,8 +78,46 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 7. Block caching for post and pages (TinyMCE)
 8. Clean cached files via admin toolbar easly
 9. Exclude page
+10. CDN
 
 == Changelog ==
+
+= 0.8.5.1 =
+* to add MaxCDN and CDN77
+* to remove comments from inline js
+* to fix trim() issue
+* to be compatible with Leaflet Maps Marker
+
+= 0.8.5.0 =
+* to prevent combine js file which is added by WP Socializer
+* to make ruleForWpContent() pasive
+* refactoring of inlineToScript()
+* Romanian has been added
+
+= 0.8.4.9 =
+* to be compatible with WP Mobile Edition
+* to prevent from sql injection attacks (Kacper Szurek)
+* to prevent using Head Cleaner
+
+= 0.8.4.8 =
+* to show .htaccess rules if not writeable
+* not to comment out Facebook js
+* not to comment out document.createElement('script')
+* not to minify and combine style and js codes in noscript tag
+
+= 0.8.4.7 =
+* to update Portuguese language
+* to make compatible with Google Adsense plugin
+* to add user-agent of Samsung S5, LG and HTC
+
+= 0.8.4.6 =
+* to add popup warning modal for premium download
+* to remove mobile cache after update post
+
+= 0.8.4.5 =
+* wpfcNOT is visible only for admins
+* to prevent creating cache for POST request
+* to fix issue of converting inline js to internal file
 
 = 0.8.4.4 =
 * to fix inline css issue
@@ -446,28 +487,28 @@ Yes. Wpfc supports "Subdirectory Install".
 Yes, it is compatible with Http Secure (https).
 
 = Is this plugin compatible with Adsense? =
-Yes, it is compatible with Adsense %100.
+Yes, it is compatible with Adsense 100%.
 
 = Is this plugin compatible with CloudFlare? =
-Yes, it is compatible with CloudFlare %100. If the "minify html" option is active on CloudFlare, the minify system removed the comment from html so you cannot see the comment of Wpfc at the bottom of the page and you cannot be sure that it works or not. In this case, you need to look at the style files. You can see the minified css files.
+Yes, it is compatible with CloudFlare 100%. If the "minify html" option is active on CloudFlare, the minify system removed the comment from html so you cannot see the comment of Wpfc at the bottom of the page and you cannot be sure that it works or not. In this case, you need to look at the style files. You can see the minified css files.
 
 = Is this plugin compatible with WP-Polls? =
-Yes, it is compatible with WP-Polls %100.
+Yes, it is compatible with WP-Polls 100%.
 
 = Is this plugin compatible with Bulletproof Security? =
-Yes, it is compatible with Bulletproof Security %100.
+Yes, it is compatible with Bulletproof Security 100%.
 
 = Is this plugin compatible with Wordfence Security? =
-Yes, it is compatible with Wordfence Security %100.
+Yes, it is compatible with Wordfence Security 100%.
 
 = Is this plugin compatible with qTranslate? =
 Yes, it works if you use qTranslate with "Use Query Mode (?lang=en)".
 
 = Is this plugin compatible with WPtouch Mobile Plugin? =
-Yes, it is compatible with WPtouch Mobile Plugin %100.
+Yes, it is compatible with WPtouch Mobile Plugin 100%.
 
 = Is this plugin compatible with WP-PostRatings? =
-Yes, it is NOT compatible with WP-PostRatings.
+No, it is NOT compatible with WP-PostRatings.
 
 = Is this plugin compatible with AdRotate? =
 No, it is NOT compatible with AdRotate.
@@ -479,7 +520,7 @@ Yes, it is compatible with WP-PostViews. The current post views appear on the ad
 No, it is NOT compatible with MobilePress. We advise WPtouch Mobile.
 
 = Is this plugin compatible with WooCommerce Themes? =
-Yes, it is compatible with WooCommerce Themes %100.
+Yes, it is compatible with WooCommerce Themes 100%.
 
 == Upgrade notice ==
 ....

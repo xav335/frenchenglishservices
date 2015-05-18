@@ -82,11 +82,13 @@ window.wpfc.dictionary = {
 	"Logged-in Users" : "Giriş Yapanlar",
 	"Minify HTML Plus" : "HTML Küçült Ekstra",
 	"Combine Js Plus" : "Js Birleştir Ekstra",
+	"Minify Css Plus" : "Css Küçült Ekstra",
+	"More powerful minify css" : "Daha güçlü css küçültme aracı",
 	"Cache Statics" : "Cache İstatistikleri",
 	"In the premium version there are some new features which speed up the sites more." : "Premium sürümde siteleri hızlandıran yeni özellikler yer alıyor.",
 	"You need to pay before downloading the premium version." : "Premium sürümünü indirmeden önce ödeme yapmalısınız.",
 	"You can download and update the premium when you want if you paid." : "Eğer ödemeyi yaptıysanız premium sürümünü indirebilir veya güncelleştirebilirsiniz.",
-	"Discover Feautures" : "Özellikleri Keşfedin",
+	"Discover Features" : "Özellikleri Keşfedin",
 	"Checkout" : "Ödeme",
 	"Download & Update" : "İndir & Güncelle",
 	"New Features" : "Yeni Özellikler",
@@ -103,6 +105,11 @@ window.wpfc.dictionary = {
 	"You can stop to create cache for specific pages" : "Belirli sayfalar için cache sistemini durdurabilirsiniz",
 	"Read More" : "Devamını Oku",
 	"Contain" : "İçerdiği",
-	"Exact" : "Tam"
+	"Exact" : "Tam",
+	"Error Occured" : "Hata Oluştu",
+	"/wp-content/plugins/ is not writable" : "/wp-content/plugins/ yazılabilir değil",
+	"Please read the tutorial" : "Lütfen dökümanı okuyunuz",
+	"You need to activate the premium plugin manually" : "Premium sürümünü manuel olarak aktifleştirmelisiniz",
+	"Continue" : "Devam Et"
 
 };

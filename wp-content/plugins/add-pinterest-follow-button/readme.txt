@@ -5,8 +5,8 @@ Contributors: weblizar
 Donate link: http://www.weblizar.com/
 Tags: pinterest, pinterest button, pinterest follow, pinterest follow button, pin it, pin it button, pinterest pin, advanced pinterest, free pinterest widget, pinter pin display, pinterest display, pinterest pin button, pinterest share, pinterest widget, wordpress widget, image, images, photo, photos, pin it, pin it button, pinterest pin it button, social, social button, social media,  board, free, pinterest board, wordpress,  pinterest follow badge, sidebar, feed, pinterest feed, rss, widget, photo share plugin, social share plugin, social share, media
 Requires at least: 3.3
-Tested up to: 4.1
-Stable tag: 0.1
+Tested up to: 4.2
+Stable tag: 0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ Pinterest follow button is a very simple & attractive plugin allows WordPress bl
 == Changelog ==
 
 For more information, see [Weblizar](http://wwww.weblizar.com/).
+
+= Version 0.2 22-Apr-2015 =
+* New: WordPress 4.2 Compatible
 
 = 0.1 =
 * New: Pinterest Follow Button
