@@ -201,6 +201,11 @@ ORDER BY blockCount DESC
 LIMIT %d
 SQL
 			, $limit));
+		if ($results) {
+			foreach ($results as &$row) {
+				$row->countryName = $this->getCountryNameByCode($row->countryCode);
+			}
+		}
 		return $results;
 	}
 
@@ -223,6 +228,11 @@ ORDER BY totalBlockCount DESC
 LIMIT %d
 SQL
 			, $limit));
+		if ($results) {
+			foreach ($results as &$row) {
+				$row->countryName = $this->getCountryNameByCode($row->countryCode);
+			}
+		}
 		return $results;
 	}
 
@@ -231,12 +241,23 @@ SQL
 	 * @return mixed
 	 */
 	public function getTopFailedLogins($limit = 10) {
+		$interval = 'UNIX_TIMESTAMP(DATE_SUB(NOW(), interval 7 day))';
+		switch (wfConfig::get('email_summary_interval', 'weekly')) {
+			case 'biweekly':
+				$interval = 'UNIX_TIMESTAMP(DATE_SUB(NOW(), interval 14 day))';
+				break;
+			case 'monthly':
+				$interval = 'UNIX_TIMESTAMP(DATE_SUB(NOW(), interval 1 month))';
+				break;
+		}
+
 		$results = $this->db->get_results($this->db->prepare(<<<SQL
 SELECT *,
 sum(fail) as fail_count,
 max(userID) as is_valid_user
 FROM {$this->db->base_prefix}wfLogins
 WHERE fail = 1
+AND ctime > $interval
 GROUP BY username
 ORDER BY fail_count DESC
 LIMIT %d
@@ -246,30 +267,28 @@ SQL
 	}
 
 	/**
-	 * Generate SQL from the whitelist.  Uses the return format from wfLog::getWhitelistedIPs
+	 * Generate SQL from the whitelist. Uses the return format from wfUtils::getIPWhitelist
 	 *
-	 * @see wfLog::getWhitelistedIPs
+	 * @see wfUtils::getIPWhitelist
 	 * @param array $whitelisted_ips
 	 * @return string
 	 */
 	public function getBlockedIPWhitelistWhereClause($whitelisted_ips = null) {
 		if ($whitelisted_ips === null) {
-			$whitelisted_ips = wordfence::getLog()->getWhitelistedIPs();
+			$whitelisted_ips = wfUtils::getIPWhitelist();
 		}
 		if (!is_array($whitelisted_ips)) {
 			return false;
 		}
 
 		$where = '';
-		/** @var array|wfUserIPRange|string $ip_range */
+
 		foreach ($whitelisted_ips as $ip_range) {
-			if (is_array($ip_range) && count($ip_range) == 2) {
-				$where .= $this->db->prepare('IP BETWEEN %s AND %s', $ip_range[0], $ip_range[1]) . ' OR ';
-			} elseif (is_a($ip_range, 'wfUserIPRange')) {
-				$where .= $ip_range->toSQL('IP') . ' OR ';
-			} elseif (is_string($ip_range) || is_numeric($ip_range)) {
-				$where .=  $this->db->prepare('IP = %s', $ip_range) . ' OR ';
+			if (!is_a($ip_range, 'wfUserIPRange')) {
+				$ip_range = wfUtils::CIDR2wfUserIPRange($ip_range);
 			}
+
+			$where .= $ip_range->toSQL('IP') . ' OR ';
 		}
 		if ($where) {
 			// remove the extra ' OR '
@@ -339,13 +358,17 @@ SQL
 
 	/**
 	 * @param mixed $ip_address
-	 * @param null  $unixday
+	 * @param int|null $unixday
 	 */
 	public static function logBlockedIP($ip_address, $unixday = null) {
+		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		if (is_string($ip_address) && !is_numeric($ip_address)) {
-			$ip_address = wfUtils::inet_aton($ip_address);
+		if (wfUtils::isValidIP($ip_address)) {
+			$ip_bin = wfUtils::inet_pton($ip_address);
+		} else {
+			$ip_bin = $ip_address;
+			$ip_address = wfUtils::inet_ntop($ip_bin);
 		}
 
 		$blocked_table = "{$wpdb->base_prefix}wfBlockedIPLog";
@@ -355,14 +378,26 @@ SQL
 			$unixday_insert = absint($unixday);
 		}
 
-		$country = wfUtils::IP2Country(is_numeric($ip_address) ? wfUtils::inet_ntoa($ip_address) : $ip_address);
+		$country = wfUtils::IP2Country($ip_address);
 
 		$wpdb->query($wpdb->prepare(<<<SQL
 INSERT INTO $blocked_table (IP, countryCode, blockCount, unixday)
 VALUES (%s, %s, 1, $unixday_insert)
 ON DUPLICATE KEY UPDATE blockCount = blockCount + 1
 SQL
-			, $ip_address, $country));
+			, $ip_bin, $country));
+	}
+
+	/**
+	 * @param $code
+	 * @return string
+	 */
+	public function getCountryNameByCode($code) {
+		static $wfBulkCountries;
+		if (!isset($wfBulkCountries)) {
+			include 'wfBulkCountries.php';
+		}
+		return array_key_exists($code, $wfBulkCountries) ? $wfBulkCountries[$code] : "";
 	}
 
 	/**

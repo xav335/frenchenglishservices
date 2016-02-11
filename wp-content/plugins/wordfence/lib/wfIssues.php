@@ -26,14 +26,14 @@ class wfIssues {
 		$ignoreC, /* some piece of data used for md5 for ignoring until something changes */
 		$shortMsg, $longMsg, $templateData
 		){
-		
+
 
 		$ignoreP = md5($ignoreP);
 		$ignoreC = md5($ignoreC);
 		$rec = $this->getDB()->querySingleRec("select status, ignoreP, ignoreC from " . $this->issuesTable . " where (ignoreP='%s' OR ignoreC='%s')", $ignoreP, $ignoreC);
 		if($rec){
 			if($rec['status'] == 'new' && ($rec['ignoreC'] == $ignoreC || $rec['ignoreP'] == $ignoreP)){ 
-				if($type != 'file'){ //Filter out duplicate new issues but not infected files because we want to see all infections even if file contents are identical
+				if($type != 'file' && $type != 'database'){ //Filter out duplicate new issues but not infected files because we want to see all infections even if file contents are identical
 					return false; 
 				}
 			}
@@ -129,33 +129,7 @@ class wfIssues {
 			'level' => $level
 			));
 		
-		require_once ABSPATH . WPINC . '/class-phpmailer.php';
-		require_once ABSPATH . WPINC . '/class-smtp.php';
-		$mail = new PHPMailer;
-		
-		// Get the site domain and get rid of www.
-		$from_email = 'wordpress@' . preg_replace('/^(https?:\/\/(www.)?)(.+?)(\/)?$/', '$3', site_url());
-		
-		$mail->From = apply_filters( 'wp_mail_from', $from_email );
-		$mail->FromName = apply_filters( 'wp_mail_from_name', 'Wordfence' );
-		
-		foreach ($emails as $email) {
-			try {
-				$mail->addAddress($email);
-			} catch (phpmailerException $e) {
-				
-			}
-		}
-		
-		$mail->Subject = $subject;
-		$mail->msgHTML($content);
-		
-		try {
-			$mail->send();
-		} catch (phpmailerException $e) {
-			// use wp_mail if there's a problem (which uses PHPMailer anyways :P)
-			wp_mail(implode(',', $emails), $subject, strip_tags($content));
-		}
+		wp_mail(implode(',', $emails), $subject, $content, 'Content-type: text/html');
 	}
 	public function deleteIssue($id){ 
 		$this->getDB()->queryWrite("delete from " . $this->issuesTable . " where id=%d", $id);
@@ -172,7 +146,9 @@ class wfIssues {
 		$rec['data'] = unserialize($rec['data']);
 		return $rec;
 	}
-	public function getIssues(){ 
+	public function getIssues(){
+		/** @var wpdb $wpdb */
+		global $wpdb;
 		$ret = array(
 			'new' => array(),
 			'ignored' => array()
@@ -181,6 +157,7 @@ class wfIssues {
 		foreach($q1 as $i){
 			$i['data'] = unserialize($i['data']);
 			$i['timeAgo'] = wfUtils::makeTimeAgo(time() - $i['time']);
+			$i['longMsg'] = wp_kses($i['longMsg'], 'post');
 			if($i['status'] == 'new'){
 				$ret['new'][] = $i;
 			} else if($i['status'] == 'ignoreP' || $i['status'] == 'ignoreC'){
@@ -199,6 +176,10 @@ class wfIssues {
 					} else {
 						$issueList[$i]['data']['fileExists'] = '';
 					}
+				}
+				if ($issueList[$i]['type'] == 'database') {
+					$prefix = $wpdb->get_blog_prefix($issueList[$i]['data']['site_id']);
+					$issueList[$i]['data']['optionExists'] = $wpdb->get_var($wpdb->prepare("SELECT count(*) FROM {$prefix}options WHERE option_name = %s", $issueList[$i]['data']['option_name'])) > 0;
 				}
 				$issueList[$i]['issueIDX'] = $i;
 			}

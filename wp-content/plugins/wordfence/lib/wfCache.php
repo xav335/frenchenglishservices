@@ -455,6 +455,7 @@ class wfCache {
 			$contents = $code . "\n" . $contents;
 		}
 		ftruncate($fh, 0);
+		fflush($fh);
 		fseek($fh, 0, SEEK_SET);
 		fwrite($fh, $contents);
 		flock($fh, LOCK_UN);
@@ -578,6 +579,11 @@ EOT;
 		self::updateBlockedIPs('add'); //Fail silently if .htaccess is not readable. Will fall back to old blocking via WP
 		wp_schedule_single_event(time() + 300, 'wordfence_update_blocked_IPs');
 	}
+
+	/**
+	 * @param $action
+	 * @return bool|string|void
+	 */
 	public static function updateBlockedIPs($action){ //'add' or 'remove'
 		if(wfConfig::get('cacheType') != 'falcon'){ return; }
 
@@ -603,6 +609,7 @@ EOT;
 			$contents = preg_replace('/#WFIPBLOCKS.*WFIPBLOCKS[r\s\n\t]*/s', '', $contents);
 
 			ftruncate($fh, 0);
+			fflush($fh);
 			fseek($fh, 0, SEEK_SET);
 			@fwrite($fh, $contents);
 			flock($fh, LOCK_UN);
@@ -635,9 +642,19 @@ EOT;
 
 					if($range){
 						if($browser || $referer){ continue; } //We don't allow combos in falcon
-						$ips = explode('-', $range);
-						$cidrs = wfUtils::rangeToCIDRs($ips[0], $ips[1]);
-						$hIPs = wfUtils::inet_ntoa($ips[0]) . ' - ' . wfUtils::inet_ntoa($ips[1]);
+
+						list($start_range, $end_range) = explode('-', $range);
+						if (preg_match('/[\.:]/', $start_range)) {
+							$start_range = wfUtils::inet_pton($start_range);
+							$end_range = wfUtils::inet_pton($end_range);
+						} else {
+							$start_range = wfUtils::inet_pton(long2ip($start_range));
+							$end_range = wfUtils::inet_pton(long2ip($end_range));
+						}
+
+						$cidrs = wfUtils::rangeToCIDRs($start_range, $end_range);
+
+						$hIPs = wfUtils::inet_ntop($start_range) . ' - ' . wfUtils::inet_ntop($end_range);
 						if(sizeof($cidrs) > 0){
 							$lines[] = '#Start of blocking code for IP range: ' . $hIPs . "\n";
 							foreach($cidrs as $c){
@@ -688,6 +705,7 @@ EOT;
 		$contents = preg_replace('/#WFIPBLOCKS.*WFIPBLOCKS[r\s\n\t]*/s', '', $contents);
 		$contents = $blockCode . $contents;
 		ftruncate($fh, 0);
+		fflush($fh);
 		fseek($fh, 0, SEEK_SET);
 		@fwrite($fh, $contents);
 		flock($fh, LOCK_UN);
@@ -695,14 +713,14 @@ EOT;
 		return false;
 	}
 	public static function getHtaccessPath(){
-		if(file_exists(ABSPATH . '/.htaccess')){
-			return ABSPATH . '/.htaccess';
+		if (!function_exists('get_home_path')) {
+			include_once ABSPATH . 'wp-admin/includes/file.php';
 		}
-		if(preg_match('/^https?:\/\/[^\/]+\/?$/i', home_url()) && preg_match('/^https?:\/\/[^\/]+\/.+/i', site_url())){
-			$path = realpath(ABSPATH . '/../.htaccess');
-			if(file_exists($path)){
-				return $path;
-			}
+
+		$homePath = get_home_path();
+		$htaccessFile = $homePath.'.htaccess';
+		if (file_exists($htaccessFile)) {
+			return $htaccessFile;
 		}
 		return false;
 	}

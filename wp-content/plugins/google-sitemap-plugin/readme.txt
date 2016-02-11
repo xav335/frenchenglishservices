@@ -1,10 +1,10 @@
 === Google Sitemap by BestWebSoft ===
 Contributors: bestwebsoft
-Donate link: https://www.2checkout.com/checkout/purchase?sid=1430388&quantity=1&product_id=94
-Tags: add posts to sitemap, add pages to sitemap, add sitemap, add site to google webmaster tools, create a map, google, googel, googgle, gogle, gogole, google sitemap, google sitemap plugin, google webmaster tools, sitemep, sitemap, sitemaps, site mep, site map, sitemap file path, update sitemap
-Requires at least: 3.1
-Tested up to: 4.2.1
-Stable tag: 2.9.7
+Donate link: http://bestwebsoft.com/donate/
+Tags: add page to sitemap, add post to sitemap, add pages to sitemap, add posts to sitemap, add site to google webmaster tools, add sitemap, best sitemap plugin, best google sitemap plugin, create a map, free google sitemap plugin, free sitemap plugin, gogle, gogole, googel, googgle, google, google sitemap, google sitemap plugin, google webmaster tools, simple sitemap plugin, simple site map plugin, site map, site mep, sitemap, sitemap file path, sitemaps, sitemep, update sitemap, webmaster tools, wp plugin, wordpress plugin, wp sitemap plugin, wordpress sitemap plugin, wp google sitemap plugin, wordpress google sitemap plugin
+Requires at least: 3.8
+Tested up to: 4.3.1
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,15 +14,15 @@ This plugin allows you to add a Sitemap file to Google Webmaster Tools.
 
 With the Google Sitemap Plugin you can create and add a Sitemap file to Google Webmaster Tools, and get the info about your site in Google Webmaster Tools.
 
-http://www.youtube.com/watch?v=C4M_ge0dyuU
+http://www.youtube.com/watch?v=3Qv-ad_aEPg
 
-<a href="http://www.youtube.com/watch?v=NKlAnFTzNrQ" target="_blank">Video instruction on Installation</a>
+<a href="http://www.youtube.com/watch?v=NKlAnFTzNrQ" target="_blank">Google Sitemap by BestWebSoft Video instruction on Installation</a>
 
-<a href="http://wordpress.org/plugins/google-sitemap-plugin/faq/" target="_blank">FAQ</a>
+<a href="http://wordpress.org/plugins/google-sitemap-plugin/faq/" target="_blank">Google Sitemap by BestWebSoft FAQ</a>
 
-<a href="http://support.bestwebsoft.com" target="_blank">Support</a>
+<a href="http://support.bestwebsoft.com" target="_blank">Google Sitemap by BestWebSoft Support</a>
 
-<a href="http://bestwebsoft.com/products/google-sitemap/?k=8b735c0f7ca51187b5062d5e4f40058b" target="_blank">Upgrade to Pro Version</a>
+<a href="http://bestwebsoft.com/products/google-sitemap/?k=8b735c0f7ca51187b5062d5e4f40058b" target="_blank">Upgrade to Google Sitemap Pro by BestWebSoft</a>
 
 = Recommended Plugins =
 
@@ -101,6 +101,21 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 4. Google Sitemap Extra Settings page.
 
 == Changelog ==
+
+= V3.0.1 - 21.09.2015 =
+* Update : Textdomain was changed.
+* Update : We updated all functionality for wordpress 4.3.1.
+
+= V3.0.0 - 18.08.2015 =
+* Update : We updated all functionality for wordpress 4.2.4.
+* Update : BWS plugins section was updated.
+
+= V2.9.9 - 10.07.2015 =
+* Bigfix : We fixed bug with editing of file robots.txt.
+* NEW : Ability to restore default settings.
+
+= V2.9.8 - 04.06.2015 =
+* NEW : Allows to add links to Post categories and Post tags to the sitemap file.
 
 = V2.9.7 - 05.05.2015 = 
 * Update : We replaced old Google Webmaster Tools API with new Google Webmaster Tools API v3.
@@ -233,6 +248,18 @@ Please make sure that the problem hasn't been discussed yet on our forum (http:/
 * New: Ability to add site in google webmaster tools, verify it and add sitemap file was added.
 
 == Upgrade Notice ==
+
+= V3.0.1 =
+Textdomain was changed. We updated all functionality for wordpress 4.3.1.
+
+= V3.0.0 =
+We updated all functionality for wordpress 4.2.4. BWS plugins section was updated.
+
+= V2.9.9 =
+We fixed bug with editing of file robots.txt. Ability to restore default settings.
+
+= V2.9.8 =
+Allows to add links to Post categories and Post tags to the sitemap file.
 
 = V2.9.7 =
 We replaced old Google Webmaster Tools API with new Google Webmaster Tools API v3.

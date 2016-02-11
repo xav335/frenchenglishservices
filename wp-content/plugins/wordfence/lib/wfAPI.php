@@ -60,11 +60,19 @@ class wfAPI {
 			require_once ABSPATH . WPINC . 'http.php';
 		}
 
-		$response = wp_remote_post($url, array(
+		$ssl_verify = (bool) wfConfig::get('ssl_verify');
+		$args = array(
 			'timeout'    => 900,
 			'user-agent' => "Wordfence.com UA " . (defined('WORDFENCE_VERSION') ? WORDFENCE_VERSION : '[Unknown version]'),
 			'body'       => $postParams,
-		));
+			'sslverify'  => $ssl_verify,
+		);
+		if (!$ssl_verify) {
+			// Some versions of cURL will complain that SSL verification is disabled but the CA bundle was supplied.
+			$args['sslcertificates'] = false;
+		}
+
+		$response = wp_remote_post($url, $args);
 
 		$this->lastHTTPStatus = (int) wp_remote_retrieve_response_code($response);
 
@@ -110,9 +118,11 @@ class wfAPI {
 			}
 		}
 		return self::buildQuery(array(
-			'v' => $this->wordpressVersion,
-			's' => $siteurl,
-			'k' => $this->APIKey
+			'v'       => $this->wordpressVersion,
+			's'       => $siteurl,
+			'k'       => $this->APIKey,
+			'openssl' => function_exists('openssl_verify') && defined('OPENSSL_VERSION_NUMBER') ? OPENSSL_VERSION_NUMBER : '0.0.0',
+			'phpv'    => phpversion(),
 		));
 	}
 

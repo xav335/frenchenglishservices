@@ -12,7 +12,7 @@
 				</td>
 				<td>
 					<div style="border: 1px solid #CCC; padding: 4px;">
-						<a href="http://docs.wordfence.com/en/Wordfence_scanning" target="_blank" class="wfhelp"></a><a href="http://docs.wordfence.com/en/Wordfence_scanning" target="_blank">Read our scanning documentation</a>. You can also <a href="#" onclick="WFAD.startTourAgain(); return false;">start the tour again</a>, <a href="http://www.wordfence.com/subscribe-to-the-wordfence-email-list/" target="_blank">subscribe to get WordPress Security Alerts and Product News</a> or <a target="_blank" href="http://support.wordfence.com/">visit our support website help.</a> Love Wordfence? You can help by doing two simple things: <a href="http://wordpress.org/extend/plugins/wordfence/" target="_blank">Go to WordPress.org now and give this plugin a 5&#9733; rating</a>. Blog about Wordfence and link to the <a href="http://wordpress.org/extend/plugins/wordfence/" target="_blank">plugin page</a> or <a href="http://www.wordfence.com/" target="_blank">www.wordfence.com</a>. Spreading the word helps us keep the best features free.
+						<a href="http://docs.wordfence.com/en/Wordfence_scanning" target="_blank" class="wfhelp"></a><a href="http://docs.wordfence.com/en/Wordfence_scanning" target="_blank">Read our scanning documentation</a>. You can also <a href="#" onclick="WFAD.startTourAgain(); return false;">start the tour again</a>, <a href="http://www.wordfence.com/gnl1listSubscr/subscribe-to-the-wordfence-email-list/" target="_blank">subscribe to get WordPress Security Alerts and Product News</a> or <a target="_blank" href="http://support.wordfence.com/">visit our support website help.</a> Love Wordfence? You can help by doing two simple things: <a href="http://wordpress.org/extend/plugins/wordfence/" target="_blank">Go to WordPress.org now and give this plugin a 5&#9733; rating</a>. Blog about Wordfence and link to the <a href="http://wordpress.org/extend/plugins/wordfence/" target="_blank">plugin page</a> or <a href="http://www.wordfence.com/gnl1scanTopHome/" target="_blank">www.wordfence.com</a>. Spreading the word helps us keep the best features free.
 					</div>
 				</td>
 			</tr>
@@ -38,9 +38,21 @@
 				Premium scanning enabled.	
 			</div>
 			<?php } else { ?>
-			<div style="margin: 0 0 20px 5px; width: 795px;">
-				<strong style="color: #F00;">How to upgrade:</strong> If you would like access to our <a href="http://support.wordfence.com/" target="_blank">Premium Support help system</a> and features like Cellphone Sign-in, Country Blocking, external site scanning and the ability to schedule scans, simply <a href="https://www.wordfence.com/wordfence-signup/" target="_blank">visit our Wordfence Premium sign-up page</a> and sign up for a Premium Wordfence API key. Then go to the Wordfence options page on this site and replace your free API key with your new premium key. You will immediately be upgraded to Wordfence Premium with all the features it includes and you will have instant access to our ticketing system on <a href="http://support.wordfence.com/" target="_blank">support.wordfence.com</a>.
-			</div>
+				<div class="wf-premium-callout" style="margin: 20px 0 20px 2px;width: 765px;">
+					<h3>Upgrade to Wordfence Premium today for less than $5 per month</h3>
+					<ul>
+						<li>Advanced features like IP reputation monitoring, country blocking, an advanced comment spam
+							filter and cell phone sign-in give you the best protection available
+						</li>
+						<li>Remote, frequent and scheduled scans</li>
+						<li>Access to Premium Support</li>
+						<li>Discounts of up to 90% for multiyear and multi-license purchases</li>
+					</ul>
+					<p class="center"><a class="button button-primary"
+					                     href="https://www.wordfence.com/gnl1scanUpgrade/wordfence-signup/">
+							Get Premium</a></p>
+				</div>
+
 
 			<?php } ?>
 			<div class="consoleHead" style="margin-top: 20px;">
@@ -93,6 +105,11 @@
 			<div class="wfTabsContainer">
 				<div id="wfIssues_new" class="wfIssuesContainer">
 					<h2>New Issues</h2>
+					<?php if (wfConfig::get('scansEnabled_highSense')): ?>
+					<div class="wf-notice">
+						<em>HIGH SENSITIVITY scanning is enabled, it may produce false positives</em>
+					</div>
+					<?php endif ?>
 					<p>
 						The list below shows new problems or warnings that Wordfence found with your site.
 						If you have fixed all the issues below, you can <a href="#" onclick="WFAD.updateAllIssues('deleteNew'); return false;">click here to mark all new issues as fixed</a>.
@@ -548,6 +565,57 @@
 				<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'ignoreC'); return false;">Ignore missing file</a>
 			{{/if}}
 				
+		{{/if}}
+		{{if status == 'ignoreC' || status == 'ignoreP'}}
+			<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'delete'); return false;">Stop ignoring this issue.</a>
+		{{/if}}
+	</div>
+</div>
+</div>
+</script>
+<script type="text/x-jquery-template" id="issueTmpl_database">
+<div>
+<div class="wfIssue">
+	<h2>${shortMsg}</h2>
+	<p>
+		<table border="0" class="wfIssue" cellspacing="0" cellpadding="0">
+		<tr><th>Option Name:</th><td>${data.option_name}</td></tr>
+		{{if ((typeof data.badURL !== 'undefined') && data.badURL)}}
+		<tr><th>Bad URL:</th><td><strong class="wfWarn">${data.badURL}</strong></td></tr>
+		{{/if}}
+		<tr><th>Issue first detected:</th><td>${timeAgo} ago.</td></tr>
+		<tr><th>Severity:</th><td>{{if severity == '1'}}Critical{{else}}Warning{{/if}}</td></tr>
+		<tr><th>Status</th><td>
+			{{if status == 'new' }}New{{/if}}
+			{{if status == 'ignoreP' }}Permanently ignoring this option{{/if}}
+			{{if status == 'ignoreC' }}Ignoring this option until it changes{{/if}}
+		</td></tr>
+		</table>
+	</p>
+	<p>
+		{{html longMsg}}
+	</p>
+	<div class="wfIssueOptions">
+		<strong>Tools:</strong>
+		{{if data.optionExists}}
+		<a target="_blank" href="${WFAD.makeViewOptionLink(data.option_name, data.site_id)}">View this option.</a>
+		{{/if}}
+		{{if data.canDelete}}
+		<a href="#" onclick="WFAD.deleteDatabaseOption('${id}'); return false;">Delete this option from the database (can't be undone).</a>
+		<br />&nbsp;<input type="checkbox" class="wfdelCheckbox" value="${id}" />&nbsp;Select for bulk delete
+		{{/if}}
+	</div>
+	<div class="wfIssueOptions">
+		{{if status == 'new'}}
+			<strong>Resolve:</strong>
+			<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'delete'); return false;">I have fixed this issue</a>
+			{{if data.optionExists}}
+				<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'ignoreC'); return false;">Ignore until the option changes.</a>
+				<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'ignoreP'); return false;">Always ignore this option.</a>
+			{{else}}
+				<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'ignoreC'); return false;">Ignore missing option.</a>
+			{{/if}}
+
 		{{/if}}
 		{{if status == 'ignoreC' || status == 'ignoreP'}}
 			<a href="#" onclick="WFAD.updateIssueStatus('${id}', 'delete'); return false;">Stop ignoring this issue.</a>

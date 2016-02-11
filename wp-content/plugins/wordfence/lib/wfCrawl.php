@@ -12,7 +12,7 @@ class wfCrawl {
 	public static function verifyCrawlerPTR($hostPattern, $IP){
 		global $wpdb; $table = $wpdb->base_prefix . 'wfCrawlers';
 		$db = new wfDB();
-		$IPn = wfUtils::inet_aton($IP);
+		$IPn = wfUtils::inet_pton($IP);
 		$status = $db->querySingle("select status from $table where IP=%s and patternSig=UNHEX(MD5('%s')) and lastUpdate > unix_timestamp() - %d", $IPn, $hostPattern, WORDFENCE_CRAWLER_VERIFY_CACHE_TIME);
 		if($status){
 			if($status == 'verified'){
@@ -27,7 +27,7 @@ class wfCrawl {
 			return false; 
 		}
 		if(preg_match($hostPattern, $host)){
-			$resultIPs = gethostbynamel($host);
+			$resultIPs = wfUtils::resolveDomainName($host);
 			$addrsMatch = false;
 			foreach($resultIPs as $resultIP){
 				if($resultIP == $IP){
@@ -54,8 +54,11 @@ class wfCrawl {
 		}
 		return false;
 	}
-	public static function isGoogleCrawler(){
-		$UA = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
+	public static function isGoogleCrawler($UA = null){
+		if ($UA === null) {
+			$UA = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
+		}
+
 		foreach(self::$googPat as $pat){
 			if(preg_match($pat . 'i', $UA)){
 				return true;
@@ -89,5 +92,87 @@ class wfCrawl {
 '@^Google$@'
 	);
 
+
+	/**
+	 * Has correct user agent and PTR record points to .googlebot.com domain.
+	 *
+	 * @param string|null $ip
+	 * @param string|null $ua
+	 * @return bool
+	 */
+	public static function isVerifiedGoogleCrawler($ip = null, $ua = null) {
+		static $verified;
+		if (!isset($verified)) {
+			$verified = array();
+		}
+		if ($ip === null) {
+			$ip = wfUtils::getIP();
+		}
+		if (array_key_exists($ip, $verified)) {
+			return $verified[$ip];
+		}
+		if (self::isGoogleCrawler($ua)) {
+			if (self::verifyCrawlerPTR(wordfence::getLog()->getGooglePattern(), $ip)) {
+				$verified[$ip] = true;
+				return $verified[$ip];
+			}
+			if (self::verifyGooglebotViaNOC1($ip)) {
+				$verified[$ip] = true;
+				return $verified[$ip];
+			}
+		}
+		$verified[$ip] = false;
+		return $verified[$ip];
+	}
+
+	/**
+	 * @param string|null $ip
+	 * @return bool
+	 */
+	public static function verifyGooglebotViaNOC1($ip = null) {
+		global $wpdb;
+		$table = $wpdb->base_prefix . 'wfCrawlers';
+		if ($ip === null) {
+			$ip = wfUtils::getIP();
+		}
+		$db = new wfDB();
+		$IPn = wfUtils::inet_pton($ip);
+		$patternSig = 'googlenoc1';
+		$status = $db->querySingle("select status from $table
+				where IP=%s
+				and patternSig=UNHEX(MD5('%s'))
+				and lastUpdate > unix_timestamp() - %d",
+				$IPn,
+				$patternSig,
+				WORDFENCE_CRAWLER_VERIFY_CACHE_TIME);
+		if ($status === 'verified') {
+			return true;
+		} else if ($status === 'fakeBot') {
+			return false;
+		}
+
+		$api = new wfAPI(wfConfig::get('apiKey'), wfUtils::getWPVersion());
+		try {
+			$data = $api->call('verify_googlebot', array(
+				'ip' => $ip,
+			));
+			if (is_array($data) && !empty($data['verified'])) {
+				// Cache results
+				$db->queryWrite("insert into $table (IP, patternSig, status, lastUpdate)
+values (%s, UNHEX(MD5('%s')), '%s', unix_timestamp())
+ON DUPLICATE KEY UPDATE status='%3\$s', lastUpdate=unix_timestamp()",
+						$IPn, $patternSig, 'verified');
+				return true;
+			} else {
+				$db->queryWrite("insert into $table (IP, patternSig, status, lastUpdate)
+values (%s, UNHEX(MD5('%s')), '%s', unix_timestamp())
+ON DUPLICATE KEY UPDATE status='%3\$s', lastUpdate=unix_timestamp()",
+						$IPn, $patternSig, 'fakeBot');
+			}
+		} catch (Exception $e) {
+			// Do nothing, bail
+		}
+		return false;
+	}
 }
 ?>

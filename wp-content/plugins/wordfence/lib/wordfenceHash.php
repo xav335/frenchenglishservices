@@ -26,6 +26,15 @@ class wordfenceHash {
 	private $only = false;
 	private $totalForks = 0;
 
+	/**
+	 * @param string $striplen
+	 * @param string $path
+	 * @param array $only
+	 * @param array $themes
+	 * @param array $plugins
+	 * @param wfScanEngine $engine
+	 * @throws Exception
+	 */
 	public function __construct($striplen, $path, $only, $themes, $plugins, $engine){
 		$this->striplen = $striplen;
 		$this->path = $path;
@@ -195,6 +204,12 @@ class wordfenceHash {
 			//exits
 		}
 
+		$exclude = WordfenceScanner::getExcludeFilePattern();
+		if ($exclude && preg_match($exclude, $realFile)) {
+			return;
+		}
+
+
 		//Put this after the fork, that way we will at least scan one more file after we fork if it takes us more than 10 seconds to search for the stoppedOnFile
 		if($this->stoppedOnFile && $file != $this->stoppedOnFile){
 			return;
@@ -206,11 +221,12 @@ class wordfenceHash {
 			wordfence::status(4, 'info', "Skipping file larger than max size: $realFile");
 			return;
 		}
-		if(function_exists('memory_get_usage')){
-                       wordfence::status(4, 'info', "Scanning: $realFile (Mem:" . sprintf('%.1f', memory_get_usage(true) / (1024 * 1024)) . "M)");
+		if (function_exists('memory_get_usage')) {
+			wordfence::status(4, 'info', "Scanning: $realFile (Mem:" . sprintf('%.1f', memory_get_usage(true) / (1024 * 1024)) . "M)");
 		} else {
-                       wordfence::status(4, 'info', "Scanning: $realFile");
+			wordfence::status(4, 'info', "Scanning: $realFile");
 		}
+		wfUtils::beginProcessingFile($file);
 		$wfHash = self::wfHash($realFile); 
 		if($wfHash){
 			$md5 = strtoupper($wfHash[0]);
@@ -333,6 +349,7 @@ class wordfenceHash {
 		} else {
 			//wordfence::status(2, 'error', "Could not gen hash for file (probably because we don't have permission to access the file): $realFile");
 		}
+		wfUtils::endProcessingFile();
 	}
 	public static function wfHash($file){
 		wfUtils::errorsOff();

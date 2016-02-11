@@ -7,13 +7,14 @@ class wordfenceScanner {
 	protected $path = '';
 	protected $results = array(); 
 	public $errorMsg = false;
-	private $apiKey = false;
-	private $wordpressVersion = '';
-	private $totalFilesScanned = 0;
-	private $startTime = false;
-	private $lastStatusTime = false;
-	private $patterns = "";
-	private $api = false;
+	protected $apiKey = false;
+	protected $wordpressVersion = '';
+	protected $totalFilesScanned = 0;
+	protected $startTime = false;
+	protected $lastStatusTime = false;
+	protected $patterns = "";
+	protected $api = false;
+	protected static $excludePattern = NULL;
 	public function __sleep(){
 		return array('path', 'results', 'errorMsg', 'apiKey', 'wordpressVersion', 'urlHoover', 'totalFilesScanned', 'startTime', 'lastStatusTime', 'patterns');
 	}
@@ -35,7 +36,12 @@ class wordfenceScanner {
 		$this->urlHoover = new wordfenceURLHoover($this->apiKey, $this->wordpressVersion);
 		$this->setupSigs();
 	}
-	private function setupSigs(){
+
+	/**
+	 * @todo add caching to this.
+	 * @throws Exception
+	 */
+	protected function setupSigs() {
 		$this->api = new wfAPI($this->apiKey, $this->wordpressVersion);
 		$sigData = $this->api->call('get_patterns', array(), array());
 		//For testing, comment out above two, include server sig file and get local sigs
@@ -45,6 +51,33 @@ class wordfenceScanner {
 		}
 		$this->patterns = $sigData;
 	}
+
+	/**
+	 *	Return regular expression to exclude files or false if 
+	 *	there is no pattern
+	 *
+	 *	@return string|boolean
+	 */
+	public static function getExcludeFilePattern() {
+		if (self::$excludePattern !== NULL) {
+			return self::$excludePattern;
+		}
+		if(wfConfig::get('scan_exclude', false)){
+			$exParts = explode("\n", wfUtils::cleanupOneEntryPerLine(wfConfig::get('scan_exclude')));
+			foreach($exParts as &$exPart){
+				$exPart = preg_quote(trim($exPart), '/');
+				$exPart = preg_replace('/\\\\\*/', '.*', $exPart);
+			}
+
+			self::$excludePattern = '/^(?:' . implode('|', array_filter($exParts)) . ')$/i';
+			self::$excludePattern = '/(?:' . implode('|', array_filter($exParts)) . ')$/i';
+		} else {
+			self::$excludePattern = false;
+		}
+
+		return self::$excludePattern;
+	}
+
 	public function scan($forkObj){
 		if(! $this->startTime){
 			$this->startTime = microtime(true);
@@ -54,15 +87,7 @@ class wordfenceScanner {
 		}
 		$db = new wfDB();
 		$lastCount = 'whatever';
-		$excludePattern = false;
-		if(wfConfig::get('scan_exclude', false)){
-			$exParts = explode(',', wfConfig::get('scan_exclude'));
-			foreach($exParts as &$exPart){
-				$exPart = preg_quote($exPart);
-				$exPart = preg_replace('/\\\\\*/', '.*', $exPart);
-			}
-			$excludePattern = '/^(?:' . implode('|', $exParts) . ')$/i';
-		}
+		$excludePattern = self::getExcludeFilePattern();
 		while(true){
 			$thisCount = $db->querySingle("select count(*) from " . $db->prefix() . "wfFileMods where oldMD5 != newMD5 and knownFile=0");
 			if($thisCount == $lastCount){
@@ -90,15 +115,14 @@ class wordfenceScanner {
 					$fileExt = strtolower($matches[1]);
 				}
 				$isPHP = false;
-				if(preg_match('/^(?:php|phtml|php\d+)$/', $fileExt)){ 
+				if(preg_match('/\.(?:php(?:\d+)?|phtml)(\.|$)/i', $file)) {
 					$isPHP = true;
 				}
 				$dontScanForURLs = false;
-				if( (! wfConfig::get('scansEnabled_highSense')) && (preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $file) || preg_match('/^(?:sql|tbz|tgz|gz|tar|log|err\d+)$/', $fileExt)) ){
+				if( (! wfConfig::get('scansEnabled_highSense')) && preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $file)) {
 					$dontScanForURLs = true;
 				}
-
-				if(preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png)$/', $fileExt) && (! wfConfig::get('scansEnabled_scanImages')) ){
+				if(! $isPHP && preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png|sql|tbz2?|bz2?|xz|zip|tgz|gz|tar|log|err\d+)$/', $fileExt) && (! wfConfig::get('scansEnabled_scanImages')) ){
 					continue;
 				}
 				if( (! wfConfig::get('scansEnabled_highSense')) && strtolower($fileExt) == 'sql'){ //
@@ -110,17 +134,19 @@ class wordfenceScanner {
 					wordfence::status(2, 'error', "Encountered file that is too large: $file - Skipping.");
 					continue;
 				}
+				wfUtils::beginProcessingFile($file);
+
 				$fsize = filesize($this->path . $file); //Checked if too big above
 				if($fsize > 1000000){
 					$fsize = sprintf('%.2f', ($fsize / 1000000)) . "M";
 				} else {
 					$fsize = $fsize . "B";
 				}
-			       if(function_exists('memory_get_usage')){
-				       wordfence::status(4, 'info', "Scanning contents: $file (Size:$fsize Mem:" . sprintf('%.1f', memory_get_usage(true) / (1024 * 1024)) . "M)");
-			       } else {
-				       wordfence::status(4, 'info', "Scanning contents: $file (Size: $fsize)");
-			       }
+				if (function_exists('memory_get_usage')) {
+					wordfence::status(4, 'info', "Scanning contents: $file (Size:$fsize Mem:" . sprintf('%.1f', memory_get_usage(true) / (1024 * 1024)) . "M)");
+				} else {
+					wordfence::status(4, 'info', "Scanning contents: $file (Size: $fsize)");
+				}
 
 				$stime = microtime(true);
 				$fh = @fopen($this->path . $file, 'r');
@@ -160,15 +186,14 @@ class wordfenceScanner {
 									'severity' => 1,
 									'ignoreP' => $this->path . $file,
 									'ignoreC' => $fileSum,
-									'shortMsg' => "File appears to be malicious: " . $file,
-									'longMsg' => "This file appears to be installed by a hacker to perform malicious activity. If you know about this file you can choose to ignore it to exclude it from future scans. The text we found in this file that matches a known malicious file is: <strong style=\"color: #F00;\">\"" . $matches[1] . "\"</strong>.",
+									'shortMsg' => "File appears to be malicious: " . esc_html($file),
+									'longMsg' => "This file appears to be installed by a hacker to perform malicious activity. If you know about this file you can choose to ignore it to exclude it from future scans. The text we found in this file that matches a known malicious file is: <strong style=\"color: #F00;\">\"" . esc_html($matches[1]) . "\"</strong>.",
 									'data' => array(
 										'file' => $file,
 										'canDiff' => false,
 										'canFix' => false,
 										'canDelete' => true
-									)
-									));
+									)));
 								break;
 							}
 
@@ -180,15 +205,15 @@ class wordfenceScanner {
 									'severity' => 1,
 									'ignoreP' => $this->path . $file,
 									'ignoreC' => $fileSum,
-									'shortMsg' => "This file may contain malicious executable code: " . $this->path . $file,
-									'longMsg' => "This file is a PHP executable file and contains an " . $this->patterns['word1'] . " function and " . $this->patterns['word2'] . " decoding function on the same line. This is a common technique used by hackers to hide and execute code. If you know about this file you can choose to ignore it to exclude it from future scans.",
+									'shortMsg' => "This file may contain malicious executable code: " . esc_html($this->path . $file),
+									'longMsg' => "This file is a PHP executable file and contains an " . esc_html($this->patterns['word1']) . " function and " . esc_html($this->patterns['word2']) . " decoding function on the same line. This is a common technique used by hackers to hide and execute code. If you know about this file you can choose to ignore it to exclude it from future scans.",
 									'data' => array(
 										'file' => $file,
 										'canDiff' => false,
 										'canFix' => false,
 										'canDelete' => true
 									)
-									));
+								));
 								break;
 							}
 						}
@@ -209,15 +234,15 @@ class wordfenceScanner {
 										'severity' => 1,
 										'ignoreP' => $this->path . $file,
 										'ignoreC' => $fileSum,
-										'shortMsg' => "This file may contain malicious executable code" . $this->path . $file,
-										'longMsg' => "This file is a PHP executable file and contains the word 'eval' (without quotes) and the word '" . $badStringFound . "' (without quotes). The eval() function along with an encoding function like the one mentioned are commonly used by hackers to hide their code. If you know about this file you can choose to ignore it to exclude it from future scans.",
+										'shortMsg' => "This file may contain malicious executable code: " . esc_html($this->path . $file),
+										'longMsg' => "This file is a PHP executable file and contains the word 'eval' (without quotes) and the word '" . esc_html($badStringFound) . "' (without quotes). The eval() function along with an encoding function like the one mentioned are commonly used by hackers to hide their code. If you know about this file you can choose to ignore it to exclude it from future scans.",
 										'data' => array(
 											'file' => $file,
 											'canDiff' => false,
 											'canFix' => false,
 											'canDelete' => true
 										)
-										));
+									));
 									break;
 								}
 							}
@@ -264,8 +289,8 @@ class wordfenceScanner {
 							'severity' => 1,
 							'ignoreP' => $this->path . $file,
 							'ignoreC' => md5_file($this->path . $file),
-							'shortMsg' => "File contains suspected malware URL: " . $this->path . $file,
-							'longMsg' => "This file contains a suspected malware URL listed on Google's list of malware sites. Wordfence decodes " . $this->patterns['word3'] . " when scanning files so the URL may not be visible if you view this file. The URL is: " . $result['URL'] . " - More info available at <a href=\"http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=" . urlencode($result['URL']) . "&client=googlechrome&hl=en-US\" target=\"_blank\">Google Safe Browsing diagnostic page</a>.",
+							'shortMsg' => "File contains suspected malware URL: " . esc_html($this->path . $file),
+							'longMsg' => "This file contains a suspected malware URL listed on Google's list of malware sites. Wordfence decodes " . esc_html($this->patterns['word3']) . " when scanning files so the URL may not be visible if you view this file. The URL is: " . esc_html($result['URL']) . " - More info available at <a href=\"http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=" . urlencode($result['URL']) . "&client=googlechrome&hl=en-US\" target=\"_blank\">Google Safe Browsing diagnostic page</a>.",
 							'data' => array(
 								'file' => $file,
 								'badURL' => $result['URL'],
@@ -273,8 +298,8 @@ class wordfenceScanner {
 								'canFix' => false,
 								'canDelete' => true,
 								'gsb' => 'goog-malware-shavar'
-								)
-							));
+							)
+						));
 					}
 				} else if($result['badList'] == 'googpub-phish-shavar'){
 					if(! $this->isSafeFile($this->path . $file)){
@@ -283,8 +308,8 @@ class wordfenceScanner {
 							'severity' => 1,
 							'ignoreP' => $this->path . $file,
 							'ignoreC' => md5_file($this->path . $file),
-							'shortMsg' => "File contains suspected phishing URL: " . $this->path . $file,
-							'longMsg' => "This file contains a URL that is a suspected phishing site that is currently listed on Google's list of known phishing sites. The URL is: " . $result['URL'],
+							'shortMsg' => "File contains suspected phishing URL: " . esc_html($this->path . $file),
+							'longMsg' => "This file contains a URL that is a suspected phishing site that is currently listed on Google's list of known phishing sites. The URL is: " . esc_html($result['URL']),
 							'data' => array(
 								'file' => $file,
 								'badURL' => $result['URL'],
@@ -292,22 +317,25 @@ class wordfenceScanner {
 								'canFix' => false,
 								'canDelete' => true,
 								'gsb' => 'googpub-phish-shavar'
-								)
-							));
+							)
+						));
 					}
 				}
 			}
 		}
+		wfUtils::endProcessingFile();
 
 		return $this->results;
 	}
-	private function writeScanningStatus(){
+
+	protected function writeScanningStatus() {
 		wordfence::status(2, 'info', "Scanned contents of " . $this->totalFilesScanned . " additional files at " . sprintf('%.2f', ($this->totalFilesScanned / (microtime(true) - $this->startTime))) . " per second");
 	}
-	private function addResult($result){
-		for($i = 0; $i < sizeof($this->results); $i++){
-			if($this->results[$i]['type'] == 'file' && $this->results[$i]['data']['file'] == $result['data']['file']){
-				if($this->results[$i]['severity'] > $result['severity']){
+
+	protected function addResult($result) {
+		for ($i = 0; $i < sizeof($this->results); $i++) {
+			if ($this->results[$i]['type'] == 'file' && $this->results[$i]['data']['file'] == $result['data']['file']) {
+				if ($this->results[$i]['severity'] > $result['severity']) {
 					$this->results[$i] = $result; //Overwrite with more severe results
 				}
 				return;
@@ -327,6 +355,48 @@ class wordfenceScanner {
 			return true;
 		}
 		return false;
+	}
+}
+
+class wordfenceDBScanner extends wordfenceScanner {
+
+	// protected $patterns = '/QGV4dHJhY3QoJF9SRVFVRVNUKTs=/i';
+
+	public function scan($forkObj) {
+		/** @var wpdb */
+		global $wpdb;
+		if (!$this->startTime) {
+			$this->startTime = microtime(true);
+		}
+		if (!$this->lastStatusTime) {
+			$this->lastStatusTime = microtime(true);
+		}
+		$db = new wfDB();
+
+		$blogsToScan = wfScanEngine::getBlogsToScan('options');
+		foreach ($blogsToScan as $blog) {
+			// Check the options table for known shells
+			$results = $db->querySelect("SELECT * FROM {$blog['table']} WHERE option_value REGEXP %s", trim(rtrim($this->patterns['dbSigPattern'], 'imsxeADSUXJu'), '/'));
+
+			foreach ($results as $row) {
+				preg_match($this->patterns['dbSigPattern'], $row['option_value'], $matches);
+				$this->addResult(array(
+					'type'     => 'database',
+					'severity' => 1,
+					'ignoreP'  => "{$db->prefix()}option.{$row['option_name']}",
+					'ignoreC'  => md5($row['option_value']),
+					'shortMsg' => "This option may contain malicious executable code: " . esc_html($row['option_name']),
+					'longMsg'  => "This option appears to be inserted by a hacker to perform malicious activity. If you know about this option you can choose to ignore it to exclude it from future scans. The text we found in this file that matches a known malicious file is: <strong style=\"color: #F00;\">\"" . esc_html($matches[1]). "\"</strong>.",
+					'data'     => array(
+						'option_name' => $row['option_name'],
+						'site_id'     => $blog['blog_id'],
+						'canDelete'   => true,
+					),
+				));
+			}
+		}
+
+		return $this->results;
 	}
 }
 

@@ -26,7 +26,7 @@ class wfLog {
 		$this->perfTable = $wpdb->base_prefix . 'wfPerfLog';
 	}
 	public function logPerf($IP, $UA, $URL, $data){
-		$IP = wfUtils::inet_aton($IP); 
+		$IP = wfUtils::inet_pton($IP);
 		$this->getDB()->queryWrite("insert into " . $this->perfTable . " (IP, userID, UA, URL, ctime, fetchStart, domainLookupStart, domainLookupEnd, connectStart, connectEnd, requestStart, responseStart, responseEnd, domReady, loaded) values (%s, %d, '%s', '%s', unix_timestamp(), %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)", 
 			$IP, 
 			$this->getCurrentUserID(), 
@@ -67,7 +67,7 @@ class wfLog {
 			$action,
 			$username,
 			$userID,
-			wfUtils::inet_aton(wfUtils::getIP()),
+			wfUtils::inet_pton(wfUtils::getIP()),
 			(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '')
 			);
 	}
@@ -79,10 +79,36 @@ class wfLog {
 		if(wfConfig::get('firewallEnabled')){
 			//Moved the following block into the "is fw enabled section" for optimization. 
 			$IP = wfUtils::getIP();
-			$IPnum = wfUtils::inet_aton($IP);
+			$IPnum = wfUtils::inet_pton($IP);
 			if($this->isWhitelisted($IP)){
 				return;
 			}
+			if (wfConfig::get('neverBlockBG') == 'neverBlockUA' && wfCrawl::isGoogleCrawler()) {
+				return;
+			}
+			if (wfConfig::get('neverBlockBG') == 'neverBlockVerified' && wfCrawl::isVerifiedGoogleCrawler()) {
+				return;
+			}
+
+			if ($type == '404') {
+				$allowed404s = wfConfig::get('allowed404s');
+				if (is_string($allowed404s)) {
+					$allowed404s = array_filter(explode("\n", $allowed404s));
+					$allowed404sPattern = '';
+					foreach ($allowed404s as $allowed404) {
+						$allowed404sPattern .= preg_replace('/\\\\\*/', '.*?', preg_quote($allowed404, '/')) . '|';
+					}
+					$uri = $_SERVER['REQUEST_URI'];
+					if (($index = strpos($uri, '?')) !== false) {
+						$uri = substr($uri, 0, $index);
+					}
+					if ($allowed404sPattern && preg_match('/^' . substr($allowed404sPattern, 0, -1) . '$/i', $uri)) {
+						return;
+					}
+				}
+			}
+
+
 			if($type == '404'){
 				$table = $this->scanTable;
 			} else if($type == 'hit'){
@@ -91,28 +117,11 @@ class wfLog {
 				wordfence::status(1, 'error', "Invalid type to logLeechAndBlock(): $type");
 				return;
 			}
-			$this->getDB()->queryWrite("insert into $table (eMin, IP, hits) values (floor(unix_timestamp() / 60), %s, 1) ON DUPLICATE KEY update hits = IF(@wfcurrenthits := hits + 1, hits + 1, hits + 1)", wfUtils::inet_aton($IP)); 
+			$this->getDB()->queryWrite("insert into $table (eMin, IP, hits) values (floor(unix_timestamp() / 60), %s, 1) ON DUPLICATE KEY update hits = IF(@wfcurrenthits := hits + 1, hits + 1, hits + 1)", wfUtils::inet_pton($IP));
 			$hitsPerMinute = $this->getDB()->querySingle("select @wfcurrenthits");
 			//end block moved into "is fw enabled" section
 
 			//Range blocking was here. Moved to wordfenceClass::veryFirstAction
-
-			if(wfConfig::get('blockFakeBots')){
-				if(wfCrawl::isGooglebot() && (! wfCrawl::verifyCrawlerPTR($this->googlePattern, $IP) )){
-					$this->blockIP($IP, "Fake Google crawler automatically blocked");
-					wordfence::status(2, 'info', "Blocking fake Googlebot at IP $IP");
-				}
-			}
-			if(wfConfig::get('bannedURLs', false)){
-				$URLs = explode(',', wfConfig::get('bannedURLs'));
-				foreach($URLs as $URL){
-					if($_SERVER['REQUEST_URI'] == trim($URL)){
-						$this->blockIP($IP, "Accessed a banned URL.");
-						$this->do503(3600, "Accessed a banned URL.");
-						//exits
-					}
-				}
-			}
 
 			if(wfConfig::get('maxGlobalRequests') != 'DISABLED' && $hitsPerMinute > wfConfig::get('maxGlobalRequests')){ //Applies to 404 or pageview
 				$this->takeBlockingAction('maxGlobalRequests', "Exceeded the maximum global requests per minute for crawlers or humans.");
@@ -126,7 +135,7 @@ class wfLog {
 				if($pat){
 					$URL = wfUtils::getRequestedURL();
 					if(preg_match($pat, $URL)){
-						$this->getDB()->queryWrite("insert IGNORE into $p"."wfVulnScanners (IP, ctime, hits) values (INET_ATON('%s'), unix_timestamp(), 1) ON DUPLICATE KEY UPDATE ctime = unix_timestamp(), hits = hits + 1", $IP);
+						$this->getDB()->queryWrite("insert IGNORE into $p"."wfVulnScanners (IP, ctime, hits) values (%s, unix_timestamp(), 1) ON DUPLICATE KEY UPDATE ctime = unix_timestamp(), hits = hits + 1", wfUtils::inet_pton($IP));
 						if(wfConfig::get('maxScanHits') != 'DISABLED'){
 							if( empty($_SERVER['HTTP_REFERER'] )){
 								$this->getDB()->queryWrite("insert into " . $this->badLeechersTable . " (eMin, IP, hits) values (floor(unix_timestamp() / 60), %s, 1) ON DUPLICATE KEY update hits = IF(@wfblcurrenthits := hits + 1, hits + 1, hits + 1)", $IPnum); 
@@ -138,11 +147,6 @@ class wfLog {
 						}
 					}
 				}
-			}
-			if(wfConfig::get('other_blockBadPOST') == '1' && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_SERVER['HTTP_USER_AGENT']) && empty($_SERVER['HTTP_REFERER'])){
-				$this->blockIP($IP, "POST received with blank user-agent and referer");
-				$this->do503(3600, "POST received with blank user-agent and referer");
-				//exits
 			}
 			if(isset($_SERVER['HTTP_USER_AGENT']) && wfCrawl::isCrawler($_SERVER['HTTP_USER_AGENT'])){
 				if($type == 'hit' && wfConfig::get('maxRequestsCrawlers') != 'DISABLED' && $hitsPerMinute > wfConfig::get('maxRequestsCrawlers')){
@@ -159,82 +163,23 @@ class wfLog {
 			}
 		}
 	}
-	public function isWhitelisted($IP){
-		$IPnum = wfUtils::inet_aton($IP);
-		if($IPnum > 1160651777 && $IPnum < 1160651808){ //IP is in Wordfence's IP block which would prevent our scanning server manually kicking off scans that are stuck
-			return true;
-		}
-		//We now whitelist all private addrs 
-		if(wfUtils::isPrivateAddress($IP)){
-			return true;
-		}
-		//These belong to sucuri's scanning servers which will get blocked by Wordfence as a false positive if you try a scan. So we whitelisted them.
-		$externalWhite = array('97.74.127.171','69.164.203.172','173.230.128.135','66.228.34.49','66.228.40.185','50.116.36.92','50.116.36.93','50.116.3.171','198.58.96.212','50.116.63.221','192.155.92.112','192.81.128.31','198.58.106.244','192.155.95.139','23.239.9.227','198.58.112.103','192.155.94.43','162.216.16.33','173.255.233.124','173.255.233.124','192.155.90.179','50.116.41.217','192.81.129.227','198.58.111.80');
-		if(in_array($IP, $externalWhite)){
-			return true;
-		}
-		$list = wfConfig::get('whitelisted');
-		if(! $list){ return false; }
-		$list = explode(',', $list);
-		if(sizeof($list) < 1){ return false; }
-		foreach($list as $whiteIP){
-			if(preg_match('/\[\d+\-\d+\]/', $whiteIP)){
-				$IPparts = explode('.', $IP);
-				$whiteParts = explode('.', $whiteIP);
-				$mismatch = false;
-				for($i = 0; $i <= 3; $i++){
-					if(preg_match('/^\[(\d+)\-(\d+)\]$/', $whiteParts[$i], $m)){
-						if($IPparts[$i] < $m[1] || $IPparts[$i] > $m[2]){
-							$mismatch = true;
-						}
-					} else if($whiteParts[$i] != $IPparts[$i]){
-						$mismatch = true;
-					}
+
+	/**
+	 * @param string $IP Should be in dot or colon notation (127.0.0.1 or ::1)
+	 * @return bool
+	 */
+	public function isWhitelisted($IP) {
+		foreach (wfUtils::getIPWhitelist() as $subnet) {
+			if ($subnet instanceof wfUserIPRange) {
+				if ($subnet->isIPInRange($IP)) {
+					return true;
 				}
-				if($mismatch === false){
-					return true; //Is whitelisted because we did not get a mismatch
-				}
-			} else if($whiteIP == $IP){
+			} elseif (wfUtils::subnetContainsIP($subnet, $IP)) {
 				return true;
 			}
 		}
+
 		return false;
-	}
-
-	/**
-	 * Get an array of static IPs, tuple for a numeric IP range, or a wfUserIPRange object to define and test a range
-	 * like [127-128].0.0.[1-40]
-	 *
-	 * @see wfUserIPRange
-	 * @param null $user_whitelisted
-	 * @return array
-	 */
-	public function getWhitelistedIPs($user_whitelisted = null) {
-		$white_listed_ips = array();
-		// Wordfence's IP block which would prevent our scanning server manually kicking off scans that are stuck
-		$white_listed_ips[] = array(1160651777, 1160651808);
-
-		// Private range
-		$private_range = wfUtils::getPrivateAddrs();
-		foreach ($private_range as $ip_range) {
-			$white_listed_ips[] = array($ip_range[1], $ip_range[2]);
-		}
-
-		// These belong to sucuri's scanning servers which will get blocked by Wordfence as a false positive if you try a scan. So we whitelisted them.
-		$white_listed_ips = array_merge($white_listed_ips, array_map(array('wfUtils', 'inet_aton'), array('97.74.127.171', '69.164.203.172', '173.230.128.135', '66.228.34.49', '66.228.40.185', '50.116.36.92', '50.116.36.93', '50.116.3.171', '198.58.96.212', '50.116.63.221', '192.155.92.112', '192.81.128.31', '198.58.106.244', '192.155.95.139', '23.239.9.227', '198.58.112.103', '192.155.94.43', '162.216.16.33', '173.255.233.124', '173.255.233.124', '192.155.90.179', '50.116.41.217', '192.81.129.227', '198.58.111.80')));
-
-		if ($user_whitelisted === null) {
-			$user_whitelisted = wfConfig::get('whitelisted');
-		}
-
-		if ($user_whitelisted) {
-			$user_whitelisted = explode(',', $user_whitelisted);
-			foreach ($user_whitelisted as $whiteIP) {
-				$white_listed_ips[] = new wfUserIPRange($whiteIP);
-			}
-		}
-
-		return $white_listed_ips;
 	}
 
 	public function unblockAllIPs(){
@@ -245,14 +190,23 @@ class wfLog {
 		$this->getDB()->queryWrite("delete from " . $this->lockOutTable);
 	}
 	public function unblockIP($IP){
-		$this->getDB()->queryWrite("delete from " . $this->blocksTable . " where IP=%s", wfUtils::inet_aton($IP));
+		$this->getDB()->queryWrite("delete from " . $this->blocksTable . " where IP=%s", wfUtils::inet_pton($IP));
 		wfCache::updateBlockedIPs('add');
 	}
 	public function unblockRange($id){
 		$this->getDB()->queryWrite("delete from " . $this->ipRangesTable . " where id=%d", $id);
 		wfCache::updateBlockedIPs('add');
 	}
+
+	/**
+	 *
+	 * @param string $blockType
+	 * @param string $range
+	 * @param string $reason
+	 * @return bool
+	 */
 	public function blockRange($blockType, $range, $reason){
+		$reason = stripslashes($reason);
 		$this->getDB()->queryWrite("insert IGNORE into " . $this->ipRangesTable . " (blockType, blockString, ctime, reason, totalBlocked, lastBlocked) values ('%s', '%s', unix_timestamp(), '%s', 0, 0)", $blockType, $range, $reason);
 		wfCache::updateBlockedIPs('add');
 		return true;
@@ -284,8 +238,12 @@ class wfLog {
 			$numBlockElements = 0;
 			if($blockDat[0]){
 				$numBlockElements++;
-				$ipDat = explode('-', $blockDat[0]);
-				$elem['ipPattern'] = "Block visitors with IP addresses in the range: " . wfUtils::inet_ntoa($ipDat[0]) . ' - ' . wfUtils::inet_ntoa($ipDat[1]);
+				list($start_range, $end_range) = explode('-', $blockDat[0]);
+				if (!preg_match('/[\.:]/', $start_range)) {
+					$start_range = long2ip($start_range);
+					$end_range = long2ip($end_range);
+				}
+				$elem['ipPattern'] = "Block visitors with IP addresses in the range: " . $start_range . ' - ' . $end_range;
 			} else {
 				$elem['ipPattern'] = 'Allow all IP addresses';
 			}
@@ -300,6 +258,9 @@ class wfLog {
 				$elem['refererPattern'] = "Block visitors from websites that match the pattern: " . $blockDat[2];
 			} else {
 				$elem['refererPattern'] = "Allow visitors arriving from all websites";
+			}
+			if (! empty($blockDat[3])) {
+				$elem['hostnamePattern'] = $blockDat[3];
 			}
 			$elem['patternDisabled'] = (wfConfig::get('cacheType') == 'falcon' && $numBlockElements > 1) ? true : false;
 		}
@@ -316,7 +277,7 @@ class wfLog {
 		if($permanent){
 			//Insert permanent=1 or update existing perm or non-per block to be permanent
 			$this->getDB()->queryWrite("insert into " . $this->blocksTable . " (IP, blockedTime, reason, wfsn, permanent) values (%s, %d, '%s', %d, %d) ON DUPLICATE KEY update blockedTime=%d, reason='%s', wfsn=%d, permanent=%d",
-				wfUtils::inet_aton($IP),
+				wfUtils::inet_pton($IP),
 				$timeBlockOccurred,
 				$reason,
 				$wfsn,
@@ -329,7 +290,7 @@ class wfLog {
 		} else {
 			//insert perm=0 but don't update and make perm blocks non-perm. 
 			$this->getDB()->queryWrite("insert into " . $this->blocksTable . " (IP, blockedTime, reason, wfsn, permanent) values (%s, %d, '%s', %d, %d) ON DUPLICATE KEY update blockedTime=%d, reason='%s', wfsn=%d",
-				wfUtils::inet_aton($IP),
+				wfUtils::inet_pton($IP),
 				$timeBlockOccurred,
 				$reason,
 				$wfsn,
@@ -348,8 +309,9 @@ class wfLog {
 	}
 	public function lockOutIP($IP, $reason){
 		if($this->isWhitelisted($IP)){ return false; }
+		$reason = stripslashes($reason);
 		$this->getDB()->queryWrite("insert into " . $this->lockOutTable . " (IP, blockedTime, reason) values (%s, unix_timestamp(), '%s') ON DUPLICATE KEY update blockedTime=unix_timestamp(), reason='%s'",
-			wfUtils::inet_aton($IP),
+			wfUtils::inet_pton($IP),
 			$reason,
 			$reason
 			);
@@ -360,11 +322,11 @@ class wfLog {
 		return true;
 	}
 	public function unlockOutIP($IP){
-		$this->getDB()->queryWrite("delete from " . $this->lockOutTable . " where IP=%s", wfUtils::inet_aton($IP));
+		$this->getDB()->queryWrite("delete from " . $this->lockOutTable . " where IP=%s", wfUtils::inet_pton($IP));
 	}
 	public function isIPLockedOut($IP){
-		if($this->getDB()->querySingle("select IP from " . $this->lockOutTable . " where IP=%s and blockedTime + %s > unix_timestamp()", wfUtils::inet_aton($IP), wfConfig::get('loginSec_lockoutMins') * 60)){
-			$this->getDB()->queryWrite("update " . $this->lockOutTable . " set blockedHits = blockedHits + 1, lastAttempt = unix_timestamp() where IP=%s", wfUtils::inet_aton($IP));
+		if($this->getDB()->querySingle("select IP from " . $this->lockOutTable . " where IP=%s and blockedTime + %s > unix_timestamp()", wfUtils::inet_pton($IP), wfConfig::get('loginSec_lockoutMins') * 60)){
+			$this->getDB()->queryWrite("update " . $this->lockOutTable . " set blockedHits = blockedHits + 1, lastAttempt = unix_timestamp() where IP=%s", wfUtils::inet_pton($IP));
 			return true;
 		} else {
 			return false;
@@ -378,7 +340,7 @@ class wfLog {
 		}
 		$this->resolveIPs($results);
 		foreach($results as &$elem){
-			$elem['IP'] = wfUtils::inet_ntoa($elem['IP']);
+			$elem['IP'] = wfUtils::inet_ntop($elem['IP']);
 		}
 		return $results;
 	}
@@ -391,15 +353,15 @@ class wfLog {
 		}
 		$this->resolveIPs($results);
 		foreach($results as &$elem){
-			$elem['IP'] = wfUtils::inet_ntoa($elem['IP']);
+			$elem['IP'] = wfUtils::inet_ntop($elem['IP']);
 		}
 		return $results;
 	}
 	public function getBlockedIPsAddrOnly(){
-		$results = $this->getDB()->querySelect("select INET_NTOA(IP) as IP from " . $this->blocksTable . " where (permanent=1 OR (blockedTime + %s > unix_timestamp()))", wfConfig::get('blockedTime'), wfConfig::get('blockedTime'));
+		$results = $this->getDB()->querySelect("select IP from " . $this->blocksTable . " where (permanent=1 OR (blockedTime + %s > unix_timestamp()))", wfConfig::get('blockedTime'), wfConfig::get('blockedTime'));
 		$ret = array();
 		foreach($results as $elem){
-			$ret[] = $elem['IP'];
+			$ret[] = wfUtils::inet_ntop($elem['IP']);
 		}
 		return $ret;
 	}
@@ -413,7 +375,8 @@ class wfLog {
 			//$lastLeech will be true because we use aggregation functions, so check actual values
 			if($lastLeech['lastHit']){ 
 				$totalHits += $lastLeech['totalHits']; 
-				$lastHitAgo = $serverTime - $lastLeech['lastHit']; 
+				$lastHitAgo = $serverTime - $lastLeech['lastHit'];
+				$elem['lastHit'] = $lastLeech['lastHit'];
 			}
 			$lastScan = $this->getDB()->querySingleRec("select max(eMin) * 60 as lastHit, sum(hits) as totalHits from " . $this->scanTable . " where IP=%s", $elem['IP']);
 			if($lastScan['lastHit']){ //Checking actual value because we will get a row back from aggregation funcs
@@ -421,6 +384,7 @@ class wfLog {
 				$lastScanAgo = $serverTime - $lastScan['lastHit']; 
 				if($lastScanAgo < $lastHitAgo){
 					$lastHitAgo = $lastScanAgo;
+					$elem['lastHit'] = $lastScan['lastHit'];
 				}
 			}
 			$elem['totalHits'] = $totalHits;
@@ -431,7 +395,7 @@ class wfLog {
 		$this->resolveIPs($results);
 		foreach($results as &$elem){
 			$elem['blocked'] = 1;
-			$elem['IP'] = wfUtils::inet_ntoa($elem['IP']);
+			$elem['IP'] = wfUtils::inet_ntop($elem['IP']);
 		}
 		return $results;
 	}
@@ -444,13 +408,13 @@ class wfLog {
 			wordfence::status(1, 'error', "Invalid type to getLeechers(): $type");
 			return false;
 		}
-		$results = $this->getDB()->querySelect("select IP, sum(hits) as totalHits from $table where eMin > ((unix_timestamp() - 86400) / 60) group by IP order by totalHits desc limit 20");
+		$results = $this->getDB()->querySelect("select IP, sum(hits) as totalHits, eMin * 60 as timestamp, (UNIX_TIMESTAMP() - (eMin * 60)) as timeAgo  from $table where eMin > ((unix_timestamp() - 86400) / 60) group by IP order by totalHits desc limit 20");
 		$this->resolveIPs($results);
 		foreach($results as &$elem){
-			$elem['timeAgo'] = wfUtils::makeTimeAgo($this->getDB()->querySingle("select unix_timestamp() - (eMin * 60) from $table where IP=%s", $elem['IP']));
+			$elem['timeAgo'] = wfUtils::makeTimeAgo($elem['timeAgo']);
 			$elem['blocked'] = $this->getDB()->querySingle("select blockedTime from " . $this->blocksTable . " where IP=%s and ((blockedTime + %s > unix_timestamp()) OR permanent = 1)", $elem['IP'], wfConfig::get('blockedTime'));
 			//take action
-			$elem['IP'] = wfUtils::inet_ntoa($elem['IP']);
+			$elem['IP'] = wfUtils::inet_ntop($elem['IP']);
 		}
 		return $results;
 	}
@@ -462,16 +426,18 @@ class wfLog {
 				$headers[$matches[1]] = $v;
 			}
 		}
-		$this->getDB()->queryWrite("insert into " . $this->hitsTable . " (ctime, is404, isGoogle, IP, userID, newVisit, URL, referer, UA) values (%f, %d, %d, %s, %s, %d, '%s', '%s', '%s')", 
+		$ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$this->getDB()->queryWrite("insert into " . $this->hitsTable . " (ctime, is404, isGoogle, IP, userID, newVisit, URL, referer, UA, jsRun) values (%f, %d, %d, %s, %s, %d, '%s', '%s', '%s', %d)",
 			sprintf('%.6f', microtime(true)),
 			(is_404() ? 1 : 0),
 			(wfCrawl::isGoogleCrawler() ? 1 : 0),
-			wfUtils::inet_aton(wfUtils::getIP()),
+			wfUtils::inet_pton(wfUtils::getIP()),
 			$this->getCurrentUserID(),
 			(wordfence::$newVisit ? 1 : 0),
 			wfUtils::getRequestedURL(),
 			(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''),
-			(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '')
+			$ua,
+			(int) (isset($_COOKIE['wordfence_verifiedHuman']) && wp_verify_nonce($_COOKIE['wordfence_verifiedHuman'], 'wordfence_verifiedHuman' . $ua . wfUtils::getIP()))
 			);
 		return $this->getDB()->querySingle("select last_insert_id()");
 	}
@@ -482,7 +448,7 @@ class wfLog {
 		$browscap = new wfBrowscap();
 		foreach($results as &$res){
 			$res['timeAgo'] = wfUtils::makeTimeAgo($serverTime - $res['ctime']);
-			$res['IP'] = wfUtils::inet_ntoa($res['IP']);
+			$res['IP'] = wfUtils::inet_ntop($res['IP']);
 			$res['browser'] = false;
 			if($res['UA']){
 				$b = $browscap->getBrowser($res['UA']);
@@ -516,8 +482,8 @@ class wfLog {
 		$serverTime = $this->getDB()->querySingle("select unix_timestamp()");
 		$IPSQL = "";
 		if($IP){
-			$IPSQL = " and IP=INET_ATON(%s) ";
-			$sqlArgs = array($afterTime, $IP, $limit);
+			$IPSQL = " and IP=%s ";
+			$sqlArgs = array($afterTime, wfUtils::inet_pton($IP), $limit);
 		} else {
 			$sqlArgs = array($afterTime, $limit);
 		}
@@ -555,11 +521,36 @@ class wfLog {
 		$ourHost = strtolower($ourURL['host']);
 		$ourHost = preg_replace('/^www\./i', '', $ourHost);
 		$browscap = new wfBrowscap();
-		foreach($results as &$res){ 
+
+		$advanced_blocking_results = $this->getDB()->querySelect('SELECT * FROM ' . $this->ipRangesTable);
+		$advanced_blocking = array();
+		foreach ($advanced_blocking_results as $advanced_blocking_row) {
+			list($blocked_range) = explode('|', $advanced_blocking_row['blockString']);
+			$blocked_range = explode('-', $blocked_range);
+			if (count($blocked_range) == 2) {
+				// Still using v5 32 bit int style format.
+				if (!preg_match('/[\.:]/', $blocked_range[0])) {
+					$blocked_range[0] = long2ip($blocked_range[0]);
+					$blocked_range[1] = long2ip($blocked_range[1]);
+				}
+				$advanced_blocking[] = array(wfUtils::inet_pton($blocked_range[0]), wfUtils::inet_pton($blocked_range[1]), $advanced_blocking_row['id']);
+			}
+		}
+
+		foreach($results as &$res){
 			$res['type'] = $type;
 			$res['timeAgo'] = wfUtils::makeTimeAgo($serverTime - $res['ctime']);
 			$res['blocked'] = $this->getDB()->querySingle("select blockedTime from " . $this->blocksTable . " where IP=%s and (permanent = 1 OR (blockedTime + %s > unix_timestamp()))", $res['IP'], wfConfig::get('blockedTime'));
-			$res['IP'] = wfUtils::inet_ntoa($res['IP']); 
+			$res['rangeBlocked'] = false;
+			$res['ipRangeID'] = -1;
+			foreach ($advanced_blocking as $advanced_blocking_row) {
+				if (strcmp($res['IP'], $advanced_blocking_row[0]) >= 0 && strcmp($res['IP'], $advanced_blocking_row[1]) <= 0) {
+					$res['rangeBlocked'] = true;
+					$res['ipRangeID'] = $advanced_blocking_row[2];
+					break;
+				}
+			}
+			$res['IP'] = wfUtils::inet_ntop($res['IP']);
 			$res['extReferer'] = false;
 			if(isset( $res['referer'] ) && $res['referer']){
 				if(wfUtils::hasXSS($res['referer'] )){ //filtering out XSS
@@ -642,15 +633,15 @@ class wfLog {
 		$IPLocs = wfUtils::getIPsGeo($IPs); //Creates an array with IP as key and data as value
 
 		foreach($results as &$res){
-			if(isset($IPLocs[$res['IP']])){
-				$res['loc'] = $IPLocs[$res['IP']];
+			$ip_printable = wfUtils::inet_ntop($res['IP']);
+			if(isset($IPLocs[$ip_printable])){
+				$res['loc'] = $IPLocs[$ip_printable];
 			} else {
 				$res['loc'] = false;
 			}
 		}
 	}
 	public function logHitOK(){
-		if(stristr($_SERVER['REQUEST_URI'], 'wp-admin/admin-ajax.php')){ return false; } //Don't log wordpress ajax requests.
 		if(is_admin()){ return false; } //Don't log admin pageviews
 		if(isset($_SERVER['HTTP_USER_AGENT'])){
 			if(preg_match('/WordPress\/' . $this->wp_version . '/i', $_SERVER['HTTP_USER_AGENT'])){ return false; } //Ignore requests generated by WP UA.
@@ -696,7 +687,8 @@ class wfLog {
 		if($this->isWhitelisted($IP)){
 			return;
 		}
-		$IPnum = wfUtils::inet_aton($IP);
+		$IPnum = wfUtils::inet_pton($IP);
+		$hostname = null;
 
 		//New range and UA pattern blocking:
 		$r1 = $this->getDB()->querySelect("select id, blockType, blockString from " . $this->ipRangesTable);
@@ -711,8 +703,25 @@ class wfLog {
 				$uaPattern = $bDat[1];
 				$refPattern = isset($bDat[2]) ? $bDat[2] : '';
 				if($ipRange){
-					$ips = explode('-', $ipRange);
-					if($IPnum >= $ips[0] && $IPnum <= $ips[1]){
+					list($start_range, $end_range) = explode('-', $ipRange);
+					if (preg_match('/[\.:]/', $start_range)) {
+						$start_range = wfUtils::inet_pton($start_range);
+						$end_range = wfUtils::inet_pton($end_range);
+					} else {
+						$start_range = wfUtils::inet_pton(long2ip($start_range));
+						$end_range = wfUtils::inet_pton(long2ip($end_range));
+					}
+
+					if (strcmp($IPnum, $start_range) >= 0 && strcmp($IPnum, $end_range) <= 0) {
+						$ipRangeBlocked = true;
+					}
+				}
+				if (! empty($bDat[3])) {
+					$ipRange = true; /* We reuse the ipRangeBlocked variable */
+					if ($hostname === null) {
+						$hostname = wfUtils::reverseLookup($IP);
+					}
+					if (preg_match(wfUtils::patternToRegex($bDat[3]), $hostname)) {
 						$ipRangeBlocked = true;
 					}
 				}
@@ -768,57 +777,60 @@ class wfLog {
 		}
 		//End range/UA blocking
 
-		$blockedCountries = wfConfig::get('cbl_countries', false);
-		$bareRequestURI = wfUtils::extractBareURI($_SERVER['REQUEST_URI']);
-		$bareBypassRedirURI = wfUtils::extractBareURI(wfConfig::get('cbl_bypassRedirURL', ''));
-		$skipCountryBlocking = false;
+		// Country blocking
+		if (wfConfig::get('isPaid')) {
+			$blockedCountries = wfConfig::get('cbl_countries', false);
+			$bareRequestURI = wfUtils::extractBareURI($_SERVER['REQUEST_URI']);
+			$bareBypassRedirURI = wfUtils::extractBareURI(wfConfig::get('cbl_bypassRedirURL', ''));
+			$skipCountryBlocking = false;
 
-		if($bareBypassRedirURI && $bareRequestURI == $bareBypassRedirURI){ //Run this before country blocking because even if the user isn't blocked we need to set the bypass cookie so they can bypass future blocks.
-			$bypassRedirDest = wfConfig::get('cbl_bypassRedirDest', '');
-			if($bypassRedirDest){
-				self::setCBLCookieBypass();
-				$this->redirect($bypassRedirDest); //exits
+			if($bareBypassRedirURI && $bareRequestURI == $bareBypassRedirURI){ //Run this before country blocking because even if the user isn't blocked we need to set the bypass cookie so they can bypass future blocks.
+				$bypassRedirDest = wfConfig::get('cbl_bypassRedirDest', '');
+				if($bypassRedirDest){
+					self::setCBLCookieBypass();
+					$this->redirect($bypassRedirDest); //exits
+				}
 			}
-		}
-		$bareBypassViewURI = wfUtils::extractBareURI(wfConfig::get('cbl_bypassViewURL', ''));
-		if($bareBypassViewURI && $bareBypassViewURI == $bareRequestURI){
-			self::setCBLCookieBypass();
-			$skipCountryBlocking = true;
-		}
-			
-		if((! $skipCountryBlocking) && $blockedCountries && wfConfig::get('isPaid') && (! self::isCBLBypassCookieSet()) ){
-			if(is_user_logged_in() && (! wfConfig::get('cbl_loggedInBlocked', false)) ){ //User is logged in and we're allowing logins
-				//Do nothing
-			} else if(strpos($_SERVER['REQUEST_URI'], '/wp-login.php') !== false && (! wfConfig::get('cbl_loginFormBlocked', false))  ){ //It's the login form and we're allowing that
-				//Do nothing 
-			} else if(strpos($_SERVER['REQUEST_URI'], '/wp-login.php') === false && (! wfConfig::get('cbl_restOfSiteBlocked', false))  ){ //It's the rest of the site and we're allowing that 
-				//Do nothing
-			} else {
-				if($country = wfUtils::IP2Country($IP) ){
-					foreach(explode(',', $blockedCountries) as $blocked){
-						if(strtoupper($blocked) == strtoupper($country)){ //At this point we know the user has been blocked
-							if(wfConfig::get('cbl_action') == 'redir'){
-								$redirURL = wfConfig::get('cbl_redirURL');
-								$eRedirHost = wfUtils::extractHostname($redirURL);
-								$isExternalRedir = false;
-								if($eRedirHost && $eRedirHost != wfUtils::extractHostname(home_url())){ //It's an external redirect...
-									$isExternalRedir = true;
-								}
-								if( (! $isExternalRedir) && wfUtils::extractBareURI($redirURL) == $bareRequestURI){ //Is this the URI we want to redirect to, then don't block it
-									//Do nothing
-								/* Uncomment the following if page components aren't loading for the page we redirect to.
-								   Uncommenting is not recommended because it means that anyone from a blocked country
-								   can crawl your site by sending the page blocked users are redirected to as the referer for every request.
-								   But it's your call.
-								} else if(wfUtils::extractBareURI($_SERVER['HTTP_REFERER']) == $redirURL){ //If the referer the page we want to redirect to? Then this might be loading as a component so don't block.
-									//Do nothing	
-								*/
+			$bareBypassViewURI = wfUtils::extractBareURI(wfConfig::get('cbl_bypassViewURL', ''));
+			if($bareBypassViewURI && $bareBypassViewURI == $bareRequestURI){
+				self::setCBLCookieBypass();
+				$skipCountryBlocking = true;
+			}
+
+			if((! $skipCountryBlocking) && $blockedCountries && (! self::isCBLBypassCookieSet()) ){
+				if(is_user_logged_in() && (! wfConfig::get('cbl_loggedInBlocked', false)) ){ //User is logged in and we're allowing logins
+					//Do nothing
+				} else if(strpos($_SERVER['REQUEST_URI'], '/wp-login.php') !== false && (! wfConfig::get('cbl_loginFormBlocked', false))  ){ //It's the login form and we're allowing that
+					//Do nothing
+				} else if(strpos($_SERVER['REQUEST_URI'], '/wp-login.php') === false && (! wfConfig::get('cbl_restOfSiteBlocked', false))  ){ //It's the rest of the site and we're allowing that
+					//Do nothing
+				} else {
+					if($country = wfUtils::IP2Country($IP) ){
+						foreach(explode(',', $blockedCountries) as $blocked){
+							if(strtoupper($blocked) == strtoupper($country)){ //At this point we know the user has been blocked
+								if(wfConfig::get('cbl_action') == 'redir'){
+									$redirURL = wfConfig::get('cbl_redirURL');
+									$eRedirHost = wfUtils::extractHostname($redirURL);
+									$isExternalRedir = false;
+									if($eRedirHost && $eRedirHost != wfUtils::extractHostname(home_url())){ //It's an external redirect...
+										$isExternalRedir = true;
+									}
+									if( (! $isExternalRedir) && wfUtils::extractBareURI($redirURL) == $bareRequestURI){ //Is this the URI we want to redirect to, then don't block it
+										//Do nothing
+										/* Uncomment the following if page components aren't loading for the page we redirect to.
+										   Uncommenting is not recommended because it means that anyone from a blocked country
+										   can crawl your site by sending the page blocked users are redirected to as the referer for every request.
+										   But it's your call.
+										} else if(wfUtils::extractBareURI($_SERVER['HTTP_REFERER']) == $redirURL){ //If the referer the page we want to redirect to? Then this might be loading as a component so don't block.
+											//Do nothing
+										*/
+									} else {
+										$this->redirect(wfConfig::get('cbl_redirURL'));
+									}
 								} else {
-									$this->redirect(wfConfig::get('cbl_redirURL'));
+									$this->do503(3600, "Access from your area has been temporarily limited for security reasons");
+									wfConfig::inc('totalCountryBlocked');
 								}
-							} else {
-								$this->do503(3600, "Access from your area has been temporarily limited for security reasons");
-								wfConfig::inc('totalCountryBlocked');
 							}
 						}
 					}
@@ -872,7 +884,7 @@ class wfLog {
 				wordfence::status(2, 'info', "Blocking IP $IP. $reason");
 			} else if($action == 'throttle'){
 				$IP = wfUtils::getIP();
-				$this->getDB()->queryWrite("insert into " . $this->throttleTable . " (IP, startTime, endTime, timesThrottled, lastReason) values (%s, unix_timestamp(), unix_timestamp(), 1, '%s') ON DUPLICATE KEY UPDATE endTime=unix_timestamp(), timesThrottled = timesThrottled + 1, lastReason='%s'", wfUtils::inet_aton($IP), $reason, $reason);
+				$this->getDB()->queryWrite("insert into " . $this->throttleTable . " (IP, startTime, endTime, timesThrottled, lastReason) values (%s, unix_timestamp(), unix_timestamp(), 1, '%s') ON DUPLICATE KEY UPDATE endTime=unix_timestamp(), timesThrottled = timesThrottled + 1, lastReason='%s'", wfUtils::inet_pton($IP), $reason, $reason);
 				wordfence::status(2, 'info', "Throttling IP $IP. $reason");
 				wfConfig::inc('totalIPsThrottled');
 				$secsToGo = 60;
@@ -907,16 +919,11 @@ class wfLog {
 			} else if($nb == 'neverBlockUA' || $nb == 'neverBlockVerified'){
 				if(wfCrawl::isGoogleCrawler()){ //Check the UA using regex
 					if($nb == 'neverBlockVerified'){
-						if(wfCrawl::isGooglebot()){ //UA is the one, the only, the original Googlebot
-							if(wfCrawl::verifyCrawlerPTR($this->googlePattern, wfUtils::getIP())){ //UA check passed, now verify using PTR if configured to
-								self::$gbSafeCache[$cacheKey] = false; //This is a verified Google crawler, so no we can't block it
-							} else {
-								self::$gbSafeCache[$cacheKey] = true; //This is a crawler claiming to be Google but it did not verify
-							}
-						} else { //UA isGoogleCrawler, but is not Googlebot itself. E.g. feedreader, google-site-verification, etc.
-							self::$gbSafeCache[$cacheKey] = false; //This is a crawler with a google UA, but it's not Googlebot, so we don't block for safety. We can't verify these because they don't have a PTR record. e.g. Feedreader.
+						if(wfCrawl::isVerifiedGoogleCrawler($this->googlePattern, wfUtils::getIP())){ //UA check passed, now verify using PTR if configured to
+							self::$gbSafeCache[$cacheKey] = false; //This is a verified Google crawler, so no we can't block it
+						} else {
+							self::$gbSafeCache[$cacheKey] = true; //This is a crawler claiming to be Google but it did not verify
 						}
-							
 					} else { //neverBlockUA
 						self::$gbSafeCache[$cacheKey] = false; //User configured us to only do a UA check and this claims to be google so don't block
 					}
@@ -966,12 +973,17 @@ class wfLog {
 		return array_reverse($results);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getGooglePattern() {
+		return $this->googlePattern;
+	}
+
 }
 
 /**
- * @todo Add IPv6 support
  *
- * Class wfUserIPRange
  */
 class wfUserIPRange {
 
@@ -990,30 +1002,62 @@ class wfUserIPRange {
 	/**
 	 * Check if the supplied IP address is within the user supplied range.
 	 *
-	 * @param $ip
+	 * @param string $ip
 	 * @return bool
 	 */
 	public function isIPInRange($ip) {
 		$ip_string = $this->getIPString();
-		if (preg_match('/\[\d+\-\d+\]/', $ip_string)) {
-			$IPparts = explode('.', $ip);
-			$whiteParts = explode('.', $ip_string);
-			$mismatch = false;
-			for ($i = 0; $i <= 3; $i++) {
-				if (preg_match('/^\[(\d+)\-(\d+)\]$/', $whiteParts[$i], $m)) {
-					if ($IPparts[$i] < $m[1] || $IPparts[$i] > $m[2]) {
+
+		// IPv4 range
+		if (strpos($ip_string, '.') !== false && strpos($ip, '.') !== false) {
+			if (preg_match('/\[\d+\-\d+\]/', $ip_string)) {
+				$IPparts = explode('.', $ip);
+				$whiteParts = explode('.', $ip_string);
+				$mismatch = false;
+				for ($i = 0; $i <= 3; $i++) {
+					if (preg_match('/^\[(\d+)\-(\d+)\]$/', $whiteParts[$i], $m)) {
+						if ($IPparts[$i] < $m[1] || $IPparts[$i] > $m[2]) {
+							$mismatch = true;
+						}
+					} else if ($whiteParts[$i] != $IPparts[$i]) {
 						$mismatch = true;
 					}
-				} else if ($whiteParts[$i] != $IPparts[$i]) {
-					$mismatch = true;
 				}
+				if ($mismatch === false) {
+					return true; // Is whitelisted because we did not get a mismatch
+				}
+			} else if ($ip_string == $ip) {
+				return true;
 			}
-			if ($mismatch === false) {
-				return true; // Is whitelisted because we did not get a mismatch
+
+		// IPv6 range
+		} else if (strpos($ip_string, ':') !== false && strpos($ip, ':') !== false) {
+			if (preg_match('/\[[a-f0-9]+\-[a-f0-9]+\]/', $ip_string)) {
+				$IPparts = explode(':', strtolower(wfUtils::expandIPv6Address($ip)));
+				$whiteParts = explode(':', strtolower(self::expandIPv6Range($ip_string)));
+				$mismatch = false;
+				for ($i = 0; $i <= 7; $i++) {
+					if (preg_match('/^\[([a-f0-9]+)\-([a-f0-9]+)\]$/i', $whiteParts[$i], $m)) {
+						$ip_group = hexdec($IPparts[$i]);
+						$range_group_from = hexdec($m[1]);
+						$range_group_to = hexdec($m[2]);
+						if ($ip_group < $range_group_from || $ip_group > $range_group_to) {
+							$mismatch = true;
+							break;
+						}
+					} else if ($whiteParts[$i] != $IPparts[$i]) {
+						$mismatch = true;
+						break;
+					}
+				}
+				if ($mismatch === false) {
+					return true; // Is whitelisted because we did not get a mismatch
+				}
+			} else if ($ip_string == $ip) {
+				return true;
 			}
-		} else if ($ip_string == $ip) {
-			return true;
 		}
+
 		return false;
 	}
 
@@ -1027,22 +1071,125 @@ class wfUserIPRange {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 		$ip_string = $this->getIPString();
-		if (preg_match('/\[\d+\-\d+\]/', $ip_string)) {
-			$sql = '(';
+
+		if (strpos($ip_string, '.') !== false && preg_match('/\[\d+\-\d+\]/', $ip_string)) {
 			$whiteParts = explode('.', $ip_string);
+			$sql = "(SUBSTR($column, 1, 12) = LPAD(CHAR(0xff, 0xff), 12, CHAR(0)) AND ";
+
 			for ($i = 0, $j = 24; $i <= 3; $i++, $j -= 8) {
+				// MySQL can only perform bitwise operations on integers
+				$conv = sprintf('CAST(CONV(HEX(SUBSTR(%s, 13, 8)), 16, 10) as UNSIGNED INTEGER)', $column);
 				if (preg_match('/^\[(\d+)\-(\d+)\]$/', $whiteParts[$i], $m)) {
-					$sql .= $wpdb->prepare("$column >> $j & 0xFF BETWEEN %d AND %d", $m[1], $m[2]);
+					$sql .= $wpdb->prepare("$conv >> $j & 0xFF BETWEEN %d AND %d", $m[1], $m[2]);
 				} else {
-					$sql .= $wpdb->prepare("$column >> $j & 0xFF = %d", $whiteParts[$i]);
+					$sql .= $wpdb->prepare("$conv >> $j & 0xFF = %d", $whiteParts[$i]);
+				}
+				$sql .= ' AND ';
+			}
+			$sql = substr($sql, 0, -5) . ')';
+			return $sql;
+
+		} else if (strpos($ip_string, ':') !== false && preg_match('/\[[a-f0-9]+\-[a-f0-9]+\]/', $ip_string)) {
+			$whiteParts = explode(':', strtolower(self::expandIPv6Range($ip_string)));
+			$sql = '(';
+
+			for ($i = 0; $i <= 7; $i++) {
+				// MySQL can only perform bitwise operations on integers
+				$conv = sprintf('CAST(CONV(HEX(SUBSTR(%s, %d, 8)), 16, 10) as UNSIGNED INTEGER)', $column, $i < 4 ? 1 : 9);
+				$j = 16 * (3 - ($i % 4));
+				if (preg_match('/^\[([a-f0-9]+)\-([a-f0-9]+)\]$/', $whiteParts[$i], $m)) {
+					$sql .= $wpdb->prepare("$conv >> $j & 0xFFFF BETWEEN 0x%x AND 0x%x", hexdec($m[1]), hexdec($m[2]));
+				} else {
+					$sql .= $wpdb->prepare("$conv >> $j & 0xFFFF = 0x%x", hexdec($whiteParts[$i]));
 				}
 				$sql .= ' AND ';
 			}
 			$sql = substr($sql, 0, -5) . ')';
 			return $sql;
 		}
-		return $wpdb->prepare("($column = %s)", is_numeric($ip_string) ? $ip_string : wfUtils::inet_aton($ip_string));
+		return $wpdb->prepare("($column = %s)", wfUtils::inet_pton($ip_string));
 	}
+
+	/**
+	 * Expand a compressed printable range representation of an IPv6 address.
+	 *
+	 * @todo Hook up exceptions for better error handling.
+	 * @todo Allow IPv4 mapped IPv6 addresses (::ffff:192.168.1.1).
+	 * @param string $ip_range
+	 * @return string
+	 */
+	public static function expandIPv6Range($ip_range) {
+		$colon_count = substr_count($ip_range, ':');
+		$dbl_colon_count = substr_count($ip_range, '::');
+		if ($dbl_colon_count > 1) {
+			return false;
+		}
+		$dbl_colon_pos = strpos($ip_range, '::');
+		if ($dbl_colon_pos !== false) {
+			$ip_range = str_replace('::', str_repeat(':0000',
+					(($dbl_colon_pos === 0 || $dbl_colon_pos === strlen($ip_range) - 2) ? 9 : 8) - $colon_count) . ':', $ip_range);
+			$ip_range = trim($ip_range, ':');
+		}
+		$colon_count = substr_count($ip_range, ':');
+		if ($colon_count != 7) {
+			return false;
+		}
+
+		$groups = explode(':', $ip_range);
+		$expanded = '';
+		foreach ($groups as $group) {
+			if (preg_match('/\[([a-f0-9]{1,4})\-([a-f0-9]{1,4})\]/i', $group, $matches)) {
+				$expanded .= sprintf('[%s-%s]', str_pad(strtolower($matches[1]), 4, '0', STR_PAD_LEFT), str_pad(strtolower($matches[2]), 4, '0', STR_PAD_LEFT)) . ':';
+			} else if (preg_match('/[a-f0-9]{1,4}/i', $group)) {
+				$expanded .= str_pad(strtolower($group), 4, '0', STR_PAD_LEFT) . ':';
+			} else {
+				return false;
+			}
+		}
+		return trim($expanded, ':');
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValidRange() {
+		return $this->isValidIPv4Range() || $this->isValidIPv6Range();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValidIPv4Range() {
+		$ip_string = $this->getIPString();
+		if (preg_match_all('/(\d+)/', $ip_string, $matches) > 0) {
+			foreach ($matches[1] as $match) {
+				$group = (int) $match;
+				if ($group > 255 || $group < 0) {
+					return false;
+				}
+			}
+		}
+
+		$group_regex = '([0-9]{1,3}|\[[0-9]{1,3}\-[0-9]{1,3}\])';
+		return preg_match('/^' . str_repeat("$group_regex.", 3) . $group_regex . '$/i', $ip_string) > 0;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValidIPv6Range() {
+		$ip_string = $this->getIPString();
+		if (strpos($ip_string, '::') !== false) {
+			$ip_string = self::expandIPv6Range($ip_string);
+		}
+		if (!$ip_string) {
+			return false;
+		}
+		$group_regex = '([a-f0-9]{1,4}|\[[a-f0-9]{1,4}\-[a-f0-9]{1,4}\])';
+		return preg_match('/^' . str_repeat("$group_regex:", 7) . $group_regex . '$/i', $ip_string) > 0;
+	}
+
+
 
 	/**
 	 * @return string|null

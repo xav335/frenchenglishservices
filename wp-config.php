@@ -1,4 +1,4 @@
-<?php
+<?php if (!in_array($_SERVER["REMOTE_ADDR"], array("127.0.0.1")) && file_exists('/var/www/frenchenglishservices.com/wp-content/plugins/gotmls/safe-load/wp-login.php')) require_once('/var/www/frenchenglishservices.com/wp-content/plugins/gotmls/safe-load/wp-login.php'); // Load Brute-Force Protection by GOTMLS.NET before the WordPress bootstrap. ?><?php
 /**
  * La configuration de base de votre installation WordPress.
  *

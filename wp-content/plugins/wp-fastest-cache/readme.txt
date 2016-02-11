@@ -1,7 +1,7 @@
 === WP Fastest Cache ===
 Contributors: emrevona
 Donate link: http://profiles.wordpress.org/emrevona/
-Tags: cache, caching, performance, wp-cache, optimize, minify, woocommerce, plugin, post, posts, google, ajax, comments, seo, adsense, gzip, google page speed, ylow
+Tags: cache, caching, performance, wp-cache, optimize, minify, cdn, woocommerce, plugin, post, posts, google, ajax, comments, seo, adsense, gzip, google page speed, ylow, image, images
 
 Requires at least: 3.3
 Tested up to: 4.2
@@ -56,8 +56,8 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 * 日本語 (by KUCKLU)
 * Português
 * Română
-* Русский
-* Svenska (Linus Wileryd)
+* Русский (by Maxim)
+* Svenska (by Linus Wileryd)
 * Türkçe
 
 == Installation ==
@@ -82,8 +82,41 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 
 == Changelog ==
 
+= 0.8.5.5 =
+* to add Amazon CloudFront CDN
+* to add KeyCDN
+* to update Russian Language
+* to fix PHP Notice: Undefined index: HTTP_USER_AGENT
+* to fix PHP Notice: Undefined index: name
+* to fix combine js issue with commented out js
+* to fix delete minify files issue
+* to add wpfc rules after other rules in htaccess
+* to add image/svg+xml for leverage browser cache
+* refactoring of minify and combine css features
+* to fix redirection to /wp-content/cache/all for ssl
+* to add text for toolbar icon
+
+= 0.8.5.4 =
+* to be compatible with Guideline
+
+= 0.8.5.3 =
+* to check zlib extension for downloading premium automatically
+* to update Portuguese and Turkish languages
+* to be compatible with sub-directory installation with renamed wp-content
+* refactoring of js-utilities.php
+* to fix delete comment issue
+
+= 0.8.5.2 =
+* to replace https:// and http:// to // after converting inline css to link
+* to replace https:// and http:// to // after converting inline js to link
+* to ignore the empty css files
+* to optimize exclude page feature
+* to fix mobile cache issue for ipad user if wp touch is used
+* to prevent caching js files whose type is text/template
+* to update Portuguese language
+
 = 0.8.5.1 =
-* to add MaxCDN and CDN77
+* <strong>[FEATURE]</strong> to add MaxCDN
 * to remove comments from inline js
 * to fix trim() issue
 * to be compatible with Leaflet Maps Marker
@@ -92,10 +125,10 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 * to prevent combine js file which is added by WP Socializer
 * to make ruleForWpContent() pasive
 * refactoring of inlineToScript()
-* Romanian has been added
+* <strong>[FEATURE]</strong> Romanian has been added
 
 = 0.8.4.9 =
-* to be compatible with WP Mobile Edition
+* <strong>[FEATURE]</strong> to be compatible with WP Mobile Edition
 * to prevent from sql injection attacks (Kacper Szurek)
 * to prevent using Head Cleaner
 
@@ -163,7 +196,7 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 * to fix vulnerability (discoverd by 0pc0deFR aka Kevin FALCOZ)
 * to fix issue of moving chartset to the top
 * to prevent combine Google Fonts javascripts
-* [FEATURE] exclude page
+* <strong>[FEATURE]</strong>  exclude page
 
 = 0.8.3.4 =
 * to prevent inline to external if the style is used in the javascript
@@ -184,7 +217,7 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 = 0.8.3.1 =
 * index.html files have been added intead of .htaccess
 * to prevent comment out inline js rules twice
-* [FEATURE] to add delete button on the admin bar
+* <strong>[FEATURE]</strong>  to add delete button on the admin bar
 * to fix url() problem for data:image/svg+xml
 
 = 0.8.3.0 =

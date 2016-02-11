@@ -38,17 +38,17 @@ $w = new wfConfig();
 						The currently active API Key is a Premium Key. <span style="font-weight: bold; color: #0A0;">Premium scanning enabled!</span>
 					<?php } else { ?>
 					The currently active API Key is a <span style="color: #F00; font-weight: bold;">Free Key</span>. <a
-							href="https://www.wordfence.com/wordfence-signup/" target="_blank">Click Here to Upgrade to
+							href="https://www.wordfence.com/gnl1optAPIKey1/wordfence-signup/" target="_blank">Click Here to Upgrade to
 							Wordfence Premium now.</a>
 						<?php } ?>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<?php if ( wfConfig::get( 'isPaid' ) ) { ?>
+					<?php if (wfConfig::get('isPaid')): ?>
 						<table border="0">
 							<tr>
-								<td><a href="https://www.wordfence.com/manage-wordfence-api-keys/"
+								<td><a href="https://www.wordfence.com/gnl1optMngKys/manage-wordfence-api-keys/"
 								       target="_blank"><input type="button" value="Renew your premium license"/></a>
 								</td>
 								<td>&nbsp;</td>
@@ -56,9 +56,25 @@ $w = new wfConfig();
 								           onclick="WFAD.downgradeLicense();"/></td>
 							</tr>
 						</table>
-					<?php } ?>
-
-
+					<?php else: ?>
+						<div class="wf-premium-callout">
+							<h3>Upgrade to Wordfence Premium today for less than $5 per month</h3>
+							<ul>
+								<li>Advanced features like IP reputation monitoring, country blocking, an advanced
+									comment spam filter and cell phone sign-in give you the best protection available
+								</li>
+								<li>Remote, frequent and scheduled scans</li>
+								<li>Access to Premium Support</li>
+								<li>Discounts of up to 90% for multiyear and multi-license purchases</li>
+							</ul>
+							<p class="center">
+								<a class="button button-primary"
+								   href="https://www.wordfence.com/gnl1optCallout1/wordfence-signup/">
+									Get Premium</a></p>
+						</div>
+					<?php endif ?>
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2"><h2>Basic Options<a href="http://docs.wordfence.com/en/Wordfence_options#Basic_Options"
 				                                    target="_blank" class="wfhelp"></a></h2></td>
@@ -379,17 +395,17 @@ $w = new wfConfig();
 				<tr>
 					<th>List of comma separated usernames to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreUsers" id="liveTraf_ignoreUsers"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreUsers' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreUsers' ); ?>"/></td>
 				</tr>
 				<tr>
 					<th>List of comma separated IP addresses to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreIPs" id="liveTraf_ignoreIPs"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreIPs' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreIPs' ); ?>"/></td>
 				</tr>
 				<tr>
 					<th>Browser user-agent to ignore:</th>
 					<td><input type="text" name="liveTraf_ignoreUA" id="liveTraf_ignoreUA"
-					           value="<?php echo $w->getHTML( 'liveTraf_ignoreUA' ); ?>"/></td>
+					           value="<?php $w->f( 'liveTraf_ignoreUA' ); ?>"/></td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -411,7 +427,7 @@ $w = new wfConfig();
 						<th style="color: #F00;">Scan public facing site for vulnerabilities?<a
 								href="http://docs.wordfence.com/en/Wordfence_options#Scan_public_facing_site"
 								target="_blank" class="wfhelp"></a>(<a
-								href="https://www.wordfence.com/wordfence-signup/" target="_blank">Paid members only</a>)
+								href="https://www.wordfence.com/gnl1optPdOnly1/wordfence-signup/" target="_blank">Paid members only</a>)
 						</th>
 						<td><input type="checkbox" id="scansEnabled_public" class="wfConfigElem"
 						           name="scansEnabled_public" value="1" DISABLED /></td>
@@ -463,6 +479,14 @@ $w = new wfConfig();
 					           value="1" <?php $w->cb( 'scansEnabled_fileContents' ); ?>/></td>
 				</tr>
 				<tr>
+					<th>Scan database for backdoors, trojans and suspicious code<a
+							href="http://docs.wordfence.com/en/Wordfence_options#Scan_database_for_backdoors.2C_trojans_and_suspicious_code"
+							target="_blank" class="wfhelp"></a></th>
+					<td><input type="checkbox" id="scansEnabled_database" class="wfConfigElem"
+					           name="scansEnabled_database"
+					           value="1" <?php $w->cb( 'scansEnabled_database' ); ?>/></td>
+				</tr>
+				<tr>
 					<th>Scan posts for known dangerous URLs and suspicious content<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Scan_posts_for_known_dangerous_URLs_and_suspicious_content"
 							target="_blank" class="wfhelp"></a></th>
@@ -492,12 +516,6 @@ $w = new wfConfig();
 					           name="scansEnabled_passwds" value="1" <?php $w->cb( 'scansEnabled_passwds' ); ?>/></td>
 				</tr>
 				<tr>
-					<th>Scan options table<a href="http://docs.wordfence.com/en/Wordfence_options#Scan_options_table"
-					                         target="_blank" class="wfhelp"></a></th>
-					<td><input type="checkbox" id="scansEnabled_options" class="wfConfigElem"
-					           name="scansEnabled_options" value="1" <?php $w->cb( 'scansEnabled_options' ); ?>/></td>
-				</tr>
-				<tr>
 					<th>Monitor disk space<a href="http://docs.wordfence.com/en/Wordfence_options#Monitor_disk_space"
 					                         target="_blank" class="wfhelp"></a></th>
 					<td><input type="checkbox" id="scansEnabled_diskSpace" class="wfConfigElem"
@@ -519,7 +537,7 @@ $w = new wfConfig();
 					           value="1" <?php $w->cb( 'other_scanOutside' ); ?> /></td>
 				</tr>
 				<tr>
-					<th>Scan image files as if they were executable<a
+					<th>Scan images and binary files as if they were executable<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Scan_image_files_as_if_they_were_executable"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="checkbox" id="scansEnabled_scanImages" class="wfConfigElem"
@@ -535,11 +553,12 @@ $w = new wfConfig();
 					</td>
 				</tr>
 				<tr>
-					<th>Exclude files from scan that match these wildcard patterns. Comma separated.<a
+					<th>Exclude files from scan that match these wildcard patterns. (One per line).<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Exclude_files_from_scan_that_match_these_wildcard_patterns."
 							target="_blank" class="wfhelp"></a></th>
-					<td><input type="text" id="scan_exclude" class="wfConfigElem" name="scan_exclude" size="20"
-					           value="<?php echo $w->getHTML( 'scan_exclude' ); ?>"/>e.g. *.sql,*.tar,backup*.zip
+					<td>
+						<textarea id="scan_exclude" class="wfConfigElem" cols="40" rows="4"
+							name="scan_exclude"><?php echo wfUtils::cleanupOneEntryPerLine($w->getHTML( 'scan_exclude' )); ?></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -780,7 +799,7 @@ $w = new wfConfig();
 					           name="loginSec_blockAdminReg" <?php $w->cb( 'loginSec_blockAdminReg' ); ?> /></td>
 				</tr>
 				<tr>
-					<th>Prevent discovery of usernames through '?/author=N' scans<a
+					<th>Prevent discovery of usernames through '/?author=N' scans<a
 							href="http://docs.wordfence.com/en/Wordfence_options#Prevent_discovery_of_usernames_through_.27.3F.2Fauthor.3DN.27_scans"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="checkbox" id="loginSec_disableAuthorScan" class="wfConfigElem"
@@ -792,7 +811,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Immediately_block_the_IP_of_users_who_try_to_sign_in_as_these_usernames"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="loginSec_userBlacklist" id="loginSec_userBlacklist"
-					           value="<?php echo $w->getHTML( 'loginSec_userBlacklist' ); ?>" size="40"/>&nbsp;(Comma
+					           value="<?php $w->f( 'loginSec_userBlacklist' ); ?>" size="40"/>&nbsp;(Comma
 						separated. Existing users won't be blocked.)
 					</td>
 				</tr>
@@ -810,7 +829,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Whitelisted_IP_addresses_that_bypass_all_rules"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="whitelisted" id="whitelisted"
-					           value="<?php echo $w->getHTML( 'whitelisted' ); ?>" size="40"/></td>
+					           value="<?php $w->f( 'whitelisted' ); ?>" size="40"/></td>
 				</tr>
 				<tr>
 					<th colspan="2" style="color: #999;">Whitelisted IP's must be separated by commas. You can specify
@@ -824,7 +843,7 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Immediately_block_IP.27s_that_access_these_URLs"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="text" name="bannedURLs" id="bannedURLs"
-					           value="<?php echo $w->getHTML( 'bannedURLs' ); ?>" size="40"/></td>
+					           value="<?php $w->f( 'bannedURLs' ); ?>" size="40"/></td>
 				</tr>
 				<tr>
 					<th colspan="2" style="color: #999;">Separate multiple URL's with commas. If you see an attacker
@@ -832,6 +851,16 @@ $w = new wfConfig();
 						them.<br/>
 						All URL's must start with a '/' without quotes and must be relative. e.g. /badURLone/,
 						/bannedPage.html, /dont-access/this/URL/
+						<br/><br/></th>
+				</tr>
+
+				<tr>
+					<th style="vertical-align: top;">Whitelisted 404 URLs (one per line). <a href="http://docs.wordfence.com/en/Wordfence_options#Whitelisted_404_URLs" target="_blank" class="wfhelp"></a></th>
+					<td><textarea name="allowed404s" id="" cols="40" rows="4"><?php echo $w->getHTML( 'allowed404s' ); ?></textarea></td>
+				</tr>
+				<tr>
+					<th colspan="2" style="color: #999;">These URL patterns will be excluded from
+						the throttling rules used to limit crawlers.
 						<br/><br/></th>
 				</tr>
 
@@ -952,7 +981,11 @@ $w = new wfConfig();
 							href="http://docs.wordfence.com/en/Wordfence_options#Add_a_debugging_comment_to_HTML_source_of_cached_pages"
 							target="_blank" class="wfhelp"></a></th>
 					<td><input type="checkbox" id="addCacheComment" class="wfConfigElem" name="addCacheComment"
-					           value="1" <?php $w->cb( 'addCacheComment' ); ?> /></td>
+					           value="1" <?php $w->cb( 'addCacheComment' ); ?> />
+						<?php if ($w->get('allowHTTPSCaching')): ?>
+							<input type="hidden" name="allowHTTPSCaching" value="1"/>
+						<?php endif ?>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="disableCodeExecutionUploads">Disable Code Execution for Uploads directory</label><a
@@ -961,6 +994,17 @@ $w = new wfConfig();
 					<td><input type="checkbox" id="disableCodeExecutionUploads" class="wfConfigElem"
 					           name="disableCodeExecutionUploads"
 					           value="1" <?php $w->cb( 'disableCodeExecutionUploads' ); ?> /></td>
+				</tr>
+				<tr>
+					<th><label for="ssl_verify">Enable SSL Verification</label><a
+							href="http://docs.wordfence.com/en/Wordfence_options#Enable_SSL_Verification"
+							target="_blank" class="wfhelp"></a>
+					</th>
+					<td style="vertical-align: top;"><input type="checkbox" id="ssl_verify" class="wfConfigElem"
+					           name="ssl_verify"
+					           value="1" <?php $w->cb( 'ssl_verify' ); ?> />
+						(Disable this if you are <strong><em>consistently</em></strong> unable to connect to the Wordfence servers.)
+					</td>
 				</tr>
 				<tr>
 					<th colspan="2"><a
@@ -1057,7 +1101,7 @@ $w = new wfConfig();
 		<p>
 			If you use the free edition of Wordfence, you don't need to worry about entering an API key in the "API Key"
 			field above. One is automatically created for you. If you choose to <a
-				href="https://www.wordfence.com/wordfence-signup/" target="_blank">upgrade to Wordfence Premium
+				href="https://www.wordfence.com/gnl1optUpg1/wordfence-signup/" target="_blank">upgrade to Wordfence Premium
 				edition</a>, you will receive an API key. You will need to copy and paste that key into the "API Key"
 			field above and hit "Save" to activate your key.
 		</p>

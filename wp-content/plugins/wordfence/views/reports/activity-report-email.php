@@ -295,7 +295,7 @@ $title = 'Wordfence Activity for the week of ' . date_i18n(get_option('date_form
 				<div style="float: right;text-align: right;line-height:1.1;color: #666666;margin:20px 0 0;">
 					Activity for week of<br> <strong><?php echo date_i18n(get_option('date_format')) ?></strong>
 				</div>
-				<a href="http://www.wordfence.com/"><img src="http://www.wordfence.com/wp-content/themes/parallelus-salutation/wfCustomHome/images/wordfenceLogo.png" alt=""/></a>
+				<a href="http://www.wordfence.com/zz7/"><img src="http://www.wordfence.com/wp-content/themes/wordfence/img/logo.png" alt=""/></a>
 
 				<h2>Top 10 IP's Blocked</h2>
 
@@ -312,7 +312,7 @@ $title = 'Wordfence Activity for the week of ' . date_i18n(get_option('date_form
 					<tbody>
 						<?php foreach ($top_ips_blocked as $row): ?>
 							<tr class="<?php echo wfHelperString::cycle('odd', 'even') ?>">
-								<td><code><?php echo wfUtils::inet_ntoa($row->IP) ?></code></td>
+								<td><code><?php echo wfUtils::inet_ntop($row->IP) ?></code></td>
 								<td>
 									<?php if ($row->countryCode): ?>
 										<img src="http://www.wordfence.com/images/flags/<?php echo esc_attr(strtolower($row->countryCode)) ?>.png" class="wfFlag" height="11" width="16">
@@ -329,7 +329,7 @@ $title = 'Wordfence Activity for the week of ' . date_i18n(get_option('date_form
 				</table>
 
 				<p>
-					<a class="button" href="<?php echo admin_url('admin.php?page=WordfenceBlockedIPs') ?>">Update Blocked IPs</a>
+					<a class="button" href="<?php echo network_admin_url('admin.php?page=WordfenceBlockedIPs') ?>">Update Blocked IPs</a>
 				</p>
 
 				<?php wfHelperString::cycle(); ?>
@@ -364,7 +364,7 @@ $title = 'Wordfence Activity for the week of ' . date_i18n(get_option('date_form
 				</table>
 
 				<p>
-					<a class="button" href="<?php echo admin_url('admin.php?page=WordfenceCountryBlocking') ?>">Update Blocked Countries</a>
+					<a class="button" href="<?php echo network_admin_url('admin.php?page=WordfenceCountryBlocking') ?>">Update Blocked Countries</a>
 				</p>
 
 				<?php wfHelperString::cycle(); ?>
@@ -391,7 +391,7 @@ $title = 'Wordfence Activity for the week of ' . date_i18n(get_option('date_form
 				</table>
 
 				<p>
-					<a class="button" href="<?php echo admin_url('admin.php?page=WordfenceSecOpt#wfMarkerLoginSecurity') ?>">Update Login Security Options</a>
+					<a class="button" href="<?php echo network_admin_url('admin.php?page=WordfenceSecOpt#wfMarkerLoginSecurity') ?>">Update Login Security Options</a>
 				</p>
 
 				<?php wfHelperString::cycle(); ?>

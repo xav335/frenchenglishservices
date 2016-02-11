@@ -426,17 +426,31 @@
 	}
 	
 	function mtCheckExclude() {
-		global $mt_options;
+		global $mt_options, $post;
 		$mt_options = mt_get_plugin_options(true);
-		$is_skip = false;
-		$curUrl = mt_curPageURL();
+		$is_skip 	= false;
+		$curUrl 	= mt_curPageURL();
+		if (is_page() || is_single()) {
+			$currID = $post->ID;	
+		} else {
+			if (is_home()) {
+				$blog_id = get_option( 'page_for_posts');
+				if ($blog_id) $currID = $blog_id;
+			}
+			
+			if (is_front_page()) {
+				$front_page_id = get_option( 'show_on_front');
+				if ($front_page_id) $currID = $front_page_id;
+				
+			}
+		}
+			
 		
 		if (isset($mt_options['exclude_pages']) && !empty($mt_options['exclude_pages'])) {
 			$exlude_objs = $mt_options['exclude_pages'];
-			
 			foreach ($exlude_objs as $objs_id) {
 				foreach ($objs_id as $obj_id) {
-					if ( $curUrl == get_the_permalink($obj_id)) {
+					if ( $currID == $obj_id) {
 						 $is_skip = true;
 						 break;
 					}
@@ -456,7 +470,8 @@
 		$vdate_start = $vdate_end = date_i18n( 'Y-m-d', strtotime( current_time('mysql', 0) )); 
 		$vtime_start = date_i18n( 'h:i a', strtotime( '12:00 am')); 
 		$vtime_end 	 = date_i18n( 'h:i a', strtotime( '12:00 pm')); 
-					
+			
+		
 		$mt_options	= mt_get_plugin_options(true);
 			if (!is_user_logged_in()) {
 				if ($mt_options['state']) {
@@ -473,7 +488,7 @@
 					 
 						$vCurrTime 		 = strtotime(current_time('mysql', 0));
 						$vCurrDate_start = strtotime($vdate_start . ' ' . $vtime_start); 
-						$vCurrDate_end 	 = strtotime($vdate_end . ' ' . $vtime_end); 
+						$vCurrDate_end 	 = strtotime($vdate_end   . ' ' . $vtime_end); 
 						
 						if (mtCheckExclude()) return true;
 						
@@ -481,6 +496,7 @@
 						if ($vCurrTime >= $vCurrDate_end) {
 							if (!empty($mt_options['is_down'])) return true;
 						}
+						
 				} else {
 					return true;		
 				}				
