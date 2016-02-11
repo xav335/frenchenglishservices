@@ -41,8 +41,8 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_UserManagement', false ) ):
 			$sTimeFormat = $oWp->getTimeFormat();
 			$sDateFormat = $oWp->getDateFormat();
 			foreach( $aActiveSessions as &$aSession ) {
-				$aSession[ 'logged_in_at' ] = date_i18n( $sTimeFormat . ' ' . $sDateFormat, $aSession[ 'logged_in_at' ] );
-				$aSession[ 'last_activity_at' ] = date_i18n( $sTimeFormat . ' ' . $sDateFormat, $aSession[ 'last_activity_at' ] );
+				$aSession[ 'logged_in_at' ] = $oWp->getTimeStringForDisplay( $aSession[ 'logged_in_at' ] );
+				$aSession[ 'last_activity_at' ] = $oWp->getTimeStringForDisplay( $aSession[ 'last_activity_at' ] );
 			}
 
 			$aData = array(
@@ -209,13 +209,6 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_UserManagement', false ) ):
 		 */
 		public function getUserSessionsTableName() {
 			return $this->doPluginPrefix( $this->getOpt( 'user_sessions_table_name' ), '_' );
-		}
-
-		/**
-		 * @return string
-		 */
-		public function getUserSessionCookieName() {
-			return $this->getOpt( 'user_session_cookie_name' );
 		}
 
 		/**

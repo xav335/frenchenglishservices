@@ -28,6 +28,7 @@
 								<button class="wpfc-green-button">Create a MaxCDN Account</button>
 							</a>
 					    </div>
+					    <p class="wpfc-bottom-note" style="margin-bottom:-10px;"><a target="_blank" href="https://www.maxcdn.com/one/tutorial/implementing-cdn-on-wordpress-with-wp-fastest-cache/">Note: Please read How to Integrate MaxCDN into WP Fastest Cache</a></p>
 					</div>
 					<div wpfc-cdn-page="2" class="wiz-cont" style="display:none">
 						<h1>Enter CDN Url</h1>		
@@ -45,7 +46,7 @@
 						<h1>File Types</h1>		
 						<p>Specify the file types within the to host with the CDN.</p>
 						
-						<?php include "file_types.php"; ?> 
+						<?php include WPFC_MAIN_PATH."templates/cdn/file_types.php"; ?>
 					</div>
 					<div wpfc-cdn-page="4" class="wiz-cont" style="display:none">
 						<h1>Ready to Go!</h1>
@@ -61,7 +62,7 @@
 				</div>
 			</div>
 		</div>
-		<?php include "../buttons.html"; ?> 
+		<?php include WPFC_MAIN_PATH."templates/buttons.html"; ?>
 	</div>
 </div>
 

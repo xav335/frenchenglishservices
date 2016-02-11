@@ -6,7 +6,10 @@ var Wpfc_Dialog = {
 		self.id = id;
 		self.buttons = buttons;
 
-		jQuery("#" + id).draggable();
+		jQuery("#" + id).show();
+		
+		if(jQuery.ui.draggable){jQuery("#" + id).draggable();}
+
 		jQuery("#" + id).position({my: "center", at: "center", of: window});
 
 		jQuery(".close-wiz").click(function(){
@@ -23,8 +26,8 @@ var Wpfc_Dialog = {
 		var self = this;
 		if(typeof self.buttons != "undefined"){
 			jQuery.each(self.buttons, function( index, value ) {
-				jQuery("button[action='" + index + "']").show();
-				jQuery("button[action='" + index + "']").click(function(){
+				jQuery("#" + self.id + " button[action='" + index + "']").show();
+				jQuery("#" + self.id + " button[action='" + index + "']").click(function(){
 					value();
 				});
 			});

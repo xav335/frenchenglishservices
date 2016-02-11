@@ -39,7 +39,6 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 
 	/**
 	 * @param bool $fIfDoCheck
-	 *
 	 * @return bool
 	 */
 	public function getIfDoCommentsCheck( $fIfDoCheck ) {
@@ -47,10 +46,20 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 			return $fIfDoCheck;
 		}
 
-		$oWp = $this->loadWpFunctionsProcessor();
-		if ( ( $oWp->getOption( 'comment_whitelist' ) == 1 ) && $oWp->comments_getIfCommentAuthorPreviouslyApproved( $this->getRawCommentData( 'comment_author_email' ) ) ) {
-			return false;
+		$oWpComments = $this->loadWpCommentsProcessor();
+
+		// 1st are comments enabled on this post?
+		$nPostId = $this->getRawCommentData( 'comment_post_ID' );
+		$oPost = $nPostId ? $this->loadWpFunctionsProcessor()->getPostById( $nPostId ) : null;
+		if ( $oPost ) {
+			$fIfDoCheck = $oWpComments->isCommentsOpen( $oPost );
 		}
+
+		if ( $fIfDoCheck && $oWpComments->getIfCommentsMustBePreviouslyApproved()
+			&& $oWpComments->isCommentAuthorPreviouslyApproved( $this->getRawCommentData( 'comment_author_email' ) ) ) {
+			$fIfDoCheck = false;
+		}
+
 		return $fIfDoCheck;
 	}
 
@@ -82,15 +91,14 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 
 	/**
 	 * @param string $sKey
-	 *
-	 * @return array|mixed
+	 * @return array|mixed|null
 	 */
 	public function getRawCommentData( $sKey = '' ) {
 		if ( !isset( $this->aRawCommentData ) ) {
 			$this->aRawCommentData = array();
 		}
-		if ( !empty( $sKey ) && isset( $this->aRawCommentData[$sKey] ) ) {
-			return $this->aRawCommentData[$sKey];
+		if ( !empty( $sKey ) ) {
+			return isset( $this->aRawCommentData[$sKey] ) ? $this->aRawCommentData[$sKey] : null;
 		}
 		return $this->aRawCommentData;
 	}
@@ -122,7 +130,9 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 	public function doCommentChecking( $aCommentData ) {
 		$this->aRawCommentData = $aCommentData;
 
-		if ( !apply_filters( $this->getFeatureOptions()->doPluginPrefix( 'if-do-comments-check' ), true ) ) {
+		/** @var ICWP_WPSF_FeatureHandler_CommentsFilter $oFO */
+		$oFO = $this->getFeatureOptions();
+		if ( !$oFO->getIfDoCommentsCheck() ) {
 			return $aCommentData;
 		}
 
@@ -218,7 +228,6 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 		if ( is_user_logged_in() ) {
 			return false;
 		}
-
 		// Compatibility with shoutbox WP Wall Plugin
 		// http://wordpress.org/plugins/wp-wall/
 		if ( function_exists( 'WPWall_Init' ) ) {
@@ -313,15 +322,17 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 				cb$sId.onclick			= cb_click$sId;
 			
 				var label$sId			= document.createElement( 'label' );
+				var labelspan$sId		= document.createElement( 'span' );
 				label$sId.htmlFor		= 'checkbox$sId';
-				label$sId.innerHTML		= \"$sConfirm\";
+				labelspan$sId.innerHTML	= \"$sConfirm\";
 
 				var cb_name$sId			= document.createElement('input');
 				cb_name$sId.type		= 'hidden';
 				cb_name$sId.name		= 'cb_nombre';
 
-				$sId.appendChild( cb$sId );
 				$sId.appendChild( label$sId );
+				label$sId.appendChild( cb$sId );
+				label$sId.appendChild( labelspan$sId );
 				$sId.appendChild( cb_name$sId );
 
 				var frm$sId					= cb$sId.form;
@@ -408,17 +419,16 @@ class ICWP_WPSF_Processor_CommentsFilter_AntiBotSpam extends ICWP_WPSF_BaseDbPro
 	 * @return string
 	 */
 	public function getCreateTableSql() {
-		// Set up comments ID table
-		$sSqlTables = "CREATE TABLE IF NOT EXISTS `%s` (
-			`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`post_id` INT(11) NOT NULL DEFAULT '0',
-			`unique_token` VARCHAR(32) NOT NULL DEFAULT '',
-			`ip` VARCHAR(40) NOT NULL DEFAULT '0',
-			`created_at` INT(15) UNSIGNED NOT NULL DEFAULT '0',
-			`deleted_at` INT(15) UNSIGNED NOT NULL DEFAULT '0',
- 			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		return sprintf( $sSqlTables, $this->getTableName() );
+		$sSqlTables = "CREATE TABLE %s (
+			id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+			post_id int(11) NOT NULL DEFAULT 0,
+			unique_token VARCHAR(32) NOT NULL DEFAULT '',
+			ip varchar(40) NOT NULL DEFAULT '0',
+			created_at int(15) UNSIGNED NOT NULL DEFAULT 0,
+			deleted_at int(15) UNSIGNED NOT NULL DEFAULT 0,
+ 			PRIMARY KEY  (id)
+		) %s;";
+		return sprintf( $sSqlTables, $this->getTableName(), $this->loadDbProcessor()->getCharCollate() );
 	}
 
 	/**

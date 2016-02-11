@@ -5,6 +5,7 @@ if (!is_file ( IPV4DBFILE ) && (!get_option('blockcountry_geoapikey'))) {
     add_action( 'admin_notices', 'iq_missing_db_notice' );
 }
 
+
 /*
  * Unzip the MaxMind IPv4 database if somebody uploaded it in GZIP format
  */
@@ -66,6 +67,31 @@ function iq_missing_db_notice()
 
 
 /*
+ * Display missing database notification.
+ */
+function iq_old_db_notice()
+{
+    ?> 
+        <div class="update-nag">
+            <h3>iQ Block Country</h3>
+            <p><?php _e('The MaxMind GeoIP database is older than 3 months. Please update this file manually or if you wish to use the GeoIP API get an API key from: ', 'iq-block-country'); ?><a href="http://geoip.webence.nl/" target="_blank">http://geoip.webence.nl/</a></p>
+		<p><?php _e("Please download the database from: " , 'iq-block-country'); ?>
+                   <?php echo "<a href=\"" . IPV4DB . "\" target=\"_blank\">" . IPV4DB . "</a> "; ?>
+                   <?php _e("unzip the file and afterwards upload it to the following location: " , 'iq-block-country'); ?>
+                    <b><?php echo IPV4DBFILE; ?></b></p>
+                   
+                   <p><?php _e("If you also use IPv6 please also download the database from: " , 'iq-block-country'); ?>
+                   <?php echo "<a href=\"" . IPV6DB . "\" target=\"_blank\">" . IPV6DB . "</a> "; ?>
+                   <?php _e("unzip the file and afterwards upload it to the following location: " , 'iq-block-country'); ?>
+                       <b><?php echo IPV6DBFILE; ?></b></p>
+		<p><?php _e('For more detailed instructions take a look at the documentation..', 'iq-block-country'); ?></p>
+                   
+        </div>        
+		<?php
+}
+
+
+/*
  * Create the wp-admin menu for iQ Block Country
  */
 function iqblockcountry_create_menu() 
@@ -93,7 +119,7 @@ function iqblockcountry_register_mysettings()
         register_setting ( 'iqblockcountry-settings-group', 'blockcountry_geoapikey','iqblockcountry_check_geoapikey');
         register_setting ( 'iqblockcountry-settings-group', 'blockcountry_geoapilocation');
         register_setting ( 'iqblockcountry-settings-group', 'blockcountry_apikey','iqblockcountry_check_adminapikey');
-        register_setting ( 'iqblockcountry-settings-group', 'blockcountry_backendlogging');
+        register_setting ( 'iqblockcountry-settings-group', 'blockcountry_debuglogging');
         register_setting ( 'iqblockcountry-settings-group', 'blockcountry_accessibility');
         register_setting ( 'iqblockcountry-settings-group', 'blockcountry_logging');
 	register_setting ( 'iqblockcountry-settings-group-backend', 'blockcountry_blockbackend' );
@@ -129,7 +155,7 @@ function iqblockcountry_get_options_arr() {
             'blockcountry_blockmessage','blockcountry_blocklogin','blockcountry_blockfrontend','blockcountry_blockbackend','blockcountry_header',
             'blockcountry_blockpages','blockcountry_pages','blockcountry_blockcategories','blockcountry_categories','blockcountry_tracking',
             'blockcountry_blockhome','blockcountry_nrstatistics','blockcountry_geoapikey','blockcountry_geoapilocation','blockcountry_apikey',
-            'blockcountry_redirect','blockcountry_redirect_url','blockcountry_allowse','blockcountry_backendlogging','blockcountry_buffer',
+            'blockcountry_redirect','blockcountry_redirect_url','blockcountry_allowse','blockcountry_debuglogging','blockcountry_buffer',
             'blockcountry_accessibility','blockcountry_logging','blockcountry_blockposttypes','blockcountry_posttypes','blockcountry_blocksearch');
         return apply_filters( 'iqblockcountry_options', $optarr );
 }
@@ -191,7 +217,7 @@ function iqblockcountry_uninstall() //deletes all the database entries that the 
         delete_option('blockcountry_redirect');
         delete_option('blockcountry_redirect_url');
         delete_option('blockcountry_allowse');
-        delete_option('blockcountry_backendlogging');
+        delete_option('blockcountry_debuglogging');
         delete_option('blockcountry_buffer');
         delete_option('blockcountry_accessibility');
         delete_option('blockcountry_logging');
@@ -838,7 +864,7 @@ function iqblockcountry_settings_frontend()
 {
 ?>
 <h3><?php _e('Frontend options', 'iq-block-country'); ?></h3>
-        
+       
 <form method="post" action="options.php">
     <?php
 	settings_fields ( 'iqblockcountry-settings-group-frontend' );
@@ -848,7 +874,6 @@ function iqblockcountry_settings_frontend()
 	}
 	if (class_exists('GeoIP'))
 	{
-		
             $countrylist = iqblockcountry_get_countries();
 
             $ip_address = iqblockcountry_get_ipaddress();
@@ -859,14 +884,8 @@ function iqblockcountry_settings_frontend()
             
 	?>
 
-            <script language="javascript" type="text/javascript" src=<?php echo "\"" . CHOSENJS . "\""?>></script>
             <link rel="stylesheet" href=<?php echo "\"" . CHOSENCSS . "\""?> type="text/css" />
-            <script>
-                        jQuery(document).ready(function(){
-			jQuery(".chosen").data("placeholder","Select country...").chosen();
-                       });
-            </script>
-    
+   
 
             <table class="form-table" cellspacing="2" cellpadding="5" width="100%">    	    
 
@@ -912,7 +931,11 @@ function iqblockcountry_settings_frontend()
         }
         else 
         {
-                ?>                           <select class="chosen" name="blockcountry_banlist[]" multiple="true" style="width:600px;">
+                ?>  
+
+
+                    <select data-placeholder="Choose a country..." class="chosen" name="blockcountry_banlist[]" multiple="true" style="width:600px;">
+                    <optgroup label="(de)select all countries">
                 <?php   
 			foreach ( $countrylist as $key => $value ) {
 			print "<option value=\"$key\"";
@@ -921,6 +944,7 @@ function iqblockcountry_settings_frontend()
 			}
                             print ">$value</option>\n";
                         }   
+                        echo "</optgroup";
                         echo "                     </select>";
         }
 
@@ -993,13 +1017,7 @@ function iqblockcountry_settings_backend()
             
 	?>
 
-            <script language="javascript" type="text/javascript" src=<?php echo "\"" . CHOSENJS . "\""?>></script>
             <link rel="stylesheet" href=<?php echo "\"" . CHOSENCSS . "\""?> type="text/css" />
-            <script>
-                        jQuery(document).ready(function(){
-			jQuery(".chosen").data("placeholder","Select country...").chosen();
-                       });
-            </script>
     
 
             <table class="form-table" cellspacing="2" cellpadding="5" width="100%">    	    
@@ -1042,7 +1060,9 @@ function iqblockcountry_settings_backend()
         }
         else 
         {
-                ?>      <select class="chosen" name="blockcountry_backendbanlist[]" multiple="true" style="width:600px;">
+                ?>      <select class="chosen" data-placeholder="Choose a country..." name="blockcountry_backendbanlist[]" multiple="true" style="width:600px;">
+                        <optgroup label="(de)select all countries">
+
                 <?php   
 			foreach ( $countrylist as $key => $value ) {
 			print "<option value=\"$key\"";
@@ -1051,6 +1071,7 @@ function iqblockcountry_settings_backend()
 			}
                             print ">$value</option>\n";
                         }   
+                        echo "</optgroup>";
                         echo "                     </select>";
         }
                         ?>
@@ -1103,33 +1124,25 @@ function iqblockcountry_settings_backend()
 function iqblockcountry_settings_home()
 {
 
-if (is_file(IPV4DBFILE))    {
+/* Check if the Geo Database exists or if GeoIP API key is entered otherwise display notification */
+if (is_file ( IPV4DBFILE ) && (!get_option('blockcountry_geoapikey'))) {
     $iqfiledate = filemtime(IPV4DBFILE);
     $iq3months = time() - 3 * 31 * 86400;
     if ($iqfiledate < $iq3months) 
     { 
-    ?>
-        <div class="update-nag">
-            <?php _e("Your MaxMind GeoIP database is older than 3 months. Please update your database. " , 'iq-block-country'); ?>
-        </div>
-    <?php
+        iq_old_db_notice();
     }  
-    
-            // . date ("F d Y H:i:s.", filemtime(IPV4DBFILE));
 }
+    
     
 ?>
 <h3><?php _e('Overall statistics since start', 'iq-block-country'); ?></h3>
 
 <?php                     $blocked = get_option('blockcountry_backendnrblocks'); ?>
-<p><?php echo $blocked; ?> <?php _e('visitors blocked from the backend.', 'iq-block-country'); ?></p>
+<p><?php echo number_format($blocked); ?> <?php _e('visitors blocked from the backend.', 'iq-block-country'); ?></p>
 <?php                     $blocked = get_option('blockcountry_frontendnrblocks'); ?>
-<p><?php echo $blocked; ?> <?php _e('visitors blocked from the frontend.', 'iq-block-country'); ?></p>
+<p><?php echo number_format($blocked); ?> <?php _e('visitors blocked from the frontend.', 'iq-block-country'); ?></p>
 
-<hr />
-
-<h3><?php _e('Basic Options', 'iq-block-country'); ?></h3>
-        
 <form method="post" action="options.php">
     <?php
 	settings_fields ( 'iqblockcountry-settings-group' );
@@ -1139,27 +1152,16 @@ if (is_file(IPV4DBFILE))    {
 	}
 	if (class_exists('GeoIP'))
 	{
-		
             $countrylist = iqblockcountry_get_countries();
-
-//            $ip_address = iqblockcountry_get_ipaddress();
-//            $country = iqblockcountry_check_ipaddress($ip_address);
-//            if ($country == "Unknown" || $country == "ipv6" || $country == "" || $country == "FALSE")
-//            { $displaycountry = "Unknown"; }
-//            else { $displaycountry = $countrylist[$country]; }
-            
-            
 	?>
 
-            <script language="javascript" type="text/javascript" src=<?php echo "\"" . CHOSENJS . "\""?>></script>
             <link rel="stylesheet" href=<?php echo "\"" . CHOSENCSS . "\""?> type="text/css" />
-            <script>
-                        jQuery(document).ready(function(){
-			jQuery(".chosen").data("placeholder","Select country...").chosen();
-                       });
-            </script>
-    
 
+            <hr>
+            <h3><?php _e('Block type', 'iq-block-country'); ?></h3>
+            <em>
+            <?php _e('You should choose one of the 3 block options below. This wil either show a block message, redirect to an internal page or redirect to an external page.', 'iq-block-country'); ?>
+            </em>
             <table class="form-table" cellspacing="2" cellpadding="5" width="100%">    	    
 
             <tr valign="top">
@@ -1202,7 +1204,11 @@ if (is_file(IPV4DBFILE))    {
             <td width="70%">
                   <input type="text" style="width:100%" name="blockcountry_redirect_url" value="<?php echo get_option ( 'blockcountry_redirect_url' );?>">
             </td></tr>
+            </table>
+            <hr>
+            <h3><?php _e('General settings', 'iq-block-country'); ?></h3>
             
+            <table class="form-table" cellspacing="2" cellpadding="5" width="100%">    	    
             <tr valign="top">
     	    <th width="30%"><?php _e('Send headers when user is blocked:', 'iq-block-country'); ?><br />
                 <em><?php _e('Under normal circumstances you should keep this selected! Only if you have "Cannot modify header information - headers already sent" errors or if you know what you are doing uncheck this.', 'iq-block-country'); ?></em></th>
@@ -1273,14 +1279,7 @@ if (is_file(IPV4DBFILE))    {
     	    <td width="70%">
                 <input type="text" size="25" name="blockcountry_apikey" value="<?php echo get_option ( 'blockcountry_apikey' );?>">
     	    </td></tr>
-<!--
-    	    <tr valign="top">
-    	    <th width="30%"><?php _e('Log all visits to the backend:', 'iq-block-country'); ?><br />
-                <em><?php _e('This logs all visits to the backend despite if they are blocked or not. This is mainly for debugging purposes.', 'iq-block-country'); ?></em></th>
-    	    <td width="70%">
-    	    	<input type="checkbox" name="blockcountry_backendlogging" <?php checked('on', get_option('blockcountry_backendlogging'), true); ?> />
-    	    </td></tr>
--->        
+
 
     	    <tr valign="top">
     	    <th width="30%"><?php _e('Accessibility options:', 'iq-block-country'); ?><br />
@@ -1288,6 +1287,14 @@ if (is_file(IPV4DBFILE))    {
     	    <td width="70%">
     	    	<input type="checkbox" name="blockcountry_accessibility" <?php checked('on', get_option('blockcountry_accessibility'), true); ?> />
     	    </td></tr>
+
+            <tr valign="top">
+    	    <th width="30%"><?php _e('Log all visits:', 'iq-block-country'); ?><br />
+                <em><?php _e('This logs all visits despite if they are blocked or not. This is only for debugging purposes.', 'iq-block-country'); ?></em></th>
+    	    <td width="70%">
+    	    	<input type="checkbox" name="blockcountry_debuglogging" <?php checked('on', get_option('blockcountry_debuglogging'), true); ?> />
+    	    </td></tr>
+            
             
             <tr><td></td><td>
 						<p class="submit"><input type="submit" class="button-primary"
@@ -1385,7 +1392,7 @@ function iqblockcountry_settings_logging()
 
         if ( isset($_POST['action']) && $_POST[ 'action' ] == 'cleardatabase') {
             if (!isset($_POST['cleardatabase_nonce'])) die("Failed security check.");
-            if (!wp_verify_nonce($_POST['cleardatabase_nonce'],'cleardatabase_nonce')) die("Is this a CSRF attempts?");
+            if (!wp_verify_nonce($_POST['cleardatabase_nonce'],'cleardatabase_nonce')) die("Is this a CSRF attempt?");
             global $wpdb;
             $table_name = $wpdb->prefix . "iqblock_logging";
             $sql = "TRUNCATE " . $table_name . ";";
@@ -1492,12 +1499,16 @@ function iqblockcountry_settings_page() {
         {
              iqblockcountry_settings_home();
         }
-        echo '<p>This product includes GeoLite data created by MaxMind, available from ';
-	echo '<a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.</p>';
-
-	echo '<p>If you like this plugin please link back to <a href="http://www.redeo.nl/">redeo.nl</a>! :-)</p>';
-
         
+        ?>
+        
+        <p>If you need assistance with this plugin please go to the <a href="https://www.webence.nl/support/">support forum</a></p>
+        
+        <p>This product uses GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.</p>
+
+        <p>If you like this plugin please link back to <a href="http://www.webence.nl/">www.webence.nl</a>! :-)</p>
+
+        <?php
 	
 }
 

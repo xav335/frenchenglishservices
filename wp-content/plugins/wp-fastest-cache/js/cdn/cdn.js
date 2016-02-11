@@ -31,6 +31,11 @@ var WpfcCDN = {
 			self.load_template(function(){
 				self.fill_integration_fields();
 				self.set_buttons_action();
+
+				if(self.id == "other"){
+					self.show_page("next");
+				}
+				
 			});
 		}
 	},
@@ -80,7 +85,7 @@ var WpfcCDN = {
 		jQuery.ajax({
 			type: 'POST',
 			dataType: "json",
-			url: self.ajax_url,
+			url: ajaxurl,
 			data : {"action": "wpfc_remove_cdn_integration_ajax_request"},
 		    success: function(res){
 		    	self.values = {};
@@ -109,7 +114,7 @@ var WpfcCDN = {
 		jQuery.ajax({
 			type: 'POST',
 			dataType: "json",
-			url: self.ajax_url,
+			url: ajaxurl,
 			data : {"action": "wpfc_save_cdn_integration_ajax_request", "values" : self.values, "file_types" : self.values.file_types},
 		    success: function(res){
 				jQuery("div[wpfc-cdn-name='" + self.id + "']").find(".connected").text("Connected");
@@ -190,19 +195,28 @@ var WpfcCDN = {
 
 	},
 	show_button: function(type){
-		jQuery(".wpfc-dialog-buttons[action='" + type + "']").show();
+		jQuery("#wpfc-modal-" + this.id + " .wpfc-dialog-buttons[action='" + type + "']").show();
 	},
 	hide_button: function(type){
-		jQuery(".wpfc-dialog-buttons[action='" + type + "']").hide();
+		jQuery("#wpfc-modal-" + this.id + " .wpfc-dialog-buttons[action='" + type + "']").hide();
 	},
 	load_template: function(callbak){
 		var self = this;
-		jQuery("#revert-loader-toolbar").show();
-		jQuery.get(self.template_url, function( data ) {
-			jQuery("#revert-loader-toolbar").hide();
-			jQuery("body").append(data);
-			Wpfc_Dialog.dialog("wpfc-modal-" + self.id);
-			callbak();
+
+		jQuery.ajax({
+			type: 'POST',
+			dataType: "json",
+			url: ajaxurl,
+			data : {"action": "wpfc_cdn_template_ajax_request", "id": self.id},
+		    success: function(res){
+		    	jQuery("body").append(res.content);
+		    	Wpfc_Dialog.dialog("wpfc-modal-" + self.id);
+		    	callbak();
+		    	jQuery("#revert-loader-toolbar").hide();
+		    },
+		    error: function(e) {
+		    	alert("CDN Template Error");
+		    }
 		});
 	}
 };

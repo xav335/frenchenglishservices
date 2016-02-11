@@ -31,20 +31,30 @@
 								if($minifiedJs){
 									if(!is_dir($minifiedJs["cachFilePath"])){
 										$prefix = time();
-										$this->wpfc->createFolder($minifiedJs["cachFilePath"], $minifiedJs["jsContent"], "js", $prefix);
+										$this->wpfc->createFolder($minifiedJs["cachFilePath"], $minifiedJs["jsContent"], "js", $prefix, true);
 									}
 
 									if($jsFiles = @scandir($minifiedJs["cachFilePath"], 1)){
+
+										$jsFiles[0] = preg_replace("/\.gz$/", "", $jsFiles[0]);
+
 										if($jsContent = $this->file_get_contents_curl($minifiedJs["url"]."/".$jsFiles[0]."?v=".time())){
-											$prev_content = $jsContent."\n".$prev_content;
 
-											$script_tag = "<!-- ".$script_tag." -->";
+											if(!preg_match("/use strict/i", $jsContent)){
+												$prev_content = $jsContent."\n".$prev_content;
 
-											if(($key + 1) == count($this->jsLinks)){
-												$this->mergeJs($prev_content, $value, true);
-												$prev_content = "";
+												$script_tag = "<!-- ".$script_tag." -->";
+
+												if(($key + 1) == count($this->jsLinks)){
+													$this->mergeJs($prev_content, $value, true);
+													$prev_content = "";
+												}else{
+													$this->html = substr_replace($this->html, $script_tag, $value["start"], ($value["end"] - $value["start"] + 1));
+												}
+
 											}else{
-												$this->html = substr_replace($this->html, $script_tag, $value["start"], ($value["end"] - $value["start"] + 1));
+												$this->mergeJs($prev_content, $this->jsLinks[$key - 1]);
+												$prev_content = "";
 											}
 										}
 									}
@@ -57,8 +67,10 @@
 								$prev_content = "";
 							}
 						}else{
-							$this->mergeJs($prev_content, $this->jsLinks[$key - 1]);
-							$prev_content = "";
+							if($key > 0 && $prev_content){
+								$this->mergeJs($prev_content, $this->jsLinks[$key - 1]);
+								$prev_content = "";
+							}
 						}
 					}else{
 						$this->mergeJs($prev_content, $this->jsLinks[$key - 1]);
@@ -157,17 +169,24 @@
 		}
 
 		public function checkInternal($link){
-			$httpHost = str_replace("www.", "", $_SERVER["HTTP_HOST"]); 
-			if(preg_match("/src=[\"\'](.*?)[\"\']/", $link, $src)){
+			$httpHost = str_replace("www.", "", $_SERVER["HTTP_HOST"]);
 
-				if(preg_match("/^\/[^\/]/", $src[1])){
-					return $src[1];
-				}
+			if(preg_match("/^<script[^\>]+\>/i", $link, $script)){
+				if(preg_match("/src=[\"\'](.*?)[\"\']/", $script[0], $src)){
+					if(preg_match("/alexa\.com\/site\_stats/i", $src[1])){
+						return false;
+					}
 
-				if(@strpos($src[1], $httpHost)){
-					return $src[1];
+					if(preg_match("/^\/[^\/]/", $src[1])){
+						return $src[1];
+					}
+
+					if(@strpos($src[1], $httpHost)){
+						return $src[1];
+					}
 				}
 			}
+			
 			return false;
 		}
 
@@ -181,6 +200,9 @@
 			}
 
 			if($jsFiles = @scandir($cachFilePath, 1)){
+
+				$jsFiles[0] = preg_replace("/\.gz$/", "", $jsFiles[0]);
+				
 				$prefixLink = str_replace(array("http:", "https:"), "", content_url());
 				$newLink = "<script src='".$prefixLink."/cache/wpfc-minified/".$name."/".$jsFiles[0]."' type=\"text/javascript\"></script>";
 

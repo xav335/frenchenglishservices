@@ -11,6 +11,7 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Plugin', false ) ):
 		public function run() {
 			parent::run();
 
+			$this->toggleForceOff();
 			$this->removePluginConflicts();
 
 			if ( $this->getIsOption( 'display_plugin_badge', 'Y' ) ) {
@@ -18,11 +19,32 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Plugin', false ) ):
 			}
 
 			add_action( 'widgets_init', array( $this, 'addPluginBadgeWidget' ) );
-
 			add_action( 'in_admin_footer', array( $this, 'printVisitorIpFooter' ) );
 
 			if ( $this->getController()->getIsValidAdminArea() ) {
 				$this->maintainPluginLoadPosition();
+			}
+		}
+
+		protected function toggleForceOff() {
+			$sForceOff = $this->loadDataProcessor()->FetchGet( 'shield_forceoff', '' );
+			if ( !empty( $sForceOff ) ) {
+				/** @var ICWP_WPSF_FeatureHandler_Plugin $oFO */
+				$oFO = $this->getFeatureOptions();
+				if ( $sForceOff == $oFO->getPluginInstallationId() ) {
+					$oFs = $this->loadFileSystemProcessor();
+					$sPath = $this->getController()->getRootDir() . 'forceOff';
+					if ( $oFO->getIfOverrideOff() ) {
+						$oFs->deleteFile( $sPath );
+					}
+					else {
+						$oFs->touch( $sPath );
+					}
+					$this->loadWpFunctionsProcessor()->redirectToAdmin();
+				}
+				else {
+					add_filter( $this->getFeatureOptions()->doPluginPrefix( 'ip_black_mark' ), '__return_true' );
+				}
 			}
 		}
 
@@ -57,7 +79,9 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Plugin', false ) ):
 		}
 
 		public function printVisitorIpFooter() {
-			echo sprintf( '<p><span>%s</span></p>', sprintf( _wpsf__( 'Your IP address is: %s' ), $this->human_ip() ) );
+			if ( apply_filters( 'icwp_wpsf_print_admin_ip_footer', true ) ) {
+				echo sprintf( '<p><span>%s</span></p>', sprintf( _wpsf__( 'Your IP address is: %s' ), $this->human_ip() ) );
+			}
 		}
 
 		/**

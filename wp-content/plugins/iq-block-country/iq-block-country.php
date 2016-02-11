@@ -1,10 +1,10 @@
 <?php   
 /*
 Plugin Name: iQ Block Country
-Plugin URI: http://www.redeo.nl/2013/12/iq-block-country-wordpress-plugin-blocks-countries/
-Version: 1.1.23
+Plugin URI: https://www.webence.nl/plugins/iq-block-country-the-wordpress-plugin-that-blocks-countries-for-you/
+Version: 1.1.27
 Author: Pascal
-Author URI: http://www.redeo.nl/
+Author URI: http://www.webence.nl/
 Description: Block visitors from visiting your website and backend website based on which country their IP address is from. The Maxmind GeoIP lite database is used for looking up from which country an ip address is from.
 License: GPL2
 Text Domain: iq-block-country
@@ -13,7 +13,7 @@ Domain Path: /lang
 
 /* This script uses GeoLite Country from MaxMind (http://www.maxmind.com) which is available under terms of GPL/LGPL */
 
-/*  Copyright 2010-2015  Pascal  (email : pascal@redeo.nl)
+/*  Copyright 2010-2016  Pascal  (email : pascal@webence.nl)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
@@ -115,21 +115,40 @@ function iqblockcountry_get_countries()
  */
 function iqblockcountry_get_ipaddress() {
     global $ip_address;
+
     
-    if ( isset($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['REMOTE_ADDR']) ) {
-    $ip_address = $_SERVER['REMOTE_ADDR'];
+    if ( isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']) ) {
+    $ip_address = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    }
+    elseif ( isset($_SERVER['HTTP_X_SUCURI_CLIENTIP']) && !empty($_SERVER['HTTP_X_SUCURI_CLIENTIP']) ) {
+    $ip_address = $_SERVER['HTTP_X_SUCURI_CLIENTIP'];
+    }
+    elseif ( isset($_SERVER['HTTP_INCAP_CLIENT_IP']) && !empty($_SERVER['HTTP_INCAP_CLIENT_IP']) ) {
+    $ip_address = $_SERVER['HTTP_INCAP_CLIENT_IP'];
     }
     elseif ( isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ) {
-    $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-    $ip_address = trim($ips[0]);
-    } elseif ( isset($_SERVER['HTTP_X_REAL_IP']) && !empty($_SERVER['HTTP_X_REAL_IP']) ) {
-    $ip_address = $_SERVER['HTTP_X_REAL_IP'];
-    } elseif ( isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']) ) {
-    $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif ( isset($_SERVER['HTTP_X_TM_REMOTE_ADDR']) && !empty($_SERVER['HTTP_X_TM_REMOTE_ADDR']) ) {
-    $ip_address = $_SERVER['HTTP_X_TM_REMOTE_ADDR'];
+    $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } 
+    elseif ( isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED']) ) {
+    $ip_address = $_SERVER['HTTP_X_FORWARDED'];
     }
-    
+    elseif ( isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']) ) {
+    $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif ( isset($_SERVER['HTTP_X_REAL_IP']) && !empty($_SERVER['HTTP_X_REAL_IP']) ) {
+    $ip_address = $_SERVER['HTTP_X_REAL_IP'];
+    } 
+    elseif ( isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED']) ) {
+    $ip_address = $_SERVER['HTTP_FORWARDED'];
+    }
+    elseif ( isset($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['REMOTE_ADDR']) ) {
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    }
+
+    // Get first ip if ip_address contains multiple addresses
+    $ips = explode(',', $ip_address);
+    $ip_address = trim($ips[0]);
+
     return $ip_address;
 }
 
@@ -196,8 +215,9 @@ function iqblockcountry_upgrade()
  * Main plugin works.
  */
 $upload_dir = wp_upload_dir();
-define("CHOSENJS", plugins_url('/chosen.jquery.js', __FILE__));
+define("CHOSENJS", plugins_url('/js/chosen.jquery.js', __FILE__));
 define("CHOSENCSS", plugins_url('/chosen.css', __FILE__));
+define("CHOSENCUSTOM",plugins_url('/js/chosen.custom.js', __FILE__));
 define("IPV6DB","http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz"); // Used to display download location.
 define("IPV4DB","http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"); // Used to display download location.
 define("IPV4DBFILE",$upload_dir['basedir'] . "/GeoIP.dat");
@@ -208,7 +228,7 @@ define("GEOIPAPIURL","http://geoip.webence.nl/geoipapi.php");
 define("GEOIPAPIURLUS","http://us.geoip.webence.nl/geoipapi.php");
 define("GEOIPAPICHECKURL","http://geoip.webence.nl/geoipapi-keycheck.php");
 define("ADMINAPICHECKURL","http://tracking.webence.nl/adminapi-keycheck.php");
-define("VERSION","1.1.22");
+define("VERSION","1.1.27");
 define("DBVERSION","121");
 define("PLUGINPATH",plugin_dir_path( __FILE__ )); 
 
@@ -227,7 +247,9 @@ require_once('libs/blockcountry-search-engines.php');
 global $apiblacklist;
 $apiblacklist = FALSE;
 $backendblacklistcheck = FALSE;
+
 $blockcountry_is_login_page = iqblockcountry_is_login_page();
+$blockcountry_is_xmlrpc = iqblockcountry_is_xmlrpc();
 
 register_activation_hook(__file__, 'iqblockcountry_this_plugin_first');
 register_activation_hook(__file__, 'iqblockcountry_set_defaults');
@@ -265,19 +287,36 @@ if (isset($_POST['action']))
     }
 }
 
+    $ip_address = iqblockcountry_get_ipaddress();
+    $country = iqblockcountry_check_ipaddress($ip_address);
+    iqblockcountry_debug_logging($ip_address,$country,'');
+
+function iq_add_my_scripts() {
+    // Scripts
+    wp_enqueue_script( 'chosen', CHOSENJS, array( 'jquery' ), false, true );
+    wp_enqueue_script( 'custom', CHOSENCUSTOM, array( 'jquery', 'chosen' ), false, true );
+}
+
+add_action( 'admin_enqueue_scripts', 'iq_add_my_scripts' );    
+    
+
   /*
  * Check first if users want to block the backend.
  */
-if (($blockcountry_is_login_page || is_admin()) && get_option('blockcountry_blockbackend'))
+if (($blockcountry_is_login_page || is_admin() || $blockcountry_is_xmlrpc) && get_option('blockcountry_blockbackend') == 'on')
 {
-    add_action ( 'login_head', 'iqblockcountry_checkCountry', 1 );
+    add_action ( 'init', 'iqblockcountry_checkCountry', 1 );
 }
-/*
- * Check first if users want to block the frontend.
- */
-if (get_option('blockcountry_blockfrontend') == "on")
+elseif (get_option('blockcountry_blockfrontend') == "on")
 {
     add_action ( 'wp_head', 'iqblockcountry_checkCountry', 1 );
+}
+else
+{
+    $ip_address = iqblockcountry_get_ipaddress();
+    $country = iqblockcountry_check_ipaddress($ip_address);
+    iqblockcountry_debug_logging($ip_address,$country,'NH');
+
 }
 
 add_action ( 'admin_init', 'iqblockcountry_localization');
@@ -287,8 +326,8 @@ add_filter ( 'add_option_blockcountry_tracking', 'iqblockcountry_schedule_tracki
 add_filter ( 'update_option_blockcountry_apikey', 'iqblockcountry_schedule_retrieving', 10, 2);
 add_filter ( 'add_option_blockcountry_apikey', 'iqblockcountry_schedule_retrieving', 10, 2);
 
-//add_filter ( 'update_option_blockcountry_backendlogging', 'iqblockcountry_blockcountry_backendlogging', 10, 2);
-//add_filter ( 'add_option_blockcountry_backendlogging', 'iqblockcountry_blockcountry_backendlogging', 10, 2);
+add_filter ( 'update_option_blockcountry_debuglogging', 'iqblockcountry_blockcountry_debuglogging', 10, 2);
+add_filter ( 'add_option_blockcountry_debuglogging', 'iqblockcountry_blockcountry_debuglogging', 10, 2);
 add_action ( 'blockcountry_tracking', 'iqblockcountry_tracking' );
 add_action ( 'blockcountry_retrievebanlist',  'iqblockcountry_tracking_retrieve_xml');
 if (get_option('blockcountry_buffer') == "on")
@@ -296,7 +335,6 @@ if (get_option('blockcountry_buffer') == "on")
     add_action ( 'init', 'iqblockcountry_buffer',1);
     add_action ( 'wp_footer', 'iqblockcountry_buffer_flush');
 }
-
 
 
 ?>

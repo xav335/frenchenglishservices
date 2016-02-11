@@ -1,37 +1,50 @@
 === iQ Block Country ===
 Contributors: iqpascal
-Donate link: http://www.redeo.nl/plugins/donate
-Tags: spam, block, countries, country, comments, ban, geo, geo blocking, geo ip, block country, block countries, ban countries, ban country, blacklist, whitelist
+Donate link: https://www.webence.nl/plugins/donate
+Tags: spam, block, country, comments, ban, geo, geo blocking, geo ip, block country, block countries, ban countries, ban country, blacklist, whitelist, security
 Requires at least: 3.5.2
-Tested up to: 4.3
-Stable tag: 1.1.23
+Tested up to: 4.4.1
+Stable tag: 1.1.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Block visitors from countries you don't want on your website. Based on which country your visitor is from.
+Allow or disallow visitors from certain countries accessing (parts of) your website
+
 
 == Description ==
 
-If you want to block people from certain (obscure) countries that have no business visiting your
-blog and perhaps only leave spam comments or other harmful actions than this is the plugin for you.
+iQ Block Country is a plugin that allows you to limit access to your website content.
+You can either allow or disallow visitors from defined countries to (parts of) your content.
 
-Choose which countries you want to ban from visiting your blog. Any visitors from that country get 
-a HTTP/403 error with the standard message "Forbidden - Users from your country are not permitted 
-to browse this site." The message is customizable an can be styled with CSS.
+For instance if you have content that should be restricted to a limited set of countries you can do so.
+If you want to block rogue countries that cause issues like for instance hack attempts, spamming of your comments etc
+you can block them as well.
 
-If you only want to block other countries from visiting your backend (administrator) website than this plugin is also something for you.
+Do you want secure your WordPress Admin backend site to only your country? Entirely possible! You can even
+block all countries and only allow your ip address.
 
-If you want to block users from both your frontend website as well as your backend website than this plugin is really something for you!
+And even if you block a country you can still allow certain visitors by whitelisting their ip address just
+like you can allow a country but blacklist ip addresses from that country.
 
-Users that are blocked will not be able to do harmful things to your blog like post comment spam.
+You can show blocked visitors a message which you can style by using CSS or you can redirect them to a page 
+within your WordPress site. Or you can redirect the visitors to an external website.
 
-You can block all visitors from a certain country accessing your site but you can also limit access to some pages, or some blog categories.
+You can (dis)allow visitors to blog articles, blog categories or pages or all content.
+
+Stop visitors from doing harmful things on your WordPress site or limit the countries that can access your
+blog. Add an additional layer of security to your WordPress site.
 
 This plugin uses the GeoLite database from Maxmind. It has a 99.5% accuracy so that is pretty good for a free database. If you need higher accuracy you can buy a license from MaxMind directly.
 If you cannot or do not want to download the GeoIP database from Maxmind you can use the GeoIP API website available on http://geoip.webence.nl/
 
 If you want to use the GeoLite database from Maxmind you will have to download the GeoIP database from MaxMind directly and upload it to your site.
 The Wordpress license does not allow this plugin to download the MaxMind Geo database for you.
+
+= Using this plugin with a caching plugin =
+
+ Please note that many of the caching plugins are not compatible with this plugin. The nature of caching is that a dynamically build web page is cached into a static page.
+ If a visitor is blocked this plugin sends header data where it supplies info that the page should not be cached. Many plugins however disregard this info and cache the
+ page or the redirect. Resulting in valid visitors receiving a message that they are blocked. This is not a malfunction of this plugin.
 
 == Installation ==
 
@@ -45,14 +58,6 @@ The Wordpress license does not allow this plugin to download the MaxMind Geo dat
 8. Go to the settings page and choose which countries you want to ban. Use the ctrl key to select multiple countries
 
 == Frequently Asked Questions ==
-
-= Why is the GeoLite database not downloaded anymore ? =
-
-The Wordpress guys have contacted me that the license of the MaxMind GeoLite database and the Wordpress license conflicted. So it was no longer
-allowed to include the GeoLite database or provide an automatic download or download button. Instead users should download the database themselves
-and upload them to the website.
-
-Wordpress could be held liable for any license issue. So that is why the auto download en update was removed from this plugin.
 
 = How come that I still see visitors from countries that I blocked in Statpress or other statistics software? =
 
@@ -112,11 +117,19 @@ you basicly can use everything as within a normal HTML page. Including images fo
 
 = Does this plugin also work with IPv6? =
 
-Since v1.0.7 this plugin supports IPv6. But as IPv6 is still scarce it may not work as well as IPv4. 
-Some IPv6 blocks may not be in the right country in the MaxMind database.
+Since v1.0.7 this plugin supports IPv6. IPv6 IP addresses are more and more used because there are no new IPv4 IP addresses anymore.
 
-There are no guarantees blocking IPv6 works but as far as I was able to test IPv6 blocking it
-works just fine.
+If your webhosting company supplies your with both IPv4 and IPv6 ip addresses please also download the GeoIPv6 database or use the GeoIP API service.
+
+If your webhosting company does not supply an IPv6 IP address yet please ask them when they are planning to.
+
+= Why is the GeoLite database not downloaded anymore ? =
+
+The Wordpress guys have contacted me that the license of the MaxMind GeoLite database and the Wordpress license conflicted. So it was no longer
+allowed to include the GeoLite database or provide an automatic download or download button. Instead users should download the database themselves
+and upload them to the website.
+
+Wordpress could be held liable for any license issue. So that is why the auto download en update was removed from this plugin.
 
 = Does this plugin work with caching? =
 
@@ -132,6 +145,8 @@ Either change the behavior of your caching software or disable the plugin.
 You can press the CTRL key and select several countries.
 
 Perhaps also a handy function is that you can type in a part of the name of the country!
+
+You can select/deselect all countries by selecting "(de)select all countries..."
 
 If you just want to allow some countries you can also use the invert function by selecting the countries you want to allow and select invert this selection.
 
@@ -159,7 +174,6 @@ If you select this option each hour the plugin checks if it has new data to send
 This data consists of each IP address that has tried to login to your backend and how many attempts were made since the last check.
 
 Goal of this feature is to check if we can create a user-driven database of rogue IP addresses that try to login to the backend.
-If this is viable in a future version this database can be used to block these rogue users despite the country they come from.
 
 If storing or sharing an IP address is illegal in your country do not select this feature.
 
@@ -167,7 +181,41 @@ If storing or sharing an IP address is illegal in your country do not select thi
 
 You can select the option on the home tab "Do not log IP addresses" to stop iQ Block Country from logging IP addresses. This will however also break the statistics.
 
+= I have moved my WordPress site to another host. Now iQ Block Country cannot find the GeoIP databases anymore =
+
+Somewhere in your WordPress database there is a wp_options table. In the wp_options table is an option_name called 'upload_path'.
+
+There probably is an (old) path set as option_value. If you know your way around MySQL (via PHPMyAdmin for instance) you can empty the option_value.
+This should fix your problem.
+
+Please note that your wp_options table may be called differently depending on your installation choices.
+
+
 == Changelog ==
+
+= 1.1.27 =
+
+* Bugfix: Fixed small bug
+
+= 1.1.26 =
+
+* New: xmlrpc.php is now handled the same way as other backend pages.
+* Change: Updated chosen library to latest version.
+* Change: Added a (de)select all countries to the backend en frontend country list.
+* Change: Changed order of how the plugin detects the ip address.
+* Change: Added detection of more header info that can contain the proper ip address
+* New: Added support forum to the site.
+* Change: Added download urls on database is too old message.
+
+= 1.1.25 =
+
+* Bugfix: Altered checking for Simple Security Firewall
+
+= 1.1.24 =
+
+* New: Added support for Lockdown WordPress Admin
+* New: Added support for WordPress Security Firewall (Simple Security Firewall)
+* Change: Various small changes
 
 = 1.1.23 =
 
@@ -307,68 +355,6 @@ You can select the option on the home tab "Do not log IP addresses" to stop iQ B
 * You can view the top 15 of countries that were blocked in the past 30 days.
 * You can view the top 15 of hosts that were blocked in the past 30 days.
 * You can view the top URL's that were most blocked in the past 30 days.
-
-= 1.0.12 =
-
-* The block message size box is now larger so there is more room for styling the message.
-* Whitelist of IPvX IP addresses for the frontend. Use a semicolon to separate IP addresses.
-* Blacklist of IPvX IP addresses for the frontend. Use a semicolon to separate IP addresses.
-
-= 1.0.11 =
-
-* You are now able to lookup which country belongs to an ip address in the backend. If the IP address is from a country that is banned this will be displayed.
-* New way of selecting countries you wish to block upon multiple request. The selection box is now in sort of facebook style.
-* Choose if you want to sent out headers or not. For people who get "Cannot modify header information - headers already sent" errors.
-* Counter added for how many visitors where blocked from frontend and backend website.
-* Code cleanup
-
-= 1.0.10 =
-
-* You can select different countries to block from your frontend website and your backend website.
-* Made it more visible what IP you are logged in from, which country it is from and that you should not block your own country from your backend site.
-* Minor changes to the settings page.
-* A bit of code cleanup for future improvements.
-
-= 1.0.9 =
-
-* Bugfix release. The backend was not blocked in multi-site (network) setup.
-
-= 1.0.8 =
-* Automatically download new GeoIP updates from Maxmind. This is checked each time you login on the Wordpress admin site (Code by williewonka)
-* Also block login attempts to the wp-admin site (Code by williewonka)
-* Send no cache headers with the output.
-
-= 1.0.7 =
-* The plugin now detects if your IP address is blocked by MaxMind when downloading the GeoIP database and if so has an adjusted error message.
-* New option: New checkbox to allow you to not block users that are logged in despite if they come from a blocked country. Use wisely :-)
-* First version of IPv6 support.
-* New Download IPv6 database button. Press "Download new GeoIP IPv6 database" if you need IPv6 support.
-
-= 1.0.6 =
-* Fixed error when not being able to download the GeoIP.dat.gz file from Maxmind it would not display the correct path.
-
-= 1.0.5 =
-* Corrected php opening tags (Reported by Phil from msiii.net)
-* Sorted list of countries (As suggested by Phil from msiii.net)
-* You can now customize the message that users get when they are blocked.
-* We moved from http://www.trinyx.nl/ to http://www.redeo.nl/. Please update your links :-)
-
-= 1.0.4 =
-* Added a button to download the new GeoIP database.
-
-= 1.0.3 =
-* FAQ updated
-* Try to make sure this plugin is loaded first to avoid "headers already sent" trouble.
-
-= 1.0.2 =
-* PHP 5.2 or higher required
-* Fixed an include bug when other plugins also use the MaxMind database. Thanks to Marcus from LunaWorX for finding this bug.
-
-= 1.0.1 =
-* Included the necessary geoip.inc file.. *duh*
-
-= 1.0 =
-* Initial release
 
 == Upgrade Notice ==
 

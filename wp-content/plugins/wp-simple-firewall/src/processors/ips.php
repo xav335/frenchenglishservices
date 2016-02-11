@@ -1,10 +1,10 @@
 <?php
 
-if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
+if ( !class_exists( 'ICWP_WPSF_Processor_Ips', false ) ):
 
 	require_once( dirname(__FILE__).ICWP_DS.'basedb.php' );
 
-	class ICWP_WPSF_Processor_Ips_V1 extends ICWP_WPSF_BaseDbProcessor {
+	class ICWP_WPSF_Processor_Ips extends ICWP_WPSF_BaseDbProcessor {
 
 		const LIST_MANUAL_WHITE =	'MW';
 		const LIST_MANUAL_BLACK =	'MB';
@@ -37,19 +37,17 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 
 			$this->processBlacklist();
 
+			// We add text of the current number of transgressions remaining in the Firewall die message
 			if ( $oFO->getIsAutoBlackListFeatureEnabled() ) {
-				// We add text of the current number of transgressions remaining in the Firewall die message
 				add_filter( $oFO->doPluginPrefix( 'firewall_die_message' ), array( $this, 'fAugmentFirewallDieMessage' ) );
 			}
+
+			add_action( $oFO->doPluginPrefix( 'pre_plugin_shutdown' ), array( $this, 'action_blackMarkIp' ) );
+			add_action( 'wp_login_failed', array( $this, 'doBlackMarkIp' ), 10, 0 );
 		}
 
-		public function action_doFeatureProcessorShutdown () {
-			/** @var ICWP_WPSF_FeatureHandler_Ips $oFO */
-			$oFO = $this->getFeatureOptions();
-
-			if ( ! $oFO->getIsPluginDeleting() ) {
-				$this->blackMarkCurrentVisitor();
-			}
+		public function doBlackMarkIp() {
+			add_filter( $this->getFeatureOptions()->doPluginPrefix( 'ip_black_mark' ), '__return_true' );
 		}
 
 		/**
@@ -106,12 +104,15 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 		}
 
 		/**
-		 * @param string $sCurrentMessage
+		 * @param array $aMessages
 		 * @return string
 		 */
-		public function fAugmentFirewallDieMessage( $sCurrentMessage ) {
-			$sCurrentMessage .= sprintf( '<p>%s</p>', $this->getTextOfRemainingTransgressions() );
-			return $sCurrentMessage;
+		public function fAugmentFirewallDieMessage( $aMessages ) {
+			if ( !is_array( $aMessages ) ) {
+				$aMessages = array();
+			}
+			$aMessages[] = sprintf( '<p>%s</p>', $this->getTextOfRemainingTransgressions() );
+			return $aMessages;
 		}
 
 		/**
@@ -207,44 +208,30 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 
 			// Manual black list first.
 			$bKill = false;
-//			$bKill = $this->getIsIpOnManualBlackList( $sIp ); // TODO: Not currently implemented
 
 			// now try auto black list
 			if ( !$bKill && $oFO->getIsAutoBlackListFeatureEnabled() ) {
 				$bKill = $this->getIsIpAutoBlackListed( $sIp );
-				if ( $bKill ) {
-					$this->query_updateLastAccessForAutoBlackListIp( $sIp );
-				}
 			}
 
 			if ( $bKill ) {
 				$sAuditMessage = sprintf( _wpsf__( 'Visitor was found to be on the Black List with IP address "%s" and their connection was killed.' ), $sIp );
 				$this->addToAuditEntry( $sAuditMessage, 3, 'black_list_connection_killed' );
 
-				$this->loadWpFunctionsProcessor()->wpDie(
-					'<h3>'.sprintf( _wpsf__( 'You have been black listed by the %s plugin.' ),
-						'<a href="https://wordpress.org/plugins/wp-simple-firewall/" target="_blank">'.$this->getController()->getHumanName().'</a>'
-					).'</h3>'
-					.'<br />'.sprintf( _wpsf__( 'You tripped the security plugin defenses a total of %s times making you a suspect.' ), $oFO->getTransgressionLimit() )
-					.'<br />'.sprintf( _wpsf__( 'If you believe this to be in error, please contact the site owner.' ) )
-					.'<p><a href="http://icwp.io/6i" target="_blank">'._wpsf__( 'Click here if you are the site owner.' ).'</a></p>'
-				);
-			}
-		}
+				$this->query_updateLastAccessForAutoBlackListIp( $sIp );
 
-		/**
-		 * @return boolean
-		 */
-		public function action_blackMarkIp() {
-
-			// Never black mark IPs that are on the whitelist
-			if ( $this->getIsVisitorWhitelisted() ) {
-				return;
-			}
-
-			$bDoBlackMark = apply_filters( $this->getFeatureOptions()->doPluginPrefix( 'ip_black_mark' ), false );
-			if ( $bDoBlackMark ) {
-				$this->blackMarkIp( $this->human_ip() );
+				$this->loadWpFunctionsProcessor()
+					->wpDie(
+						'<h3>'.sprintf( _wpsf__( 'You have been black listed by the %s plugin.' ),
+							'<a href="https://wordpress.org/plugins/wp-simple-firewall/" target="_blank">'.$this->getController()->getHumanName().'</a>'
+						).'</h3>'
+						.'<br />'.sprintf( _wpsf__( 'You tripped the security plugin defenses a total of %s times making you a suspect.' ), $oFO->getTransgressionLimit() )
+						.'<br />'.sprintf( _wpsf__( 'If you believe this to be in error, please contact the site owner.' ) )
+						.'<p>'.sprintf( _wpsf__( 'Time remaining until you are automatically removed from the black list: %s minute(s)' ), floor( $oFO->getAutoExpireTime() / 60 ) )
+						.'<br />'._wpsf__( 'If you attempt to access the site within this period the counter will be reset.' )
+						.'</p>'
+						.'<p><a href="http://icwp.io/6i" target="_blank">'._wpsf__( 'Click here if you are the site owner.' ).'</a></p>'
+					);
 			}
 		}
 
@@ -256,13 +243,20 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 		}
 
 		/**
+		 * @return boolean
+		 */
+		public function action_blackMarkIp() {
+			$this->blackMarkCurrentVisitor();
+		}
+
+		/**
 		 */
 		protected function blackMarkCurrentVisitor() {
 			/** @var ICWP_WPSF_FeatureHandler_Ips $oFO */
 			$oFO = $this->getFeatureOptions();
 
 			// Never black mark IPs that are on the whitelist
-			if ( !$oFO->getIsAutoBlackListFeatureEnabled() || $this->getIsVisitorWhitelisted() ) {
+			if ( $oFO->getIsPluginDeleting() || !$oFO->getIsAutoBlackListFeatureEnabled() || $this->getIsVisitorWhitelisted() ) {
 				return;
 			}
 
@@ -461,7 +455,7 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 			$aNewData[ 'list' ]				= self::LIST_MANUAL_WHITE;
 			$aNewData[ 'ip6' ]				= $this->loadDataProcessor()->getIpAddressVersion( $sIp ) == 6;
 			$aNewData[ 'transgressions' ]	= 0;
-			$aNewData[ 'range' ]			= strpos( $sIp, '/' );
+			$aNewData[ 'is_range' ]			= strpos( $sIp, '/' ) !== false;
 			$aNewData[ 'last_access_at' ]	= 0;
 			$aNewData[ 'created_at' ]		= $this->time();
 
@@ -485,7 +479,7 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 			$aNewData[ 'list' ]				= self::LIST_AUTO_BLACK;
 			$aNewData[ 'ip6' ]				= $this->loadDataProcessor()->getIpAddressVersion( $sIp ) == 6;
 			$aNewData[ 'transgressions' ]	= 1;
-			$aNewData[ 'range' ]			= 0;
+			$aNewData[ 'is_range' ]			= 0;
 			$aNewData[ 'last_access_at' ]	= $this->time();
 			$aNewData[ 'created_at' ]		= $this->time();
 
@@ -637,27 +631,27 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 		 * @return string
 		 */
 		public function getCreateTableSql() {
-			$sSqlTables = "CREATE TABLE IF NOT EXISTS `%s` (
-				`id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`ip` varchar(40) NOT NULL DEFAULT '',
-				`label` varchar(255) NOT NULL DEFAULT '',
-				`list` varchar(4) NOT NULL DEFAULT '',
-				`ip6` TINYINT(1) NOT NULL DEFAULT 0,
-				`range` TINYINT(1) NOT NULL DEFAULT 0,
-				`transgressions` TINYINT(2) UNSIGNED NOT NULL DEFAULT '0',
-				`last_access_at` INT(15) UNSIGNED NOT NULL DEFAULT '0',
-				`created_at` INT(15) UNSIGNED NOT NULL DEFAULT '0',
-				`deleted_at` INT(15) UNSIGNED NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			return sprintf( $sSqlTables, $this->getTableName() );
+			$sSqlTables = "CREATE TABLE %s (
+				id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				ip varchar(40) NOT NULL DEFAULT '',
+				label varchar(255) NOT NULL DEFAULT '',
+				list varchar(4) NOT NULL DEFAULT '',
+				ip6 tinyint(1) NOT NULL DEFAULT 0,
+				is_range tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+				transgressions tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+				last_access_at int(15) UNSIGNED NOT NULL DEFAULT 0,
+				created_at int(15) UNSIGNED NOT NULL DEFAULT 0,
+				deleted_at int(15) UNSIGNED NOT NULL DEFAULT 0,
+				PRIMARY KEY  (id)
+			) %s;";
+			return sprintf( $sSqlTables, $this->getTableName(), $this->loadDbProcessor()->getCharCollate() );
 		}
 
 		/**
 		 * @return array
 		 */
 		protected function getTableColumnsByDefinition() {
-			return $this->getOption( 'ip_list_table_columns' );
+			return $this->getFeatureOptions()->getOptionsVo()->getOptDefault( 'ip_list_table_columns' );
 		}
 
 		/**
@@ -696,8 +690,4 @@ if ( !class_exists( 'ICWP_WPSF_Processor_Ips_V1', false ) ):
 		}
 	}
 
-endif;
-
-if ( !class_exists( 'ICWP_WPSF_Processor_Ips', false ) ):
-	class ICWP_WPSF_Processor_Ips extends ICWP_WPSF_Processor_Ips_V1 { }
 endif;

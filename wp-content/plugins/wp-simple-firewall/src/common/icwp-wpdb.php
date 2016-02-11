@@ -1,20 +1,4 @@
 <?php
-/**
- * Copyright (c) 2015 iControlWP <support@icontrolwp.com>
- * All rights reserved.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 if ( !class_exists( 'ICWP_WPSF_WpDb', false ) ):
 
 	class ICWP_WPSF_WpDb {
@@ -40,6 +24,15 @@ if ( !class_exists( 'ICWP_WPSF_WpDb', false ) ):
 		}
 
 		public function __construct() {}
+
+		/**
+		 * @param string $sSQL
+		 * @return array
+		 */
+		public function dbDelta( $sSQL ) {
+			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			return dbDelta( $sSQL );
+		}
 
 		/**
 		 * @param string $sTable
@@ -97,6 +90,10 @@ if ( !class_exists( 'ICWP_WPSF_WpDb', false ) ):
 			}
 			$sQuery = sprintf( 'TRUNCATE TABLE `%s`', $sTable );
 			return $this->doSql( $sQuery );
+		}
+
+		public function getCharCollate() {
+			return $this->getWpdb()->get_charset_collate();
 		}
 
 		/**

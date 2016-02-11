@@ -70,13 +70,6 @@ options:
     link_info: ''
     link_blog: ''
   -
-    key: 'ip_whitelist'
-    section: 'section_global_security_options'
-    default: ''
-    type: 'array'
-    link_info: ''
-    link_blog: ''
-  -
     key: 'block_send_email_address'
     section: 'section_general_plugin_options'
     default: ''
@@ -102,6 +95,13 @@ options:
     section: 'section_general_plugin_options'
     default: 'N'
     type: 'checkbox'
+    link_info: ''
+    link_blog: ''
+  -
+    key: 'unique_installation_id'
+    section: 'section_general_plugin_options'
+    default: ''
+    type: 'noneditable_text'
     link_info: ''
     link_blog: ''
   -
@@ -132,6 +132,9 @@ options:
         storage_key: 'firewall'
         load_priority: 13
       -
+        slug: 'hack_protect'
+        storage_key: 'hack_protect'
+      -
         slug: 'login_protect'
         storage_key: 'loginprotect'
       -
@@ -155,9 +158,6 @@ options:
         storage_key: 'audit_trail'
         load_priority: 11
         hidden: false
-      -
-        slug: 'hack_protect'
-        storage_key: 'hack_protect'
       -
         slug: 'email'
         storage_key: 'email'

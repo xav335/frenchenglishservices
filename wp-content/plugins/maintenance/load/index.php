@@ -1,10 +1,9 @@
 <?php 
-	$mess_arr = array();
-	$ebody_class = '';
+	$mess_arr 	 = array();
+	$ebody_class = null;
 	$mess_arr = get_custom_login_code(); 
 	if (!empty($mess_arr[0])) $ebody_class = 'error';
 	$mt_options = mt_get_plugin_options(true);
-	
 ?>
 <!DOCTYPE html>
 <!--[if IE 7]>
@@ -20,6 +19,10 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php get_page_title(esc_attr($mess_arr[0])); ?>
 	<meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1, initial-scale=1, minimum-scale=1">
+	<meta property="og:title" content="<?php bloginfo('name'); ?>"/>
+	<meta property="og:type" content="Maintenance"/>
+	<meta property="og:url" content="<?php echo site_url(); ?>"/>
+	<meta property="og:description" content="<?php bloginfo('description'); ?>"/>
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 	<?php do_action('load_custom_scripts'); ?>

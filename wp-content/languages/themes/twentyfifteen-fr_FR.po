@@ -2,13 +2,18 @@
 # This file is distributed under the same license as the Twenty Fifteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2015-05-06 15:54:09+0000\n"
+"PO-Revision-Date: 2015-07-09 15:04:32+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/1.0-alpha-1000\n"
+"X-Generator: GlotPress/1.0-alpha-1100\n"
 "Project-Id-Version: Twenty Fifteen\n"
+
+#. translators: %s: post title
+#: inc/template-tags.php:123
+msgid "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr "Laisser un commentaire<span class=\"screen-reader-text\"> sur %s</span>"
 
 #. Theme URI of the plugin/theme
 msgid "https://wordpress.org/themes/twentyfifteen/"
@@ -64,18 +69,6 @@ msgstr "Image suivante"
 msgid "Comment navigation"
 msgstr "Navigation des commentaires"
 
-#: inc/template-tags.php:122
-msgid "Leave a comment"
-msgstr "Laisser un commentaire"
-
-#: inc/template-tags.php:122
-msgid "1 Comment"
-msgstr "Un commentaire"
-
-#: inc/template-tags.php:122
-msgid "% Comments"
-msgstr "% commentaires"
-
 #: search.php:18
 msgid "Search Results for: %s"
 msgstr "Résultats de recherche pour %s"
@@ -88,19 +81,19 @@ msgstr "L&rsquo;équipe WordPress"
 msgid "Twenty Fifteen"
 msgstr "Twenty Fifteen"
 
-#: inc/customizer.php:125
+#: inc/customizer.php:146
 msgid "Pink"
 msgstr "Rose"
 
-#: inc/customizer.php:103
+#: inc/customizer.php:124
 msgid "Dark"
 msgstr "Foncé"
 
-#: inc/customizer.php:114
+#: inc/customizer.php:135
 msgid "Yellow"
 msgstr "Jaune"
 
-#: inc/customizer.php:92
+#: inc/customizer.php:113
 msgid "Default"
 msgstr "Par défaut"
 
@@ -108,11 +101,11 @@ msgstr "Par défaut"
 msgid "Featured"
 msgstr "Mise en avant"
 
-#: inc/customizer.php:147
+#: inc/customizer.php:168
 msgid "Blue"
 msgstr "Bleu"
 
-#: inc/customizer.php:136
+#: inc/customizer.php:157
 msgid "Purple"
 msgstr "Violet"
 
@@ -251,7 +244,7 @@ msgid "on"
 msgstr "on"
 
 #. translators: %s: Name of current post
-#: content-link.php:31 content.php:33 inc/template-tags.php:237
+#: content-link.php:31 content.php:33 inc/template-tags.php:238
 msgid "Continue reading %s"
 msgstr "Continuer la lecture de %s"
 
@@ -275,7 +268,7 @@ msgstr "Zone de widgets"
 msgid "Social Links Menu"
 msgstr "Menu des liens de réseaux sociaux"
 
-#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.2)  #-#-#-#-#
+#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 1.4)  #-#-#-#-#
 #. Author URI of the plugin/theme
 #: footer.php:25
 msgid "https://wordpress.org/"

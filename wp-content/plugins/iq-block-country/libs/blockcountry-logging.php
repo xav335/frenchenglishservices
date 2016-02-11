@@ -19,6 +19,7 @@ function iqblockcountry_install_db() {
    dbDelta( $sql );
 }
 
+
 function iqblockcountry_uninstall_db() {
    global $wpdb;
 
@@ -52,16 +53,17 @@ function iqblockcountry_update_db_check() {
 function iqblockcountry_install_loggingdb() {
    global $wpdb;
 
-   $table_name = $wpdb->prefix . "iqblock_logging_backend";
+   $table_name = $wpdb->prefix . "iqblock_debug_logging";
      
    $sql = "CREATE TABLE $table_name (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   datetime datetime NOT NULL,
   ipaddress tinytext NOT NULL,
+  type tinytext NOT NULL,
   country tinytext NOT NULL,
   url varchar(250) DEFAULT '/' NOT NULL,
-  banned enum('NH','WL') NOT NULL,
-  UNIQUE KEY id (id)
+  banned enum('NH','NB','FB','BB','AB','TB') NOT NULL,
+  PRIMARY KEY id (id)
 );";
 
    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -71,7 +73,7 @@ function iqblockcountry_install_loggingdb() {
 function iqblockcountry_uninstall_loggingdb() {
    global $wpdb;
 
-   $table_name = $wpdb->prefix . "iqblock_logging_backend";
+   $table_name = $wpdb->prefix . "iqblock_debug_logging";
       
    $sql = "DROP TABLE IF EXISTS `$table_name`;"; 
 
@@ -84,7 +86,7 @@ function iqblockcountry_clean_loggingdb()
 {
    global $wpdb;
 
-   $table_name = $wpdb->prefix . "iqblock_logging_db";
+   $table_name = $wpdb->prefix . "iqblock_debug_logging";
    $sql = "DELETE FROM " . $table_name . " WHERE DATE_SUB(CURDATE(),INTERVAL 14 DAY) >= datetime;";
    $wpdb->query($sql);
 }
@@ -92,7 +94,7 @@ function iqblockcountry_clean_loggingdb()
 /*
  * Schedule debug logging if this option was set in the admin panel
  */
-function iqblockcountry_blockcountry_backendlogging($old_value, $new_value)
+function iqblockcountry_blockcountry_debuglogging($old_value, $new_value)
 {
     if ($old_value !== $new_value)
     {
@@ -112,18 +114,22 @@ function iqblockcountry_logging($ipaddress,$country,$banend)
 {
     global $wpdb;
 
-    $urlRequested = (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '/' );
+    $urlRequested = (isset($_SERVER["REQUEST_URI"]) ? htmlspecialchars($_SERVER["REQUEST_URI"]) : '/' );
 
     $table_name = $wpdb->prefix . "iqblock_logging";
     $wpdb->insert($table_name,array ('datetime' => current_time('mysql'), 'ipaddress' => $ipaddress, 'country' => $country, 'banned' => $banend,'url' => $urlRequested));
 }
 
-function iqblockcountry_logging_backend($ipaddress,$country,$banend)
+function iqblockcountry_debug_logging($ipaddress,$country,$banend)
 {
-    global $wpdb;
+    if (get_option('blockcountry_debuglogging'))
+    {
+        global $wpdb;
 
-    $urlRequested = (isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : '/' );
+        $urlRequested = (isset($_SERVER["REQUEST_URI"]) ? htmlspecialchars($_SERVER["REQUEST_URI"]) : '/' );
+        $type = htmlspecialchars($_SERVER['REQUEST_METHOD']);
 
-    $table_name = $wpdb->prefix . "iqblock_logging_backend";
-    $wpdb->insert($table_name,array ('datetime' => current_time('mysql'), 'ipaddress' => $ipaddress, 'country' => $country, 'banned' => $banend,'url' => $urlRequested));
+        $table_name = $wpdb->prefix . "iqblock_debug_logging";
+        $wpdb->insert($table_name,array ('datetime' => current_time('mysql'), 'ipaddress' => $ipaddress, 'type' => $type, 'country' => $country, 'banned' => $banend,'url' => $urlRequested));
+    }
 }

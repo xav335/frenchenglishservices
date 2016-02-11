@@ -45,7 +45,7 @@
 						<h1>File Types</h1>		
 						<p>Specify the file types within the to host with the CDN.</p>
 						
-						<?php include "file_types.php"; ?> 
+						<?php include WPFC_MAIN_PATH."templates/cdn/file_types.php"; ?>
 					</div>
 					<div wpfc-cdn-page="4" class="wiz-cont" style="display:none">
 						<h1>Ready to Go!</h1>
@@ -61,7 +61,7 @@
 				</div>
 			</div>
 		</div>
-		<?php include "../buttons.html"; ?> 
+		<?php include WPFC_MAIN_PATH."templates/buttons.html"; ?>
 	</div>
 </div>
 

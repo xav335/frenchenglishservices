@@ -74,13 +74,6 @@ options:
     link_info: 'http://icwp.io/3t'
     link_blog: ''
   -
-    key: 'enable_two_factor_bypass_on_email_fail'
-    section: 'section_two_factor_authentication'
-    default: 'N'
-    type: 'checkbox'
-    link_info: ''
-    link_blog: ''
-  -
     key: 'two_factor_auth_user_roles'
     section: 'section_two_factor_authentication'
     type: 'multiple_select'
@@ -164,14 +157,6 @@ options:
     link_info: 'http://icwp.io/4h'
     link_blog: ''
   -
-    key: 'enable_login_protect_log'
-    section: 'section_login_logging'
-    hidden: true
-    default: 'N'
-    type: 'checkbox'
-    link_info: 'http://icwp.io/4h'
-    link_blog: ''
-  -
     key: 'current_plugin_version'
     section: 'section_non_ui'
   -
@@ -199,20 +184,17 @@ options:
     value: 'login_auth'
   -
     key: 'two_factor_auth_table_columns'
+    immutable: true
     section: 'section_non_ui'
     value:
       - 'id'
-      - 'unique_id'
+      - 'session_id'
       - 'wp_username'
       - 'ip'
       - 'pending'
       - 'expired_at'
       - 'created_at'
       - 'deleted_at'
-  -
-    key: 'two_factor_auth_cookie_name'
-    section: 'section_non_ui'
-    value: 'wpsf_auth'
   -
     key: 'two_factor_auth_table_created'
     section: 'section_non_ui'

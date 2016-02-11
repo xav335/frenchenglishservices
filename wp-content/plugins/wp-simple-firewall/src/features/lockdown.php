@@ -13,14 +13,6 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Lockdown', false ) ):
 		}
 
 		public function doPrePluginOptionsSave() {
-
-//		if ( $this->getOpt( 'action_reset_auth_salts' ) == 'Y' ) {
-//			$this->setOpt( 'action_reset_auth_salts', 'P' );
-//		}
-//		else if ( $this->getOpt( 'action_reset_auth_salts' ) == 'P' ) {
-//			$this->setOpt( 'action_reset_auth_salts', 'N' );
-//		}
-
 			$sCurrent = $this->getOpt( 'mask_wordpress_version' );
 			if ( !empty( $sCurrent ) ) {
 				$this->setOpt( 'mask_wordpress_version', preg_replace( '/[^a-z0-9_.-]/i', '', $sCurrent ) );
@@ -49,10 +41,10 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Lockdown', false ) ):
 				case 'section_system_lockdown' :
 					$sTitle = _wpsf__( 'WordPress System Lockdown' );
 					$aSummary = array(
-						sprintf( _wpsf__( 'Purpose - %s' ), _wpsf__( 'Lockdown certain core WordPress system feature.' ) ),
+						sprintf( _wpsf__( 'Purpose - %s' ), _wpsf__( 'Lockdown certain core WordPress system features.' ) ),
 						sprintf( _wpsf__( 'Recommendation - %s' ), _wpsf__( 'This depends on your usage and needs for certain WordPress functions and features.' ) )
 					);
-					$sTitleShort = _wpsf__( 'Lockdown' );
+					$sTitleShort = _wpsf__( 'System' );
 					break;
 
 				case 'section_permission_access_options' :

@@ -9,7 +9,6 @@ class ICWP_EmailProcessor_V1 extends ICWP_WPSF_Processor_Base {
 	const Slug = 'email';
 	
 	protected $m_sRecipientAddress;
-	protected $m_sSiteName;
 
 	/**
 	 * @var string
@@ -49,7 +48,30 @@ class ICWP_EmailProcessor_V1 extends ICWP_WPSF_Processor_Base {
 	}
 
 	public function run() {}
-	
+
+	/**
+	 * @return array
+	 */
+	protected function getEmailHeader() {
+		return array(
+			_wpsf__('Hi !'), '',
+		);
+	}
+	/**
+	 * @return array
+	 */
+	protected function getEmailFooter() {
+		return array(
+			'', '',
+			sprintf(
+				_wpsf__( 'This email was sent from the %s plugin, provided by %s.' ),
+				$this->getController()->getHumanName(),
+				sprintf( '<a href="%s"><strong>%s</strong></a>', 'http://icwp.io/shieldicontrolwpemailfooter', 'iControlWP - WordPress Management and Backup Protection For Professionals' )
+			),
+			sprintf( _wpsf__( 'Current Plugin Version: %s.' ), $this->getController()->getVersion() ),
+		);
+	}
+
 	/**
 	 * @param string $sEmailAddress
 	 * @param string $sEmailSubject
@@ -63,18 +85,22 @@ class ICWP_EmailProcessor_V1 extends ICWP_WPSF_Processor_Base {
 
 		$aHeaders = array(
 			'MIME-Version: 1.0',
-			'Content-type: text/plain;',
-			sprintf( 'From: %s :: %s <%s>', $this->getSiteName(), $this->getController()->getHumanName(), $sEmailTo ),
+			'Content-type: text/html;',
+			sprintf( 'From: %s - %s <%s>', $this->getSiteName(), $this->getController()->getHumanName(), $sEmailTo ),
 			sprintf( "Subject: %s", $sEmailSubject ),
 			'X-Mailer: PHP/'.phpversion()
 		);
+
 		
 		$this->updateEmailThrottle();
 		// We make it appear to have "succeeded" if the throttle is applied.
 		if ( $this->fEmailIsThrottled ) {
 			return true;
 		}
-		$fSuccess = wp_mail( $sEmailTo, $sEmailSubject, implode( "\r\n", $aMessage ), implode( "\r\n", $aHeaders ) );
+
+		$aMessage = array_merge( $this->getEmailHeader(), $aMessage, $this->getEmailFooter() );
+
+		$fSuccess = wp_mail( $sEmailTo, $sEmailSubject, implode( "<br />", $aMessage ), implode( "\r\n", $aHeaders ) );
 		return $fSuccess;
 	}
 

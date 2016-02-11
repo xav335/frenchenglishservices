@@ -122,7 +122,8 @@ function iqblockcountry_check($country,$badcountries,$ip_address)
         $backendblacklistcheck = TRUE;
     }
 
-    global $blockcountry_is_login_page;
+    global $blockcountry_is_login_page,$blockcountry_is_xmlrpc;
+    
 
     /* Check if requested url is not login page. Else check against frontend whitelist/blacklist. */
     if (!$blockcountry_is_login_page )
@@ -136,7 +137,7 @@ function iqblockcountry_check($country,$badcountries,$ip_address)
     }
     
     
-    if ($blockcountry_is_login_page )
+    if ($blockcountry_is_login_page || is_admin() || $blockcountry_is_xmlrpc)
     {    
         if (is_array($backendbanlistip) &&  in_array($ip_address,$backendbanlistip))
         {
@@ -249,11 +250,11 @@ function iqblockcountry_check($country,$badcountries,$ip_address)
  * 
  */
 function iqblockcountry_CheckCountry() {
-
+    
     $ip_address = iqblockcountry_get_ipaddress();
     $country = iqblockcountry_check_ipaddress($ip_address);
-    global $blockcountry_is_login_page;
-    if (($blockcountry_is_login_page || is_admin()) && get_option('blockcountry_blockbackend'))
+    global $blockcountry_is_login_page,$blockcountry_is_xmlrpc;
+    if (($blockcountry_is_login_page || is_admin()) || $blockcountry_is_xmlrpc && get_option('blockcountry_blockbackend'))
     { 
         $banlist = get_option( 'blockcountry_backendbanlist' );
         if (!is_array($banlist)) { $banlist = array(); }
@@ -282,29 +283,31 @@ function iqblockcountry_CheckCountry() {
         /* Check ip address against banlist, whitelist and blacklist */
         if (iqblockcountry_check($country,$badcountries,$ip_address))
         {        
-                if (($blockcountry_is_login_page || is_admin()) && get_option('blockcountry_blockbackend'))
+                if (($blockcountry_is_login_page || is_admin()) || $blockcountry_is_xmlrpc && get_option('blockcountry_blockbackend'))
                 {
                     $blocked = get_option('blockcountry_backendnrblocks');
                     if (empty($blocked)) { $blocked = 0; }
                     $blocked++;
                     update_option('blockcountry_backendnrblocks', $blocked);
-                    global $apiblacklist,$backendblacklistcheck;
+                    global $apiblacklist,$backendblacklistcheck,$debughandled;
                     if (!get_option('blockcountry_logging'))
                     {
                         if (!$apiblacklist)
                         {    
                             iqblockcountry_logging($ip_address, $country, "B");
+                            iqblockcountry_debug_logging($ip_address,$country,'BB');
                         }
                         elseif ($backendblacklistcheck && $apiblacklist)
                         {
                             iqblockcountry_logging($ip_address, $country, "T");
+                            iqblockcountry_debug_logging($ip_address,$country,'TB');
                         }
                         else
                         {
-                            iqblockcountry_logging($ip_address, $country, "A");                        
+                            iqblockcountry_logging($ip_address, $country, "A");   
+                            iqblockcountry_debug_logging($ip_address,$country,'AB');
                         }
                     }
-                    
                 }
                 else
                 {
@@ -315,6 +318,7 @@ function iqblockcountry_CheckCountry() {
                     if (!get_option('blockcountry_logging'))
                     {
                         iqblockcountry_logging($ip_address, $country, "F");
+                        iqblockcountry_debug_logging($ip_address,$country,'FB');
                     }
                 }
             
@@ -347,8 +351,25 @@ function iqblockcountry_CheckCountry() {
 
 
 		exit ();
-	}		
+	}	
+        else
+        {
+            iqblockcountry_debug_logging($ip_address,$country,'NB');
+        }
     }
+    else
+    {
+            iqblockcountry_debug_logging($ip_address,$country,'NB');
+    }
+}
+
+
+/**
+ * Check if xmlrpc.php is hit.
+ * @return bool
+ */
+function iqblockcountry_is_xmlrpc() {
+    return defined('XMLRPC_REQUEST') && XMLRPC_REQUEST;
 }
 
 
@@ -362,12 +383,40 @@ function iqblockcountry_is_login_page() {
     include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); 
     if ( is_plugin_active( 'all-in-one-wp-security-and-firewall/wp-security.php' ) ) {
         $aio = get_option('aio_wp_security_configs');
-        $pos2 = strpos( $_SERVER['REQUEST_URI'], $aio['aiowps_login_page_slug'] );
+        if (!empty($aio)) {
+        $pos2 = strpos( $_SERVER['REQUEST_URI'], $aio['aiowps_login_page_slug'] ); }
     } 
  
+    if ( is_plugin_active( 'lockdown-wp-admin/lockdown-wp-admin.php' ) ) {
+        $ld = get_option('ld_login_base');
+        if (!empty($ld)) {
+        $pos2 = strpos( $_SERVER['REQUEST_URI'], $ld); }
+    } 
+    
+    if ( is_plugin_active( 'wp-simple-firewall/icwp-wpsf.php' ) ) {
+        $wpsf = get_option('icwp_wpsf_loginprotect_options');
+        if (!empty($wpsf['rename_wplogin_path'])) {
+        $pos2 = strpos( $_SERVER['REQUEST_URI'], $wpsf['rename_wplogin_path'] ); }
+    } 
+ 
+    
     $pos = strpos( $_SERVER['REQUEST_URI'], 'wp-login' );
     if ($pos !== false) { $found = TRUE; }
     elseif ($pos2 !== false) { $found = TRUE; }
+    
+    return $found;
+}
+
+
+/*
+ * Check if page is within wp-admin page
+ */
+function iqblockcountry_is_admin() {
+   $found = FALSE;
+   
+ 
+    $pos = strpos( $_SERVER['REQUEST_URI'], '/wp-admin/' );
+    if ($pos !== false) { $found = TRUE; }
     
     return $found;
 }

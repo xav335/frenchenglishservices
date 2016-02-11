@@ -52,17 +52,6 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Plugin', false ) ):
 		}
 
 		/**
-		 * @return array
-		 */
-		public function getIpWhitelistOption() {
-			$aList = $this->getOpt( 'ip_whitelist', array() );
-			if ( empty( $aList ) || !is_array( $aList ) ){
-				$aList = array();
-			}
-			return $aList;
-		}
-
-		/**
 		 * @param array $aSummaryData
 		 * @return array
 		 */
@@ -153,14 +142,6 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Plugin', false ) ):
 					$sDescription = sprintf( _wpsf__( 'Uncheck this option to disable all %s features.' ), $this->getController()->getHumanName() );
 					break;
 
-				case 'ip_whitelist' :
-					$sName = _wpsf__( 'IP Whitelist' );
-					$sSummary = _wpsf__( 'IP Address White List' );
-					$sDescription = sprintf( _wpsf__( 'Any IP addresses on this list will by-pass all Plugin Security Checking.' ) )
-									.'<br />'.sprintf( _wpsf__( 'Your IP address is: %s' ), '<span class="code">'.( $this->loadDataProcessor()->getVisitorIpAddress() ).'</span>' )
-									.'<br /><strong>This option is deprecated - Please use the IP Manager to set white list IPs.</strong>';
-					break;
-
 				case 'block_send_email_address' :
 					$sName = _wpsf__( 'Report Email' );
 					$sSummary = _wpsf__( 'Where to send email reports' );
@@ -179,6 +160,12 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Plugin', false ) ):
 					$sDescription = _wpsf__( 'Enabling this option helps support the plugin by spreading the word about it on your website.' )
 						.' '._wpsf__('The plugin badge also lets visitors know your are taking your website security seriously.')
 						.sprintf( '<br /><strong><a href="%s" target="_blank">%s</a></strong>', 'http://icwp.io/wpsf20', _wpsf__('Read this carefully before enabling this option.') );
+					break;
+
+				case 'unique_installation_id' :
+					$sName = _wpsf__( 'Installation ID' );
+					$sSummary = _wpsf__( 'Unique Plugin Installation ID' );
+					$sDescription = _wpsf__( 'Keep this ID private.' );
 					break;
 
 				case 'delete_on_deactivate' :
@@ -202,10 +189,40 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Plugin', false ) ):
 		 */
 		protected function doPrePluginOptionsSave() {
 
-			$nInstalledAt = $this->getOpt( 'installation_time' );
-			if ( empty($nInstalledAt) || $nInstalledAt <= 0 ) {
-				$this->setOpt( 'installation_time', time() );
+			$nInstalledAt = $this->getPluginInstallationTime();
+			if ( empty( $nInstalledAt ) || $nInstalledAt <= 0 ) {
+				$this->setOpt( 'installation_time', $this->loadDataProcessor()->time() );
 			}
+
+			$sUniqueId = $this->getPluginInstallationId();
+			if ( empty( $sUniqueId ) || !is_string( $sUniqueId ) || strlen( $sUniqueId ) != 32 ) {
+				$this->setPluginInstallationId();
+			}
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getPluginInstallationId() {
+			return $this->getOpt( 'unique_installation_id', '' );
+		}
+
+		/**
+		 * @return string
+		 */
+		public function getPluginInstallationTime() {
+			return $this->getOpt( 'installation_time', 0 );
+		}
+
+		/**
+		 * @param string $sNewId - leave empty to reset
+		 * @return bool
+		 */
+		public function setPluginInstallationId( $sNewId = null ) {
+			if ( empty( $sNewId ) ) {
+				$sNewId = md5( $this->getOpt( 'installation_time' ) . $this->loadWpFunctionsProcessor()->getHomeUrl() . rand( 0, 1000 ) );
+			}
+			return $this->setOpt( 'unique_installation_id', $sNewId );
 		}
 
 		protected function updateHandler() {
@@ -230,6 +247,20 @@ if ( !class_exists( 'ICWP_WPSF_FeatureHandler_Plugin', false ) ):
 					$oWpUsers->deleteUserMeta( $this->prefixOptionKey( $sOldMeta ) );
 				}
 			}
+		}
+
+		/**
+		 * Kept just in-case.
+		 */
+		protected function old_translations() {
+			_wpsf__( 'IP Whitelist' );
+			_wpsf__( 'IP Address White List' );
+			_wpsf__( 'Any IP addresses on this list will by-pass all Plugin Security Checking.' );
+			_wpsf__( 'Your IP address is: %s' );
+			_wpsf__( 'Choose IP Addresses To Blacklist' );
+			_wpsf__( 'Recommendation - %s' );
+			_wpsf__( 'Blacklist' );
+			_wpsf__( 'Logging' );
 		}
 	}
 

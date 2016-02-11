@@ -5,40 +5,43 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: security, firewall, rename wp login, two-factor authentication, audit trail, dos, brute force, whitelist, blacklist, GASP, spam, automatic updates, ithemes, better wp security, all-in-one, lockdown, login, hack
 Requires at least: 3.5.0
-Tested up to: 4.3
-Stable tag: 4.12.0
+Tested up to: 4.4
+Stable tag: 4.16.2
 
 Comprehensive and Easy-To-Use WordPress Security - Comes With Business Grade Support, with no "premium" restrictions
 
 == Description ==
 
-Are you looking to secure your WordPress site but without getting overwhelmed?
+> The Simple Security Firewall is the **most powerful [WordPress protection system](http://icwp.io/wpsf09) available**.
+We're designed for maximum compatibility with your WordPress sites, while providing an uncomplicated approach for beginner
+and advanced users alike - with NO nasty site lockouts. Experience the difference that a great security plugin makes,
+alongside common-sense security design.  You'll never look back!
 
-The WordPress Security Firewall is the easiest to use, most reliable [WordPress Security System](http://icwp.io/wpsf09) available today.
+Do you want to secure your WordPress site, without getting overwhelmed?
 
-What makes the Simple Security Firewall different?
+Stand out from the herd - what makes ours different?
 
+* No restrictive PRO/Premium version - it's all there.
 * Easy-To-Setup Interface.
-* All Features available to everyone - no premium version.
 * It won't ever break your website - you'll never get that horrible,
 	pit-of-your stomach feeling you get with other security plugins when your website doesn't load anymore.
-* Plugin Self Protection - the only WordPress Security Plugin that protects against tampering.
+* Plugin Self Security Protection - the *only* WordPress Security Plugin that protects against tampering.
 * Exclusive membership to a private security group where you can learn more about WordPress security.
 
-Don't let **Simple** Security fool you - simple doesn't mean *soft*, it means easy to use, uncomplicated protection.
+= Awesome Features =
 
-* It blocks malicious URLs and requests to your site.
-* It blocks **ALL** automated spambot comments.
-* It hides your login page.
-* It prevents brute force attacks on your login and also any attempted automatic bot logins.
-* You can be sure that users are who they say they are (with Two-Factor Authentication)
-* You can monitor user login activity and restrict username sharing (with User Sessions Management)
-* You can see exactly what's going on with your site (with a detailed Audit Trail Log)
-* You can turn on and turn off WordPress Automatic Updates.
+* Blocks malicious URLs and requests
+* Blocks **ALL** automated spambot comments.
+* Hide your WordPress Admin and Login page.
+* Prevents brute force attacks on your login and any attempted automatic bot logins.
+* Verify user identity with email-based Two-Factor Authentication
+* Monitor login activity and restrict username sharin, with User Sessions Management
+* Review admin activity with a detailed Audit Trail Log
+* Turn on and turn off WordPress Automatic Updates separately for plugins, themes and Core
 * Easy to use kill switch to temporarily turn off all Firewall Features without disabling the plugin or even logging into WordPress.
 
 = Plugin Admin Access Protection =
-The **only** WordPress security plugin with a WordPress-independent security key to protects itself. [more info](http://icwp.io/wpsf05)
+The **only** WordPress security plugin with a WordPress-independent security key to protect itself. [more info](http://icwp.io/wpsf05)
 
 = Audit Trail Activity Monitor =
 With the Audit Trail you can review all major actions that have taken place on your WordPress site, by all users.
@@ -265,15 +268,73 @@ This is best [described on the blog](http://icwp.io/2u)
 The Automatic (Background) WordPress updates happens on a WordPress schedule - it doesn't happen immediately when an update is detected.
 You can either manually upgrade, or WordPress will handle it in due course.
 
+= How can I remove the WordPress admin footer message that displays my IP address? =
+
+You can add some custom code to your functions.php exactly as the following:
+
+`add_filter( 'icwp_wpsf_print_admin_ip_footer', '__return_false' );`
+
 == Screenshots ==
 
 == Changelog ==
 
-= 4.12.0 Point Release =
-*Released: 10th October, 2015*
+= 4.16.2 Latest Point Release =
+*Released: 25th January, 2016*
 
-* **(v.0)**  NEW:			Option to completely disable the XML-RPC system. [more info](http://icwp.io/wpsf31)
-* **(v.0)**  CHANGED:		Logged-in users are automatically forwarded to the WordPress admin only if they are Administrators.
+* **(v.2)**  CHANGED:		Further changes and improvements to the [Core File Scanner](http://icwp.io/wpsf40).
+* **(v.2)**  CHANGED:		Improvements to the [automatic black list system](http://icwp.io/wpsf27) for failed login attempts.
+* **(v.2)**  CHANGED:		Provided the option to [manually force a Core File Scan](https://icontrolwp.freshdesk.com/support/solutions/articles/3000047513).
+* **(v.2)**  TRANSLATIONS:	Turkish (100%)
+
+= 4.16 Series =
+*Released: 20th January, 2016*
+
+* **(v.2)**  CHANGED:		Further changes and improvements to the [Core File Scanner](http://icwp.io/wpsf40).
+* **(v.2)**  CHANGED:		Improvements to the [automatic black list system](http://icwp.io/wpsf27) for failed login attempts.
+* **(v.2)**  TRANSLATIONS:	Turkish (100%)
+* **(v.1)**  CHANGED:		Improved the contents of the [Core File Scanner](http://icwp.io/wpsf40) notification email with links to original source files.
+* **(v.1)**  CHANGED:		Now also excluding the /wp-content/languages/ directory since translations may update independently.
+* **(v.1)**  CHANGED:		Handles the special case of [old index.php files](https://wordpress.org/support/topic/problem-with-checksum-hashes)
+* **(v.0)**  ADDED:			Feature: [Automatically scans WordPress Core files](http://icwp.io/wpsf40) and detects alterations from the default WordPress Core File data
+* **(v.0)**  ADDED:			Feature: to automatically attempt to repair/replace WordPress Core files that are discovered which have been altered.
+* **(v.0)**  ADDED:			Option to toggle the [Plugin Vulnerabilities cron](http://icwp.io/wpsf41).
+* **(v.0)**  ADDED:			Two-Factor Authentication links now honour the WordPress 'redirect_to' parameter.
+
+= 4.15 Series =
+*Released: 6th January, 2016*
+
+* **(v.0)**  ADDED:			New and updated Firewall rules as well as a new 'Aggressive' option that looks for additional request data. Disabled by default, but may cause an increase in false positives.
+* **(v.0)**  CHANGED:		Improved and optimized Firewall processing.
+* **(v.0)**  FIXED:			[Issue](https://github.com/FernleafSystems/wp-simple-firewall/issues/3) where automatic update notification emails are sent out without any update notices (probably due to failed updates).
+* **(v.0)**  FIXED:			Small conflict with WP Login Rename and other security plugins.
+* **(v.0)**  TRANSLATIONS:	Czech (91%), Finnish (98%), Turkish (98%).
+
+= 4.14 Series =
+*Released: 20th November, 2015*
+
+* **(v.2)**  ADDED:			User notice message displayed when the 'Theme My Login' plugin is active and you try to rename your login URL - It is not compatible.
+* **(v.1)**  ADDED:			Added WordPress filter option to specify URL instead of present a 404 when Rename WP Login is active. [more info](https://icontrolwp.freshdesk.com/solution/articles/3000044812)
+* **(v.1)**  ADDED:			Added 'Unique Plugin Installation ID' to be utilized in the future.
+* **(v.1)**  FIXED:			WordPress Comments bug where some comments didn't pass through the SPAM filters in a certain scenario.
+* **(v.0)**  ADDED:			[Custom Automatic Update Notifications Email](http://icwp.io/wpsf33) that runs separately to the in-built WordPress core notification email.
+* **(v.0)**  ADDED:			Filter to remove the admin area IP address footer text
+* **(v.0)**  CHANGED:		Added native support for PayPal return links - whitelisting "verify_sign" parameter.
+* **(v.0)**  CHANGED:		Tweak patterns for matching on 'WordPress terms'.
+* **(v.0)**  TRANSLATIONS:	Danish (100%), Czech (92%), Turkish (92%), Finnish (88%),
+* **(v.0)**  FIXED:			Small bugs and readying for WordPress 4.4
+
+= 4.13 Series =
+*Released: 22nd October, 2015*
+
+* **(v.0)**  NEW:			Added option to block the modification, addition/promotion and deletion of WordPress administrators users within the 'Security Admin' module.
+* **(v.0)**  NEW:			Renamed 'Admin Access' module to 'Security Admin'.
+* **(v.0)**  CHANGED:		Simplified and consolidated the use of cookies for User Session - sets and removes cookies better to reduce their usage.
+* **(v.0)**  CHANGED:		Simplified and consolidated the use of cookies for Two Factor Login Authentication.
+* **(v.0)**  CHANGED:		Cleaned up some Comment SPAM filtering code.
+* **(v.0)**  CHANGED:		Comments Filter doesn't use cookies unless a session cookie for the visitor already exists.
+* **(v.0)**  CHANGED:		IP Manager Automatic Black List - default black list duration is now 1 minute & default transgressions limit is 10
+* **(v.0)**  CHANGED:		Improvements to the database create queries: use MySQL Engine defaults (instead of MyISAM); use WordPress dbDelta() for updates.
+* **(v.0)**  CHANGED:		Various code optimizations and cleaning.
 
 = 4.12 Series =
 *Released: 10th October, 2015*
@@ -961,7 +1022,7 @@ Which actions will trigger an ABLE transgression?
 
 = 1.1.0 =
 
-*	You can now specify IP ranges in whitelists and blacklists. To do this separate the start and end address with a hypen (-)	E.g. For everything between 1.2.3.4 and 1.2.3.10, you would do: 1.2.3.4-1.2.3.10
+*	You can now specify IP ranges in whitelists and blacklists. To do this separate the start and end address with a hyphen (-)	E.g. For everything between 1.2.3.4 and 1.2.3.10, you would do: 1.2.3.4-1.2.3.10
 *	You can now specify which email address to send the notification emails.
 *	You can now add a comment to IP addresses in the whitelist/blacklist. To do this, write your IP address then type a SPACE and write whatever you want (don't take a new line).
 *	You can now set to delete ALL firewall settings when you deactivate the plugin.
@@ -976,7 +1037,7 @@ Which actions will trigger an ABLE transgression?
 
 *	CHANGED: Logging now has its own dedicated database table.
 *	Fix: Block notification emails weren't showing the user-friendly IP Address format.
-*	You can now specify IP ranges in whitelists and blacklists. To do this separate the start and end address with a hypen (-)	E.g. For everything between 1.2.3.4 and 1.2.3.10, you would do: 1.2.3.4-1.2.3.10
+*	You can now specify IP ranges in whitelists and blacklists. To do this separate the start and end address with a hyphen (-)	E.g. For everything between 1.2.3.4 and 1.2.3.10, you would do: 1.2.3.4-1.2.3.10
 *	You can now specify which email address to send the notification emails.
 *	You can now add a comment to IP addresses in the whitelist/blacklist. To do this, write your IP address then type a SPACE and write whatever you want (don't take a new line).
 *	You can now set to delete ALL firewall settings when you deactivate the plugin.

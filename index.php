@@ -5,7 +5,7 @@
  *
  * @package WordPress
  */
-include "./wp-admin/includes/class-wp-admin-list-table.php";
+
 /**
  * Tells WordPress to load the WordPress theme and output it.
  *
